@@ -13,8 +13,8 @@ Also if you are behind a proxy add 'proxy = http://<proxy>' to your ~/.curlrc an
 ## Start mini-mon
 
 - vagrant up
-  - This will bring the vm up
-  - Your home dir is synced to the vm in /vagrant_home
-- vagrant ssh
-  - This will give you shell on the vm
-- Your vm is accessible at the ip 10.10.10.10
+  - This will bring the vms up
+  - Your home dir is synced to the vm in /vagrant_home on each vm
+- Vms created
+  - kafkha at 10.10.10.10
+- Run 'vagrant help' for more info
