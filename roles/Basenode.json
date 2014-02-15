@@ -1,0 +1,15 @@
+{
+  "name": "Basenode",
+  "description": "Base setup for vagrant nodes",
+  "json_class": "Chef::Role",
+  "default_attributes": {
+  },
+  "override_attributes": {
+  },
+  "chef_type": "role",
+  "run_list": [
+    "recipe[apt]"
+  ],
+  "env_run_lists": {
+  }
+}
