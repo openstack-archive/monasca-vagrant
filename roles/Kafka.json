@@ -9,7 +9,8 @@
   "chef_type": "role",
   "run_list": [
     "role[Basenode]",
-    "recipe[zookeeper]"
+    "recipe[zookeeper]",
+    "recipe[kafka]"
   ],
   "env_run_lists": {
   }
