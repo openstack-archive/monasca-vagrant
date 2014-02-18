@@ -9,6 +9,8 @@ Also if you are behind a proxy add 'proxy = http://<proxy>' to your ~/.curlrc an
 - brew install brew-cask
 - brew cask install virtualbox 
 - brew cask install vagrant
+- vagrant plugin install vagrant-berkshelf
+- gem install berkshelf
 
 ## Start mini-mon
 
