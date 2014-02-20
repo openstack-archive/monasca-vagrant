@@ -12,7 +12,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # VM specific settings
   config.vm.define "kafka" do |kafka|
-    kafka.vm.network :private_network, ip: "10.10.10.10"
+    kafka.vm.network :private_network, ip: "192.168.10.10"
     kafka.vm.provision :chef_solo do |chef|
       chef.roles_path = "roles"
       chef.data_bags_path = "data_bags"
