@@ -1,5 +1,12 @@
 # Common setup for all vagrant boxes
 
+# This move the default apt sources which are the standard ubuntu apt ones aside, so we are forced to deal with what hpcloud has mirrored
+bash 'move dist sources.list' do
+  action :run
+  code 'mv /etc/apt/sources.list /etc/apt/sources.list-dist'
+  not_if do ::File.exists?('/etc/apt/sources.list-dist') end
+end
+
 apt_repository 'foundation' do
   uri 'http://packages.dev.uswest.hpcloud.net/cloud/foundation'
   arch 'amd64'
