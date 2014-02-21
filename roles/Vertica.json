@@ -1,0 +1,17 @@
+{
+  "name": "Vertica",
+  "description": "Sets up Vertica",
+  "json_class": "Chef::Role",
+  "default_attributes": {
+  },
+  "override_attributes": {
+  },
+  "chef_type": "role",
+  "run_list": [
+    "role[Basenode]",
+    "recipe[vertica]",
+    "recipe[sysctl]"
+  ],
+  "env_run_lists": {
+  }
+}

@@ -21,4 +21,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
   end
 
+  config.vm.define "vertica" do |vertica|
+    vertica.vm.network :private_network, ip: "192.168.10.8"
+    vertica.vm.provision :chef_solo do |chef|
+      chef.roles_path = "roles"
+      chef.data_bags_path = "data_bags"
+
+      chef.add_role "Vertica"
+    end
+  end
+
 end

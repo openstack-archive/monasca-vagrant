@@ -32,4 +32,5 @@ vagrant up
 - Your home dir is synced to the vm in /vagrant_home on each vm
 - Vms created
   - `kafka` at `192.168.10.10`
+  - `vertica` at `192.168.10.8`
 - Run `vagrant help` for more info
