@@ -9,7 +9,7 @@ git clone https://git.hpcloud.net/mon/mini-mon.git
 ```
 
 ## Setup Vagrant
-Assumes you have home homebrew installed. Also if you are behind a proxy add `proxy = http://<proxy>` to your `~/.curlrc` and set your `HTTP_PROXY` environment variable
+Assumes you have home homebrew installed.
 
 ```
 brew tap phinze/cask
@@ -18,6 +18,13 @@ brew cask install virtualbox
 brew cask install vagrant
 vagrant plugin install vagrant-berkshelf
 gem install berkshelf
+```
+
+If you are behind a proxy you can install the `vagrant-proxyconf` pluging to have Vagrant honor any proxy-related
+environment variables that are set:
+
+```
+vagrant pluging install vagrant-proxyconf
 ```
 
 ## Start mini-mon
