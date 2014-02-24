@@ -24,7 +24,7 @@ If you are behind a proxy you can install the `vagrant-proxyconf` pluging to hav
 environment variables that are set:
 
 ```
-vagrant pluging install vagrant-proxyconf
+vagrant plugin install vagrant-proxyconf
 ```
 
 ## Start mini-mon
