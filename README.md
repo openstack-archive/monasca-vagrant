@@ -21,7 +21,7 @@ gem install berkshelf
 ```
 
 If you are behind a proxy you can install the `vagrant-proxyconf` pluging to have Vagrant honor any proxy-related
-environment variables that are set:
+environment variables that are set. Note that this is all or nothing with this set all apt repositories use the proxy.:
 
 ```
 vagrant plugin install vagrant-proxyconf
