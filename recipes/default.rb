@@ -1,5 +1,8 @@
 # Common setup for all vagrant boxes
 
+
+## Todo - This apt setup is specific to HP Cloud and should be moved to an optional recipe.
+
 # This move the default apt sources which are the standard ubuntu apt ones aside, so we are forced to deal with what hpcloud has mirrored
 bash 'move dist sources.list' do
   action :run
