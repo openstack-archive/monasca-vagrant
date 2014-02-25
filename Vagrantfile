@@ -33,6 +33,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
   end
 
+  config.vm.define "mysql" do |mysql|
+    mysql.vm.hostname = 'mysql'
+    mysql.vm.network :private_network, ip: "192.168.10.6"
+    mysql.vm.provision :chef_solo do |chef|
+      chef.roles_path = "roles"
+      chef.data_bags_path = "data_bags"
+      chef.add_role "MySQL"
+    end
+  end
+
   config.vm.define "vertica" do |vertica|
     vertica.vm.hostname = 'vertica'
     vertica.vm.network :private_network, ip: "192.168.10.8"

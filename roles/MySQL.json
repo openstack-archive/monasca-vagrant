@@ -1,0 +1,32 @@
+{
+  "name": "MySQL",
+  "description": "Sets up MySQL",
+  "json_class": "Chef::Role",
+  "default_attributes": {
+    "percona": {
+      "backup": {
+        "password": "password"
+      },
+      "cluster": {
+        "package": "percona-xtradb-cluster-56"
+      },
+      "server": {
+        "debain_password": "password",
+        "replication": {
+          "password": "password"
+        },
+        "root_password": "password"
+      },
+      "use_percona_apt": false
+    }
+  },
+  "override_attributes": {
+  },
+  "chef_type": "role",
+  "run_list": [
+    "role[Basenode]",
+    "recipe[percona::cluster]"
+  ],
+  "env_run_lists": {
+  }
+}
