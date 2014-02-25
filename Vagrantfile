@@ -43,6 +43,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
   end
 
+  config.vm.define "persister" do |persister|
+    persister.vm.hostname = 'persister'
+    persister.vm.network :private_network, ip: "192.168.10.12"
+    persister.vm.provision :chef_solo do |chef|
+      chef.roles_path = "roles"
+      chef.data_bags_path = "data_bags"
+      chef.add_role "Persister"
+    end
+  end
+
   config.vm.define "vertica" do |vertica|
     vertica.vm.hostname = 'vertica'
     vertica.vm.network :private_network, ip: "192.168.10.8"

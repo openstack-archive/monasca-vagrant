@@ -2,5 +2,6 @@ metadata
 cookbook 'hostsfile', '= 1.0.1'
 cookbook 'kafka', git: 'git@git.hpcloud.net:mon/cookbooks-kafka'
 cookbook 'percona', git: 'https://github.com/tkuhlman/chef-percona'
+cookbook 'persister', git: 'git@git.hpcloud.net:mon/cookbooks-persister'
 cookbook 'vertica', git: 'git@git.hpcloud.net:mon/cookbooks-vertica'
 cookbook 'zookeeper', git: 'git@git.hpcloud.net:mon/cookbooks-zookeeper'
