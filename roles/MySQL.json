@@ -10,7 +10,9 @@
       "cluster": {
         "package": "percona-xtradb-cluster-56"
       },
+      "main_config_file": "/etc/mysql/my.cnf",
       "server": {
+        "bind_address": "0.0.0.0",
         "debain_password": "password",
         "replication": {
           "password": "password"
@@ -25,7 +27,8 @@
   "chef_type": "role",
   "run_list": [
     "role[Basenode]",
-    "recipe[percona::cluster]"
+    "recipe[percona::cluster]",
+    "recipe[mini-mon::mysql_schema]"
   ],
   "env_run_lists": {
   }
