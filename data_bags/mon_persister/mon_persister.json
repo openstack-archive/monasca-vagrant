@@ -1,0 +1,10 @@
+{
+  "id" : "mon_persister",
+  "vertica" : {
+    "dbname" : "mon",
+    "hostname" : "192.168.10.8"
+  },
+  "zookeeper" : {
+    "hostname" : "192.168.10.10"
+  }
+}
