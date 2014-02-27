@@ -28,14 +28,13 @@ gem install berkshelf  or gem install --http-proxy <http://some-proxy.foo.com:80
 
 ## Start mini-mon
 Berkshelf will download some cookbooks from the community so http_proxy and https_proxy environment variables must be set if applicable.
-From within the `mini-mon` directory, run:
+From within the `mini-mon` directory, to start all the vms run:
 
 ```
 vagrant up
 ```
 
-- This will bring the vms up
-- Your home dir is synced to the vm in /vagrant_home on each vm
+- Your home dir is synced to `/vagrant_home` on each vm
 - Vms created
   - `kafka` at `192.168.10.10`
   - `mysql` at `192.168.10.6`
