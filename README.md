@@ -17,7 +17,7 @@ brew install brew-cask
 brew cask install virtualbox 
 brew cask install vagrant
 vagrant plugin install vagrant-berkshelf
-gem install berkshelf
+gem install berkshelf  or gem install --http-proxy <http://some-proxy.foo.com:8088> berkshelf
 ```
 
 If you are behind a proxy you can install the `vagrant-proxyconf` pluging to have Vagrant honor any proxy-related
