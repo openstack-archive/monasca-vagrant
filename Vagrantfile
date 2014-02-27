@@ -10,18 +10,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.synced_folder "~/", "/vagrant_home"
   config.berkshelf.enabled = true
 
-  # Handle local proxy settings
-  if Vagrant.has_plugin?("vagrant-proxyconf")
-    if ENV["http_proxy"]
-      config.proxy.http     = ENV["http_proxy"]
-      config.proxy.no_proxy = ENV["no_proxy"]
-    end
-    if ENV["https_proxy"]
-      config.proxy.https     = ENV["https_proxy"]
-      config.proxy.no_proxy  = ENV["no_proxy"]
-    end
-  end
-
   # VM specific settings
   config.vm.define "kafka" do |kafka|
     kafka.vm.hostname = 'kafka'
