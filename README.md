@@ -40,8 +40,8 @@ vagrant up
 - Vms created
   - `kafka` at `192.168.10.10`
   - `mysql` at `192.168.10.6`
+  - `persister` at `192.168.10.12`
   - `vertica` at `192.168.10.8`
-  - `persister` at `?`
 - Run `vagrant help` for more info
 - Run `vagrant ssh <vm name>` to login to a particular vm
   - password is either `vagrant` or `password`
