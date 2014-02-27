@@ -43,7 +43,6 @@ vagrant up
   - `vertica` at `192.168.10.8`
   - `persister` at `?`
 - Run `vagrant help` for more info
-
-- Run `vagrant ssh <vm name>` to login.
+- Run `vagrant ssh <vm name>` to login to a particular vm
   - password is either `vagrant` or `password`
   
