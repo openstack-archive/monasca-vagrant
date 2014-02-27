@@ -41,4 +41,9 @@ vagrant up
   - `kafka` at `192.168.10.10`
   - `mysql` at `192.168.10.6`
   - `vertica` at `192.168.10.8`
+  - `persister` at `?`
 - Run `vagrant help` for more info
+
+- Run `vagrant ssh <vm name>` to login.
+  - password is either `vagrant` or `password`
+  
