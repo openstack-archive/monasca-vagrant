@@ -45,3 +45,10 @@ vagrant up
 - Can also run `ssh vagrant@<ip address>` to login 
   - password is `vagrant`
   
+
+## Updating a VM
+When someone updates the config for a vm this process should allow you to bring up an updated vm.
+- `git pull`
+- `vagrant destroy vm` - Where vm is the name of the vm being updated, for example 'vertica'
+- `berks update`
+- `vagrant up vm`
