@@ -1,5 +1,5 @@
 {
-  "id" : "mon_persister",
+  "id" : "mon_api",
   "vertica" : {
     "dbname" : "mon",
     "hostname" : "192.168.10.8"
