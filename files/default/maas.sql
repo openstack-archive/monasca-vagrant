@@ -196,4 +196,7 @@ CREATE TABLE `subscription_meta` (
   CONSTRAINT `subscription_meta` FOREIGN KEY (`subscription_id`) REFERENCES `subscription` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE USER 'notification'@'%' IDENTIFIED BY 'password';
+GRANT SELECT ON maas.* TO 'notification'@'%';
+
 SET foreign_key_checks = 1;
