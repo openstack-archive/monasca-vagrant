@@ -1,0 +1,16 @@
+{
+  "name": "Api",
+  "description": "Sets up the Monitoring Api",
+  "json_class": "Chef::Role",
+  "default_attributes": {
+  },
+  "override_attributes": {
+  },
+  "chef_type": "role",
+  "run_list": [
+    "role[Basenode]",
+    "recipe[mon_api]"
+  ],
+  "env_run_lists": {
+  }
+}

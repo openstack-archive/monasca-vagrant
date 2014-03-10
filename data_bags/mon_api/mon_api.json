@@ -1,0 +1,17 @@
+{
+  "id" : "mon_api",
+  "vertica" : {
+    "dbname" : "mon",
+    "hostname" : "192.168.10.8"
+  },
+  "zookeeper" : {
+    "hostname" : "192.168.10.10"
+  },
+  "mysql": {
+   "hostname":"192.168.10.6",
+   "schema": "mon"
+  },
+  "kafka": {
+    "hostname": "192.168.10.10"
+  }
+}

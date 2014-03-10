@@ -1,5 +1,6 @@
 metadata
 cookbook 'hostsfile', '= 1.0.1'
+cookbook 'mon_api', git: 'git@git.hpcloud.net:mon/cookbooks-mon_api'
 cookbook 'kafka', git: 'git@git.hpcloud.net:mon/cookbooks-kafka'
 cookbook 'mon_persister', git: 'git@git.hpcloud.net:mon/cookbooks-mon_persister'
 cookbook 'percona', git: 'https://github.com/tkuhlman/chef-percona'

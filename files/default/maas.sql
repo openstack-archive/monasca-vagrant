@@ -199,4 +199,6 @@ CREATE TABLE `subscription_meta` (
 CREATE USER 'notification'@'%' IDENTIFIED BY 'password';
 GRANT SELECT ON maas.* TO 'notification'@'%';
 
+CREATE USER 'monapi'@'%' IDENTIFIED BY 'password';
+GRANT ALL ON maas.* TO 'monapi'@'%';
 SET foreign_key_checks = 1;
