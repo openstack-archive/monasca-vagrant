@@ -2,7 +2,7 @@
 
 bash 'maas_schema' do
   action :nothing
-  code 'mysql -uroot -ppassword < /var/lib/mysql/maas.sql'
+  code 'mysql -uroot -ppassword < /var/lib/mysql/mon.sql'
 end
 
 bash 'addr_validate_schema' do
@@ -10,11 +10,11 @@ bash 'addr_validate_schema' do
   code 'mysql -uroot -ppassword < /var/lib/mysql/addr_validate.sql'
 end
 
-cookbook_file '/var/lib/mysql/maas.sql' do
+cookbook_file '/var/lib/mysql/mon.sql' do
   action :create
   owner 'root'
   group 'root'
-  source 'maas.sql'
+  source 'mon.sql'
   notifies :run, "bash[maas_schema]"
 end
 
