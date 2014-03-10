@@ -43,7 +43,7 @@ CREATE TABLE `sub_alarm` (
   `id` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL,
   `alarm_id` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL,
   `function` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `namespace` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `metric_name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `operator` varchar(5) COLLATE utf8mb4_unicode_ci NOT NULL,
   `threshold` double NOT NULL,
   `period` int(11) NOT NULL,
