@@ -165,7 +165,7 @@ DROP TABLE IF EXISTS `subscription`;
 CREATE TABLE `subscription` (
   `id` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tenant_id` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `endpoint_id` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+    `endpoint_id` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL,
   `namespace` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
@@ -196,4 +196,6 @@ CREATE TABLE `subscription_meta` (
   CONSTRAINT `subscription_meta` FOREIGN KEY (`subscription_id`) REFERENCES `subscription` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE USER 'monapi'@'%' IDENTIFIED BY 'password';
+GRANT ALL ON maas.* TO 'monapi'@'%';
 SET foreign_key_checks = 1;
