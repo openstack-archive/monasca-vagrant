@@ -18,7 +18,8 @@
   "run_list": [
     "role[Basenode]",
     "recipe[zookeeper]",
-    "recipe[kafka]"
+    "recipe[kafka]",
+    "recipe[mon_notification]"
   ],
   "env_run_lists": {
   }
