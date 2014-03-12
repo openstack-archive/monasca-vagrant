@@ -3,6 +3,14 @@
   "description": "Sets up Kafka",
   "json_class": "Chef::Role",
   "default_attributes": {
+    "kafka": {
+      "topics": {
+        "metrics": { "replicas": 1, "partitions": 4 },
+        "events": { "replicas": 1, "partitions": 4 },
+        "alarm-state-transitions": { "replicas": 1, "partitions": 4 },
+        "alarm-notifications": { "replicas": 1, "partitions": 4 }
+      }
+    }
   },
   "override_attributes": {
   },
