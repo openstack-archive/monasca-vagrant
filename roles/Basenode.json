@@ -11,8 +11,8 @@
   },
   "chef_type": "role",
   "run_list": [
-    "recipe[apt]",
-    "recipe[mini-mon]"
+    "recipe[mini-mon]",
+    "recipe[apt]"
   ],
   "env_run_lists": {
   }
