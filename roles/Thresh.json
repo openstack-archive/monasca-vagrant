@@ -1,0 +1,16 @@
+{
+  "name": "Thresh",
+  "description": "Sets up Thresh",
+  "json_class": "Chef::Role",
+  "default_attributes": {
+  },
+  "override_attributes": {
+  },
+  "chef_type": "role",
+  "run_list": [
+    "role[Basenode]",
+    "recipe[mon_thresh]"
+  ],
+  "env_run_lists": {
+  }
+}

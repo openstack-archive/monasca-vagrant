@@ -76,4 +76,7 @@ GRANT SELECT ON mon.* TO 'notification'@'%';
 
 CREATE USER 'monapi'@'%' IDENTIFIED BY 'password';
 GRANT ALL ON mon.* TO 'monapi'@'%';
+
+CREATE USER 'thresh'@'%' IDENTIFIED BY 'password';
+GRANT ALL ON mon.* TO 'thresh'@'%';
 SET foreign_key_checks = 1;

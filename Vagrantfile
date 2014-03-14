@@ -51,6 +51,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
   end
 
+  config.vm.define "thresh" do |thresh|
+    thresh.vm.hostname = 'thresh'
+    thresh.vm.network :private_network, ip: "192.168.10.14"
+    thresh.vm.provision :chef_solo do |chef|
+      chef.roles_path = "roles"
+      chef.data_bags_path = "data_bags"
+      chef.add_role "Thresh"
+    end
+  end
+
   config.vm.define "vertica" do |vertica|
     vertica.vm.hostname = 'vertica'
     vertica.vm.network :private_network, ip: "192.168.10.8"
