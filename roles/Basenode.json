@@ -3,11 +3,15 @@
   "description": "Base setup for vagrant nodes",
   "json_class": "Chef::Role",
   "default_attributes": {
+    "apt": {
+      "periodic_update_min_delay": 60
+    }
   },
   "override_attributes": {
   },
   "chef_type": "role",
   "run_list": [
+    "recipe[apt]",
     "recipe[mini-mon]"
   ],
   "env_run_lists": {
