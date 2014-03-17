@@ -21,9 +21,10 @@ CREATE TABLE `alarm` (
 DROP TABLE IF EXISTS `alarm_action`;
 CREATE TABLE `alarm_action` (
   `alarm_id` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `action_id` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`alarm_id`,`action_id`),
-  CONSTRAINT `alarm_action` FOREIGN KEY (`alarm_id`) REFERENCES `alarm` (`id`) ON DELETE CASCADE
+  `notification_method_id` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`alarm_id`,`notification_method_id`),
+  CONSTRAINT `fk_alarm_action_alarm_id` FOREIGN KEY (`alarm_id`) REFERENCES `alarm` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_alarm_action_notification_method_id` FOREIGN KEY (`notification_method_id`) REFERENCES `notification_method` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `notification_method`;
