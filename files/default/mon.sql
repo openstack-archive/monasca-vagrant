@@ -21,10 +21,10 @@ CREATE TABLE `alarm` (
 DROP TABLE IF EXISTS `alarm_action`;
 CREATE TABLE `alarm_action` (
   `alarm_id` INT NOT NULL,
-  `notification_id` INT NOT NULL,
-  PRIMARY KEY (`alarm_id`,`notification_id`),
+  `notification_method_id` INT NOT NULL,
+  PRIMARY KEY (`alarm_id`,`notification_method_id`),
   CONSTRAINT `fk_alarm_action_alarm_id` FOREIGN KEY (`alarm_id`) REFERENCES `alarm` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `fk_alarm_action_notification_id` FOREIGN KEY (`notification_id`) REFERENCES `notification_method` (`id`) ON DELETE CASCADE
+  CONSTRAINT `fk_alarm_action_notification_method_id` FOREIGN KEY (`notification_method_id`) REFERENCES `notification_method` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `notification_method`;
