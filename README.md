@@ -36,9 +36,11 @@ vagrant up
 
 - Your home dir is synced to `/vagrant_home` on each vm
 - Vms created
-  - `kafka` at `192.168.10.10`
+  - `api` at `192.168.10.4`
+  - `kafka` at `192.168.10.10` - mon-notification runs on this box also
   - `mysql` at `192.168.10.6`
   - `persister` at `192.168.10.12`
+  - `thresh` at `192.168.10.14`
   - `vertica` at `192.168.10.8`
 - Run `vagrant help` for more info
 - Run `vagrant ssh <vm name>` to login to a particular vm
