@@ -5,7 +5,7 @@ SET foreign_key_checks = 0;
 
 DROP TABLE IF EXISTS `alarm`;
 CREATE TABLE `alarm` (
-  `id` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` INT NOT NULL,
   `tenant_id` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(250) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `expression` mediumtext COLLATE utf8mb4_unicode_ci,
@@ -20,15 +20,16 @@ CREATE TABLE `alarm` (
 
 DROP TABLE IF EXISTS `alarm_action`;
 CREATE TABLE `alarm_action` (
-  `alarm_id` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `action_id` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`alarm_id`,`action_id`),
-  CONSTRAINT `alarm_action` FOREIGN KEY (`alarm_id`) REFERENCES `alarm` (`id`) ON DELETE CASCADE
+  `alarm_id` INT NOT NULL,
+  `notification_id` INT NOT NULL,
+  PRIMARY KEY (`alarm_id`,`notification_id`),
+  CONSTRAINT `fk_alarm_action_alarm_id` FOREIGN KEY (`alarm_id`) REFERENCES `alarm` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_alarm_action_notification_id` FOREIGN KEY (`notification_id`) REFERENCES `notification_method` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `notification_method`;
 CREATE TABLE `notification_method` (
-  `id` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` INT NOT NULL,
   `tenant_id` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(250) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `type` enum('EMAIL','SMS') COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -40,8 +41,8 @@ CREATE TABLE `notification_method` (
 
 DROP TABLE IF EXISTS `sub_alarm`;
 CREATE TABLE `sub_alarm` (
-  `id` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `alarm_id` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` INT NOT NULL,
+  `alarm_id` INT NOT NULL,
   `function` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `metric_name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `operator` varchar(5) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -58,7 +59,7 @@ CREATE TABLE `sub_alarm` (
 
 DROP TABLE IF EXISTS `sub_alarm_dimension`;
 CREATE TABLE `sub_alarm_dimension` (
-  `sub_alarm_id` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `sub_alarm_id` INT NOT NULL,
   `dimension_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `value` varchar(300) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`sub_alarm_id`,`dimension_name`),

@@ -1,6 +1,6 @@
 # Temporary way of loading in the mysql schema
 
-bash 'maas_schema' do
+bash 'mon_schema' do
   action :nothing
   code 'mysql -uroot -ppassword < /var/lib/mysql/mon.sql'
 end
@@ -15,7 +15,7 @@ cookbook_file '/var/lib/mysql/mon.sql' do
   owner 'root'
   group 'root'
   source 'mon.sql'
-  notifies :run, "bash[maas_schema]"
+  notifies :run, "bash[mon_schema]"
 end
 
 cookbook_file '/var/lib/mysql/addr_validate.sql' do
