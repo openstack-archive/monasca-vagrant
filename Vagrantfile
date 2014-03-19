@@ -10,7 +10,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.synced_folder "~/", "/vagrant_home"
   config.berkshelf.enabled = true
 
-  # VM specific settings
+  # VM specific settings, these machines come up in order they are specified.
   config.vm.define "mysql" do |mysql|
     mysql.vm.hostname = 'mysql'
     mysql.vm.network :private_network, ip: "192.168.10.6"
@@ -21,16 +21,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
   end
 
-  config.vm.define "api" do |api|
-    api.vm.hostname = 'api'
-    api.vm.network :private_network, ip: "192.168.10.4"
-    api.vm.provision :chef_solo do |chef|
-      chef.roles_path = "roles"
-      chef.data_bags_path = "data_bags"
-      chef.add_role "Api"
-    end
-  end
-
   config.vm.define "kafka" do |kafka|
     kafka.vm.hostname = 'kafka'
     kafka.vm.network :private_network, ip: "192.168.10.10"
@@ -38,6 +28,29 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       chef.roles_path = "roles"
       chef.data_bags_path = "data_bags"
       chef.add_role "Kafka"
+    end
+  end
+
+  config.vm.define "vertica" do |vertica|
+    vertica.vm.hostname = 'vertica'
+    vertica.vm.network :private_network, ip: "192.168.10.8"
+    vertica.vm.provision :chef_solo do |chef|
+      chef.roles_path = "roles"
+      chef.data_bags_path = "data_bags"
+      chef.add_role "Vertica"
+    end
+    vertica.vm.provider "virtualbox" do |vb|
+      vb.memory = 2048  # Vertica is pretty strict about its minimum
+    end
+  end
+
+  config.vm.define "api" do |api|
+    api.vm.hostname = 'api'
+    api.vm.network :private_network, ip: "192.168.10.4"
+    api.vm.provision :chef_solo do |chef|
+      chef.roles_path = "roles"
+      chef.data_bags_path = "data_bags"
+      chef.add_role "Api"
     end
   end
 
@@ -58,19 +71,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       chef.roles_path = "roles"
       chef.data_bags_path = "data_bags"
       chef.add_role "Thresh"
-    end
-  end
-
-  config.vm.define "vertica" do |vertica|
-    vertica.vm.hostname = 'vertica'
-    vertica.vm.network :private_network, ip: "192.168.10.8"
-    vertica.vm.provision :chef_solo do |chef|
-      chef.roles_path = "roles"
-      chef.data_bags_path = "data_bags"
-      chef.add_role "Vertica"
-    end
-    vertica.vm.provider "virtualbox" do |vb|
-      vb.memory = 2048  # Vertica is pretty strict about its minimum
     end
   end
 
