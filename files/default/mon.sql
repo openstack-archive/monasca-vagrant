@@ -25,7 +25,7 @@ CREATE TABLE `alarm_action` (
   `alarm_id` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL,
   `alarm_state` varchar(12) COLLATE utf8mb4_unicode_ci NOT NULL,
   `action_id` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`alarm_id`,`action_id`),
+  PRIMARY KEY (`alarm_id`,`alarm_state`,`action_id`),
   CONSTRAINT `fk_alarm_action_alarm_id` FOREIGN KEY (`alarm_id`) REFERENCES `alarm` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
