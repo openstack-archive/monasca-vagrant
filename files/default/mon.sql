@@ -20,6 +20,7 @@ CREATE TABLE `alarm` (
   KEY `created_at` (`created_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+DROP TABLE IF EXISTS `alarm_action`;
 CREATE TABLE `alarm_action` (
   `alarm_id` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL,
   `alarm_state` enum('UNDETERMINED','OK','ALARM') COLLATE utf8mb4_unicode_ci NOT NULL,
