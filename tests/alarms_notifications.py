@@ -21,7 +21,7 @@ def post(conn, url, body):
     conn.request("POST", url, body, HEADERS)
     http_response = conn.getresponse()
     response = http_response.read()
-    if http_response.status < 200 or http_response > 300:
+    if http_response.status < 200 or http_response.status > 300:
         print("\tError %d response: %s" % (http_response.status, response))
     return response
 
@@ -41,11 +41,18 @@ def main():
 
     notification_method_id = response_json['id']
 
+    # Alarms with notification
     for path in glob('alarms/*.json'):
         with open(path, 'r') as alarm_file:
             alarm_json = alarm_file.read() % (notification_method_id, notification_method_id, notification_method_id)
         print('Adding Alarm %s' % path)
         post(conn, '/v2.0/alarms', alarm_json)
+
+    # Alarms without notification
+    for path in glob('alarms-no-notification/*.json'):
+        print('Adding Alarm %s' % path)
+        with open(path, 'r') as alarm_file:
+            post(conn, '/v2.0/alarms', alarm_file.read())
 
 if __name__ == "__main__":
     sys.exit(main())

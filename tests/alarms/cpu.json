@@ -1,14 +1,14 @@
- {
-    "description": "mini-mon cpu alarm",
-    "name": "compute.cpu",
-    "expression": "compute.cpu{hostname=kafka} >= 90",
-    "alarm_actions": [
-      "%s"
-    ],
-    "ok_actions": [
-      "%s"
-    ],
-    "undetermined_actions": [
-      "%s"
-    ]
+{
+  "description": "mini-mon cpu alarm",
+  "name": "compute.cpu",
+  "expression": "compute.cpu{hostname=kafka} >= 90",
+  "alarm_actions": [
+    "%s"
+  ],
+  "ok_actions": [
+    "%s"
+  ],
+  "undetermined_actions": [
+    "%s"
+  ]
 }
