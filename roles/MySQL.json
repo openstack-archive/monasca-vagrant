@@ -17,7 +17,8 @@
         "replication": {
           "password": "password"
         },
-        "root_password": "password"
+        "root_password": "password",
+        "skip_name_resolve": true
       },
       "use_percona_apt": false
     }
