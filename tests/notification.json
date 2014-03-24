@@ -1,0 +1,5 @@
+{
+    "name": "mini-mon test",
+    "type": "EMAIL",
+    "address": "%s"
+}
