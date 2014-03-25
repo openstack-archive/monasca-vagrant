@@ -42,6 +42,7 @@ vagrant up
   - `persister` at `192.168.10.12`
   - `thresh` at `192.168.10.14`
   - `vertica` at `192.168.10.8`
+    - The management console is at https://192.168.10.8:5450
 - Run `vagrant help` for more info
 - Run `vagrant ssh <vm name>` to login to a particular vm
 - Can also run `ssh vagrant@<ip address>` to login 
