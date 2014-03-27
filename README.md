@@ -29,9 +29,16 @@ gem install berkshelf  or gem install --http-proxy <http://some-proxy.foo.com:80
 ## Start mini-mon
 Berkshelf will download some cookbooks from the community so http_proxy and https_proxy environment variables must be set if applicable.
 From within the `mini-mon` directory, to start all the vms run:
-
 ```
-vagrant up
+bin/vup
+```
+The standard vagrant commands can also be used, the vup script just starts things up in a dependency order using parallel startup.
+
+## Halt mini-mon
+In some cases halting mini-mon can result in certain vms being left in an odd state, to avoid this a script has been made to halt boxes in the 
+correct order
+```
+bin/vhalt
 ```
 
 - Your home dir is synced to `/vagrant_home` on each vm
@@ -52,6 +59,6 @@ vagrant up
 ## Updating a VM
 When someone updates the config for a vm this process should allow you to bring up an updated vm.
 - `git pull`
-- `vagrant destroy vm` - Where vm is the name of the vm being updated, for example 'vertica'
 - `berks update`
+- `vagrant destroy vm` - Where vm is the name of the vm being updated, for example 'vertica'
 - `vagrant up vm`
