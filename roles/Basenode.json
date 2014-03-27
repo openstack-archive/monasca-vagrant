@@ -12,7 +12,12 @@
   "chef_type": "role",
   "run_list": [
     "recipe[mini-mon]",
+<<<<<<< HEAD
     "recipe[apt]"
+=======
+    "recipe[apt]",
+    "recipe[mon_agent]"
+>>>>>>> feature/agent
   ],
   "env_run_lists": {
   }
