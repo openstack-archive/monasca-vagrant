@@ -26,20 +26,7 @@ vagrant plugin install vagrant-berkshelf
 gem install berkshelf  or gem install --http-proxy <http://some-proxy.foo.com:8088> berkshelf
 ```
 
-## Start mini-mon
-Berkshelf will download some cookbooks from the community so http_proxy and https_proxy environment variables must be set if applicable.
-From within the `mini-mon` directory, to start all the vms run:
-```
-bin/vup
-```
-The standard vagrant commands can also be used, the vup script just starts things up in a dependency order using parallel startup.
-
-## Halt mini-mon
-In some cases halting mini-mon can result in certain vms being left in an odd state, to avoid this a script has been made to halt boxes in the 
-correct order
-```
-bin/vhalt
-```
+# Using mini-mon
 
 - Your home dir is synced to `/vagrant_home` on each vm
 - Vms created
@@ -55,6 +42,20 @@ bin/vhalt
 - Can also run `ssh vagrant@<ip address>` to login 
   - password is `vagrant`
   
+## Start mini-mon
+Berkshelf will download some cookbooks from the community so http_proxy and https_proxy environment variables must be set if applicable.
+From within the `mini-mon` directory, to start all the vms run:
+```
+bin/vup
+```
+The standard vagrant commands can also be used, the vup script just starts things up in a dependency order using parallel startup.
+
+## Halt mini-mon
+In some cases halting mini-mon can result in certain vms being left in an odd state, to avoid this a script has been made to halt boxes in the 
+correct order
+```
+bin/vhalt
+```
 
 ## Updating a VM
 When someone updates the config for a vm this process should allow you to bring up an updated vm.
@@ -62,3 +63,14 @@ When someone updates the config for a vm this process should allow you to bring 
 - `berks update`
 - `vagrant destroy vm` - Where vm is the name of the vm being updated, for example 'vertica'
 - `vagrant up vm`
+
+## Improving Provisioning Speed
+The slowest part of the provisioning process is the downloading of deb packages. To speed this up a local apt-cache-ng can be used.
+To install on a mac
+```
+brew install apt-cache-ng
+```
+Run `apt-cache-ng -c /usr/local/etc/apt-cacher-ng/` or optionaly follow the instructions from brew to start up the cache automatically.
+That is all that is needed from now on the cache will be used.
+
+A report from the cache is found at http://localhost:3142/acng-report.html
