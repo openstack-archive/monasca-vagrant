@@ -65,12 +65,12 @@ When someone updates the config for a vm this process should allow you to bring 
 - `vagrant up vm`
 
 ## Improving Provisioning Speed
-The slowest part of the provisioning process is the downloading of deb packages. To speed this up a local apt-cache-ng can be used.
+The slowest part of the provisioning process is the downloading of deb packages. To speed this up a local apt-cacher-ng can be used.
 To install on a mac
 ```
-brew install apt-cache-ng
+brew install apt-cacher-ng
 ```
-Run `apt-cache-ng -c /usr/local/etc/apt-cacher-ng/` or optionaly follow the instructions from brew to start up the cache automatically.
+Run `apt-cacher-ng -c /usr/local/etc/apt-cacher-ng/` or optionally follow the instructions from brew to start up the cache automatically.
 That is all that is needed from now on the cache will be used.
 
 A report from the cache is found at http://localhost:3142/acng-report.html
