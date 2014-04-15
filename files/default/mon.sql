@@ -11,7 +11,7 @@ CREATE TABLE `alarm` (
   `description` varchar(250) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `expression` mediumtext COLLATE utf8mb4_unicode_ci,
   `state` enum('UNDETERMINED','OK','ALARM') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `actions_enabled` tinyint(1) NOT NULL DEFAULT '1',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `deleted_at` datetime DEFAULT NULL,
