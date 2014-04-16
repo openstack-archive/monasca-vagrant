@@ -74,3 +74,18 @@ Run `apt-cacher-ng -c /usr/local/etc/apt-cacher-ng/` or optionally follow the in
 That is all that is needed from now on the cache will be used.
 
 A report from the cache is found at http://localhost:3142/acng-report.html
+
+# Creating a new hlinux box
+The [hlinux](http://hlinux-home.usa.hp.com/wiki/index.php/Main_Page) box used in mini-mon is created via a [veewee](https://github.com/jedi4ever/veewee)
+template in the templates directory.
+
+- Follow the instructions at the [veewee](https://github.com/jedi4ever/veewee) site to install veewee.
+  - Copy `templates/Veeweefile` to your VeeWee directory and edit the file, updating the path to your mini-mon.
+  - At this point the template assumes you need an hp proxy setup, if not edit base.sh and comment out the .curlrc lines at the bottom
+  - From your veewee directory run:
+    - `bundle exec veewee vbox define hlinux hlinux-amd64-netboot`
+    - `bundle exec veewee vbox build hlinux`
+    - `bundle exec veewee vbox validate hlinux`
+    - `bundle exec veewee vbox export hlinux`
+- From the mini-mon directory run `vagrant box add hlinux ../veewee/hlinux.box` or other appropriate path
+  - If you have an existing hlinux box you man need to first remove it `vagrant box remove hlinux`
