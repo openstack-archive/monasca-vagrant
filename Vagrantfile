@@ -5,8 +5,8 @@ VAGRANTFILE_API_VERSION = "2" # Vagrantfile API/syntax version. Don't touch unle
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Settings for all vms
-  config.vm.box = "precise64"
-  config.vm.box_url = "http://files.vagrantup.com/precise64.box"
+  config.vm.box = "hlinux"
+  config.vm.box_url = "http://packages.dev.uswest.hpcloud.net/cloud/som/hlinux.box"
   config.vm.synced_folder "~/", "/vagrant_home"
   config.berkshelf.enabled = true
 
