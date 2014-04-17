@@ -17,7 +17,6 @@ if test -f .vbox_version ; then
   # Install the VirtualBox guest additions
   VBOX_VERSION=$(cat .vbox_version)
   VBOX_ISO=VBoxGuestAdditions_$VBOX_VERSION.iso
-  modprobe isofs  # hlinux isn't loading this module by default
   mount -o loop $VBOX_ISO /mnt
   yes|sh /mnt/VBoxLinuxAdditions.run
   umount /mnt

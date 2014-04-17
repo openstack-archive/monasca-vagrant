@@ -25,10 +25,8 @@ EOF
 update-grub
 
 # Setup proxy
-echo "proxy = 'http://web-proxy.fc.hp.com:8080'" >> ~vagrant/.curlrc
-cat <<EOF >> ~vagrant/.bashrc
+cat <<EOF >> /root/.bashrc
 export http_proxy='http://web-proxy.fc.hp.com:8080'
 export https_proxy='http://web-proxy.fc.hp.com:8080'
 EOF
-chown vagrant ~vagrant/.curlrc ~vagrant/.bashrc
 
