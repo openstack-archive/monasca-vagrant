@@ -7,6 +7,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Settings for all vms
   config.vm.box = "hlinux"
   config.vm.box_url = "http://packages.dev.uswest.hpcloud.net/cloud/som/hlinux.box"
+  config.vm.guest = :debian   # bypass vagrant guest type autodetection
   config.vm.synced_folder "~/", "/vagrant_home"
   config.berkshelf.enabled = true
 

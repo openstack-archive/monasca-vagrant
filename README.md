@@ -85,7 +85,7 @@ template in the templates directory.
   - From your veewee directory run:
     - `bundle exec veewee vbox define hlinux hlinux-amd64-netboot`
     - `bundle exec veewee vbox build hlinux`
-    - `bundle exec veewee vbox validate hlinux`
+    - `bundle exec veewee vbox validate hlinux` Note: puppet is not installed.
     - `bundle exec veewee vbox export hlinux`
 - From the mini-mon directory run `vagrant box add hlinux ../veewee/hlinux.box` or other appropriate path, also upload to a server for others to download.
   - If you have an existing hlinux box you man need to first remove it `vagrant box remove hlinux`
