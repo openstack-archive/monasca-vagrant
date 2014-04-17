@@ -1,4 +1,8 @@
-source 'https://api.berkshelf.com'
+require 'rubygems'
+
+if Gem::Specification::find_by_name('berkshelf').version.to_s[0] == '3'
+  source 'https://api.berkshelf.com'
+end
 
 metadata
 cookbook 'mon_api', git: 'git@git.hpcloud.net:mon/cookbooks-mon_api'
