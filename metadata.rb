@@ -1,3 +1,4 @@
+name             "mini-mon"
 maintainer       "SOM Team"
 maintainer_email "hpcs-mon@hp.com"
 license          "All rights reserved"
