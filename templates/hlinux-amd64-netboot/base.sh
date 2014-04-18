@@ -24,6 +24,11 @@ EOF
 
 update-grub
 
+# Install upstart - needed until hLinux switches to systemd and all upstart scripts are converted
+apt-get install upstart
+# Install rsync used for vagrant synced dirs
+apt-get install rsync
+
 # Setup proxy
 cat <<EOF >> /root/.bashrc
 export http_proxy='http://web-proxy.fc.hp.com:8080'
