@@ -8,7 +8,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "hlinux"
   config.vm.box_url = "http://packages.dev.uswest.hpcloud.net/cloud/som/hlinux.box"
   config.vm.guest = :debian   # bypass vagrant guest type autodetection
-  config.vm.synced_folder "~/", "/vagrant_home"
+  #config.vm.synced_folder "~/", "/vagrant_home"
+  config.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ".git/"
   config.berkshelf.enabled = true
 
   # VM specific settings, these machines come up in order they are specified.
@@ -16,6 +17,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     mysql.vm.hostname = 'mysql'
     mysql.vm.network :private_network, ip: "192.168.10.6"
     mysql.vm.provision :chef_solo do |chef|
+      chef.synced_folder_type = "rsync"
       chef.roles_path = "roles"
       chef.data_bags_path = "data_bags"
       chef.add_role "MySQL"
@@ -26,6 +28,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     kafka.vm.hostname = 'kafka'
     kafka.vm.network :private_network, ip: "192.168.10.10"
     kafka.vm.provision :chef_solo do |chef|
+      chef.synced_folder_type = "rsync"
       chef.roles_path = "roles"
       chef.data_bags_path = "data_bags"
       chef.add_role "Kafka"
@@ -36,6 +39,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     vertica.vm.hostname = 'vertica'
     vertica.vm.network :private_network, ip: "192.168.10.8"
     vertica.vm.provision :chef_solo do |chef|
+      chef.synced_folder_type = "rsync"
       chef.roles_path = "roles"
       chef.data_bags_path = "data_bags"
       chef.add_role "Vertica"
@@ -49,6 +53,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     api.vm.hostname = 'api'
     api.vm.network :private_network, ip: "192.168.10.4"
     api.vm.provision :chef_solo do |chef|
+      chef.synced_folder_type = "rsync"
       chef.roles_path = "roles"
       chef.data_bags_path = "data_bags"
       chef.add_role "Api"
@@ -59,6 +64,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     persister.vm.hostname = 'persister'
     persister.vm.network :private_network, ip: "192.168.10.12"
     persister.vm.provision :chef_solo do |chef|
+      chef.synced_folder_type = "rsync"
       chef.roles_path = "roles"
       chef.data_bags_path = "data_bags"
       chef.add_role "Persister"
@@ -69,6 +75,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     thresh.vm.hostname = 'thresh'
     thresh.vm.network :private_network, ip: "192.168.10.14"
     thresh.vm.provision :chef_solo do |chef|
+      chef.synced_folder_type = "rsync"
       chef.roles_path = "roles"
       chef.data_bags_path = "data_bags"
       chef.add_role "Thresh"

@@ -17,15 +17,7 @@ apt_repository 'hlinux' do
   key 'http://hlinux-hrepo.usa.hp.com/hLinuxBrowse/dists/testing/Release.gpg'
 end
 
-apt_repository 'dev' do
-  uri 'http://packages.dev.uswest.hpcloud.net/cloud/som/developer'
-  arch 'amd64'
-  distribution node['lsb']['codename']
-  components ['release']
-  key 'http://packages.dev.uswest.hpcloud.net/cloud/som/developer/hpcs.gpg'
-end
-
-# Look for a local apt cache
+# Look for a local apt cache, the base repo must be there before the apt cache but it should ideally be before the others
 rb = ruby_block "Check for local apt cache" do
   action :nothing
   block do
@@ -44,4 +36,12 @@ rb.run_action(:create)  # Run during compile time so that apt::cacher-client has
 
 # Add in the cacher-client, it will do something or nothing depending on the value of node[:apt][:cacher_ipaddress]
 include_recipe('apt::cacher-client')
+
+apt_repository 'dev' do
+  uri 'http://packages.dev.uswest.hpcloud.net/cloud/som/developer'
+  arch 'amd64'
+  distribution 'precise'
+  components ['release']
+  key 'http://packages.dev.uswest.hpcloud.net/cloud/som/developer/hpcs.gpg'
+end
 

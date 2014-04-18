@@ -16,3 +16,13 @@ rm /lib/udev/rules.d/75-persistent-net-generator.rules
 
 echo "Adding a 2 sec delay to the interface up, to make the dhclient happy"
 echo "pre-up sleep 2" >> /etc/network/interfaces
+
+# Remove the proxy for root and the proxy for apt
+if grep _proxy /root/.bashrc; then
+  mv /root/.bashrc /root/.bashrc-with_proxy
+  grep -v _proxy /root/.bashrc-with_proxy > /root/.bashrc
+fi
+
+if [ -e /etc/apt/apt.conf.d/HPproxy ]; then
+  rm /etc/apt/apt.conf.d/HPproxy
+fi

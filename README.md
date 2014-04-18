@@ -75,8 +75,8 @@ That is all that is needed from now on the cache will be used.
 
 A report from the cache is found at http://localhost:3142/acng-report.html
 
-# Creating a new hlinux box
-The [hlinux](http://hlinux-home.usa.hp.com/wiki/index.php/Main_Page) box used in mini-mon is created via a [veewee](https://github.com/jedi4ever/veewee)
+# Creating a new hLinux box
+The [hLinux](http://hlinux-home.usa.hp.com/wiki/index.php/Main_Page) box used in mini-mon is created via a [veewee](https://github.com/jedi4ever/veewee)
 template in the templates directory.
 
 - Follow the instructions at the [veewee](https://github.com/jedi4ever/veewee) site to install veewee.
@@ -88,4 +88,4 @@ template in the templates directory.
     - `bundle exec veewee vbox validate hlinux` Note: puppet is not installed.
     - `bundle exec veewee vbox export hlinux`
 - From the mini-mon directory run `vagrant box add hlinux ../veewee/hlinux.box` or other appropriate path, also upload to a server for others to download.
-  - If you have an existing hlinux box you man need to first remove it `vagrant box remove hlinux`
+  - If you have an existing hLinux box you man need to first remove it `vagrant box remove hlinux`
