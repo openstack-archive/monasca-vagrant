@@ -38,6 +38,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       chef.data_bags_path = "data_bags"
       chef.add_role "Kafka"
     end
+    kafka.vm.provider "virtualbox" do |vb|
+      vb.memory = 1024
+    end
   end
 
   config.vm.define "vertica" do |vertica|
