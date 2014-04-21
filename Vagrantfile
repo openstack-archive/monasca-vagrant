@@ -8,9 +8,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "hlinux"
   config.vm.box_url = "http://packages.dev.uswest.hpcloud.net/cloud/som/hlinux.box"
   config.vm.guest = :debian   # bypass vagrant guest type autodetection
-  #config.vm.synced_folder "~/", "/vagrant_home"
-  config.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ".git/"
   config.berkshelf.enabled = true
+  # hlinux is not currently working with virtual box shared folders so minimize shared folders and switch to rsync
+  #config.vm.synced_folder "~/", "/vagrant_home"
+  config.vm.synced_folder ".", "/vagrant", disabled: true
 
   # VM specific settings, these machines come up in order they are specified.
   config.vm.define "mysql" do |mysql|
