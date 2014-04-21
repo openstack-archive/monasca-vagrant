@@ -14,7 +14,7 @@ apt_repository 'hlinux' do
   arch 'amd64'
   distribution 'testing'
   components ['main', 'contrib', 'non-free']
-  key 'http://hlinux-hrepo.usa.hp.com/hLinuxBrowse/dists/testing/Release.gpg'
+  key 'http://hlinux-hrepo.usa.hp.com/hLinux/dists/testing/Release.gpg'
 end
 
 # Look for a local apt cache, the base repo must be there before the apt cache but it should ideally be before the others
