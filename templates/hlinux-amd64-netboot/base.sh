@@ -25,9 +25,9 @@ EOF
 update-grub
 
 # Install upstart - needed until hLinux switches to systemd and all upstart scripts are converted
-apt-get install upstart
-# Install rsync used for vagrant synced dirs
-apt-get install rsync
+apt-get -y install upstart
+# Install rsync used for vagrant synced dirs and python used for the agent running on everything
+apt-get -y install rsync python
 
 # Setup proxy
 cat <<EOF >> /root/.bashrc
