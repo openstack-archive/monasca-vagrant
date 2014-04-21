@@ -9,13 +9,31 @@ bash 'move dist sources.list' do
   not_if do ::File.exists?('/etc/apt/sources.list-dist') end
 end
 
-apt_repository 'hlinux' do
-  uri 'http://hlinux-hrepo.usa.hp.com/hLinux'
+# HP Public Cloud apt mirror
+apt_repository 'foundation' do
+  uri 'http://packages.dev.uswest.hpcloud.net/cloud/foundation'
   arch 'amd64'
-  distribution 'testing'
-  components ['main', 'contrib', 'non-free']
-  key 'http://hlinux-hrepo.usa.hp.com/hLinux/dists/testing/Release.gpg'
+  distribution node['lsb']['codename']
+  components ['main', 'restricted', 'universe', 'multiverse']
+  key 'http://packages.dev.uswest.hpcloud.net/cloud/som/developer/hpcs.gpg'
 end
+
+apt_repository 'foundation-updates' do
+  uri 'http://packages.dev.uswest.hpcloud.net/cloud/foundation'
+  arch 'amd64'
+  distribution "#{node['lsb']['codename']}-updates/snapshots/rc20140129"
+  components ['main', 'restricted', 'universe', 'multiverse']
+  key 'http://packages.dev.uswest.hpcloud.net/cloud/som/developer/hpcs.gpg'
+end
+
+# hLinux apt repo
+#apt_repository 'hlinux' do
+#  uri 'http://hlinux-hrepo.usa.hp.com/hLinux'
+#  arch 'amd64'
+#  distribution 'testing'
+#  components ['main', 'contrib', 'non-free']
+#  key 'http://hlinux-hrepo.usa.hp.com/hLinux/dists/testing/Release.gpg'
+#end
 
 # Look for a local apt cache, the base repo must be there before the apt cache but it should ideally be before the others
 rb = ruby_block "Check for local apt cache" do
@@ -44,4 +62,3 @@ apt_repository 'dev' do
   components ['release']
   key 'http://packages.dev.uswest.hpcloud.net/cloud/som/developer/hpcs.gpg'
 end
-

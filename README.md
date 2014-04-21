@@ -77,7 +77,8 @@ A report from the cache is found at http://localhost:3142/acng-report.html
 
 # Running hLinux as the base OS
 hLinux can be installed and run as the base OS for all the vms defined in mini-mon. To this comment/uncomment the appropriate lines in the Vagrantfile.
-There are a couple of minor problem which would slow down development and are why at this point hLinux has not been turned on by default:
+Also switch to the proper base apt repos in recipes/default.rb. There are a couple of minor problem which would slow down development and are why at
+this point hLinux has not been turned on by default:
 - The vboxsf filesystem driver is not working correctly in hLinux, this prevents home directory syncing.
 - Slow network performance of the hLinux vbox image makes some tasks annoying.
 
