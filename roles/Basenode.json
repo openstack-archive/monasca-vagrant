@@ -4,6 +4,7 @@
   "json_class": "Chef::Role",
   "default_attributes": {
     "apt": {
+      "cache_bypass": { "hlinux-hrepo.usa.hp.com": "http" },
       "periodic_update_min_delay": 60
     }
   },
