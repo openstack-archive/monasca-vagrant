@@ -29,7 +29,7 @@
         "auto <wait>",
         "locale=en_US <wait>",
         "kbd-chooser/method=us <wait>",
-        "netcfg/get_hostname={{ .Name }} <wait>",
+        "netcfg/get_hostname=hLinux <wait>",
         "netcfg/get_domain=vagrantup.com <wait>",
         "fb=false <wait>",
         "debconf/frontend=noninteractive <wait>",
