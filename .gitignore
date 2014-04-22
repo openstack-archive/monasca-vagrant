@@ -1,3 +1,5 @@
 .vagrant
 Berksfile.lock
 .project
+templates/output-virtualbox-iso
+templates/packer_cache

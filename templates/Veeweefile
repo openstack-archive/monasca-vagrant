@@ -1,8 +1,0 @@
-Veewee::Config.run do |config|
-
-  env = config.veewee.env
-
-  # These env settings will override default settings
-  env.template_path    = ['/Users/kuhlmant/src/mon/mini-mon/templates']
-
-end
