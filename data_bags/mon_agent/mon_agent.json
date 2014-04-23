@@ -1,6 +1,6 @@
 {
   "id" : "mon_agent",
-  "tags" : "Origin:Mini-mon, Environment:Dev",
+  "dimensions" : "Origin:Mini-mon, Environment:Dev",
   "log_level" : "DEBUG",
   "use_dd": "no",
   "dd_url": "https://app.datadoghq.com",
