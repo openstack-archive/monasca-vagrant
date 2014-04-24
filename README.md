@@ -1,6 +1,25 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](http://doctoc.herokuapp.com/)*
+
+- [Installation](#installation)
+  - [Get the Code](#get-the-code)
+  - [Setup Vagrant](#setup-vagrant)
+    - [Install Vagrant](#install-vagrant)
+    - [Setup Berkshelf](#setup-berkshelf)
+- [Using mini-mon](#using-mini-mon)
+  - [Start mini-mon](#start-mini-mon)
+  - [Halt mini-mon](#halt-mini-mon)
+  - [Updating a VM](#updating-a-vm)
+  - [Improving Provisioning Speed](#improving-provisioning-speed)
+- [Running hLinux as the base OS](#running-hlinux-as-the-base-os)
+  - [Creating a new hLinux box](#creating-a-new-hlinux-box)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 Install's a mini monitoring environment based on vagrant. Intended for development and monitoring of the monitoring infrastructure.
 
-# Usage
+# Installation
 
 ## Get the Code
 
@@ -82,7 +101,7 @@ this point hLinux has not been turned on by default:
 - The vboxsf filesystem driver is not working correctly in hLinux, this prevents home directory syncing.
 - Slow network performance of the hLinux vbox image makes some tasks annoying.
 
-# Creating a new hLinux box
+## Creating a new hLinux box
 The [hLinux](http://hlinux-home.usa.hp.com/wiki/index.php/Main_Page) box used in mini-mon is created via [packer](http://www.packer.io/), config is in
 the templates directory.
 
