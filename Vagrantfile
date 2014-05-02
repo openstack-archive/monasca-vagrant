@@ -16,10 +16,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # hlinux is not currently working with virtual box shared folders so minimize shared folders and switch to rsync
   config.vm.synced_folder "~/", "/vagrant_home"
   #config.vm.synced_folder ".", "/vagrant", disabled: true
-  #config.vm.provider "virtualbox" do |vb|
+  config.vm.provider "virtualbox" do |vb|
+    vb.customize ["modifyvm", :id, "--memory", "768"]
   #  vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
   #  vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
-  #end
+  end
 
   # VM specific settings, these machines come up in order they are specified.
   config.vm.define "mysql" do |mysql|
@@ -80,6 +81,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       chef.roles_path = "roles"
       chef.data_bags_path = "data_bags"
       chef.add_role "Persister"
+    end
+    persister.vm.provider "virtualbox" do |vb|
+      vb.memory = 1024
     end
   end
 
