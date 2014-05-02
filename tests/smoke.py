@@ -135,7 +135,7 @@ def main():
             break
 
     if state != 'ALARM':
-        print("Wrong initial final state, expected ALARM but was " + state, file=sys.stderr)
+        print("Wrong final state, expected ALARM but was " + state, file=sys.stderr)
         sys.exit(1)
     print("Final state of alarm was " + state)
     # If the alarm changes state too fast, then there isn't time for the new metric to arrive.
