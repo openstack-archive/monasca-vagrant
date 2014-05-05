@@ -35,6 +35,34 @@ def get_alarm_state(alarm_id):
     response_json = json.loads(stdout)
     return response_json['state']
 
+def check_alarm_history(alarm_id):
+    print('Checking Alarm History')
+    # Make take a little bit of time for Alarm history to flow all the way through
+    for x in range(0, 10):
+        stdout = run_mon_cli(["mon", "--json", "alarm-history", alarm_id])
+        response_json = json.loads(stdout)
+        if len(response_json) > 0:
+            break
+        time.sleep(4)
+
+    result = True
+    if not check_expected(1, len(response_json), 'number of history entries'):
+        return False
+    alarm_json = response_json[0]
+    if not check_expected('UNDETERMINED', alarm_json['old_state'], 'old_state'):
+        result = False
+    if not check_expected('ALARM', alarm_json['new_state'], 'new_state'):
+        result = False
+    if not check_expected(alarm_id, alarm_json['alarm_id'], 'alarm_id'):
+        result = False
+    return result
+
+def check_expected(expected, actual, what):
+    if (expected == actual):
+        return True
+    print("Incorrect value for alarm history " + what + " expected '" + str(expected) + "' but was '" + str(actual) + "'", file=sys.stderr)
+    return False
+
 def create_alarm(name, expression, notification_method_id, description=None):
     args = ["mon", "alarm-create"]
     if (description):
@@ -57,7 +85,7 @@ def create_alarm(name, expression, notification_method_id, description=None):
     return alarm_id 
 
 def get_metrics(name, dimensions):
-    print("Getting metrics for " + name)
+    print("Getting metrics for " + name + str(dimensions))
     dimensions_arg = ""
     for key, value in dimensions.iteritems():
         if dimensions_arg != "":
@@ -112,6 +140,10 @@ def main():
 
     # Query how many metrics there are for the Alarm
     metric_json = get_metrics(metric_name, metric_dimensions)
+    if len(metric_json) == 0:
+        print("No measurements received for metric " + metric_name + str(metric_dimensions), file=sys.stderr)
+        sys.exit(1)
+
     initial_num_metrics = len(metric_json[0]['measurements'])
 
     # Create Notification through CLI 
@@ -149,6 +181,9 @@ def main():
         print("No new metrics received", file=sys.stderr)
         sys.exit(1)
     print("Received " + str(final_num_metrics - initial_num_metrics) + " metrics in " + str(change_time) + " seconds")
+    if not check_alarm_history(alarm_id):
+        sys.exit(1)
+
     return 0
     
     
