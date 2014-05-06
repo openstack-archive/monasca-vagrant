@@ -55,6 +55,8 @@ def check_alarm_history(alarm_id):
         result = False
     if not check_expected(alarm_id, alarm_json['alarm_id'], 'alarm_id'):
         result = False
+    if result:
+        print("Alarm History is OK")
     return result
 
 def check_expected(expected, actual, what):
@@ -134,7 +136,7 @@ def main():
     notification_name = "Jahmon Smoke Test"
     notification_email_addr = "root@kafka"
     alarm_name = "high cpu and load"
-    metric_name = "cpu_user_perc"
+    metric_name = "cpu_system_perc"
     metric_dimensions = {"hostname":"thresh"}
     cleanup(notification_name, alarm_name)
 
@@ -149,7 +151,7 @@ def main():
     # Create Notification through CLI 
     notification_method_id = create_notification(notification_name, notification_email_addr)
     # Create Alarm through CLI
-    alarm_id = create_alarm(alarm_name, "max(cpu_user_perc{hostname=thresh}) > 1 and max(load_avg_1_min{hostname=thresh}) > 6", notification_method_id, "CPU Utilization exceeds 1% and Load exeeds 6 per measurement period")
+    alarm_id = create_alarm(alarm_name, "max(cpu_system_perc) > 1 and max(load_avg_1_min{hostname=thresh}) > 3", notification_method_id, "System CPU Utilization exceeds 1% and Load exeeds 3 per measurement period")
     state = get_alarm_state(alarm_id)
     # Ensure it is created in the right state
     if state != 'UNDETERMINED':
