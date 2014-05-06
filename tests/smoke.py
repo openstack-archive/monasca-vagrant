@@ -9,9 +9,8 @@
     modify /etc/mon/notification.yaml to use localhost for the email server, then restart
 
     TODO:
-        1. Add check of alarm history when that works
-        2. Add check of notification history when that is implemented
-        3. Add check of mail getting to root when postfix is added mini-mon. This script will have to run on the kafka VM
+        1. Add check of notification history when that is implemented
+        2. Add check of mail getting to root when postfix is added mini-mon. This script will have to run on the kafka VM
 """
 
 from __future__ import print_function
