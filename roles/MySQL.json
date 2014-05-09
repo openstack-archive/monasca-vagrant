@@ -19,8 +19,7 @@
         },
         "root_password": "password",
         "skip_name_resolve": true
-      },
-      "use_percona_apt": false
+      }
     }
   },
   "override_attributes": {

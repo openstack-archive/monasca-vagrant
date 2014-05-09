@@ -1,40 +1,5 @@
 # Common setup for all vagrant boxes
 
-## Todo - This apt setup is specific to HP Cloud and should be moved to an optional recipe.
-
-# This move the default apt sources which are the standard ubuntu apt ones aside, so we are forced to deal with what hpcloud has mirrored
-bash 'move dist sources.list' do
-  action :run
-  code 'mv /etc/apt/sources.list /etc/apt/sources.list-dist'
-  not_if do ::File.exists?('/etc/apt/sources.list-dist') end
-end
-
-# HP Public Cloud apt mirror
-apt_repository 'foundation' do
-  uri 'http://packages.dev.uswest.hpcloud.net/cloud/foundation'
-  arch 'amd64'
-  distribution node['lsb']['codename']
-  components ['main', 'restricted', 'universe', 'multiverse']
-  key 'http://packages.dev.uswest.hpcloud.net/cloud/som/developer/hpcs.gpg'
-end
-
-apt_repository 'foundation-updates' do
-  uri 'http://packages.dev.uswest.hpcloud.net/cloud/foundation'
-  arch 'amd64'
-  distribution "#{node['lsb']['codename']}-updates/snapshots/rc20140129"
-  components ['main', 'restricted', 'universe', 'multiverse']
-  key 'http://packages.dev.uswest.hpcloud.net/cloud/som/developer/hpcs.gpg'
-end
-
-# hLinux apt repo
-#apt_repository 'hlinux' do
-#  uri 'http://hlinux-hrepo.usa.hp.com/hLinux'
-#  arch 'amd64'
-#  distribution 'testing'
-#  components ['main', 'contrib', 'non-free']
-#  key 'http://hlinux-hrepo.usa.hp.com/hLinux/dists/testing/Release.gpg'
-#end
-
 # Look for a local apt cache, the base repo must be there before the apt cache but it should ideally be before the others
 rb = ruby_block "Check for local apt cache" do
   action :nothing
@@ -56,9 +21,8 @@ rb.run_action(:create)  # Run during compile time so that apt::cacher-client has
 include_recipe('apt::cacher-client')
 
 apt_repository 'dev' do
-  uri 'http://packages.dev.uswest.hpcloud.net/cloud/som/developer'
+  uri 'https://region-a.geo-1.objects.hpcloudsvc.com/v1/46995959297574/mini-mon/public_repo'
   arch 'amd64'
   distribution 'precise'
   components ['release']
-  key 'http://packages.dev.uswest.hpcloud.net/cloud/som/developer/hpcs.gpg'
 end
