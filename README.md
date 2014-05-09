@@ -24,7 +24,7 @@ Install's a mini monitoring environment based on vagrant. Intended for developme
 ## Get the Code
 
 ```
-git clone https://git.hpcloud.net/mon/mini-mon.git
+git clone https://github.com/hpcloud-mon/mon-vagrant
 ```
 
 ## Setup Vagrant
@@ -93,6 +93,15 @@ Run `apt-cacher-ng -c /usr/local/etc/apt-cacher-ng/` or optionally follow the in
 That is all that is needed from now on the cache will be used.
 
 A report from the cache is found at http://localhost:3142/acng-report.html
+
+## Cookbook Development
+
+To develop cookbook changes with Vagrant:
+- Edit Berksfile changing the appropriate cookbook line to a local path, ie `cookbook 'zookeeper', path: '/Users/kuhlmant/src/mon/cookbooks/zookeeper'`
+- Edit your local cookbook as needed.
+- run 'berks update <cookbook_name>' (make sure you have proxy envs set if needed)
+- If the vagrant vm is already up run 'vagrant provision' if not run 'Vagrant up'
+- When finish testing commit and upload your cookbook as normal but don't forget to bump the cookbook version in the metadata.rb.
 
 # Running hLinux as the base OS
 hLinux can be installed and run as the base OS for all the vms defined in mini-mon. To this comment/uncomment the appropriate lines in the Vagrantfile.
