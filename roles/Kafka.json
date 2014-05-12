@@ -19,6 +19,7 @@
     "role[Basenode]",
     "recipe[zookeeper]",
     "recipe[kafka]",
+    "recipe[mini-mon::postfix]",
     "recipe[mon_notification]"
   ],
   "env_run_lists": {
