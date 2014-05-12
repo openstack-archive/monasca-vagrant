@@ -27,3 +27,9 @@ apt_repository 'dev' do
   components ['release']
   key 'https://region-a.geo-1.objects.hpcloudsvc.com/v1/46995959297574/mini-mon/public_repo/mon.gpg'
 end
+
+# The precise image does not have easy_install which is needed by some cookbooks
+
+package 'python-setuptools' do
+  action :install
+end

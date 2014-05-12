@@ -12,6 +12,7 @@
   - [Halt mini-mon](#halt-mini-mon)
   - [Updating a VM](#updating-a-vm)
   - [Improving Provisioning Speed](#improving-provisioning-speed)
+  - [Cookbook Development](#cookbook-development)
 - [Running hLinux as the base OS](#running-hlinux-as-the-base-os)
   - [Creating a new hLinux box](#creating-a-new-hlinux-box)
 
@@ -26,11 +27,17 @@ Install's a mini monitoring environment based on vagrant. Intended for developme
 ```
 git clone https://github.com/hpcloud-mon/mon-vagrant
 ```
+Vertica must be downloaded from the [Vertica site](https://my.vertica.com/). Download these packages and place in the root of this repository.
+- vertica_7.0.1-0_amd64.db
+- vertica-R-lang_7.0.1_amd64.deb
+
+The vertica::console recipe is not enabled by default but if it is added this package is also needed.
+- vertica-console_7.0.1-0_amd64.deb
 
 ## Setup Vagrant
 
 ### Install Vagrant
-Assumes you have home homebrew installed, if not download and install VirtualBox and Vagrant from their websites then continue  with Setup Berkshelf.
+Assumes you have home homebrew installed, if not download and install VirtualBox and Vagrant from their websites then continue with Setup Berkshelf.
 
 ```
 brew tap phinze/cask
@@ -42,7 +49,7 @@ brew cask install vagrant
 ### Setup Berkshelf
 ```
 vagrant plugin install vagrant-berkshelf
-gem install berkshelf  or gem install --http-proxy <http://some-proxy.foo.com:8088> berkshelf
+gem install berkshelf
 ```
 
 # Using mini-mon
@@ -62,7 +69,6 @@ gem install berkshelf  or gem install --http-proxy <http://some-proxy.foo.com:80
   - password is `vagrant`
   
 ## Start mini-mon
-Berkshelf will download some cookbooks from the community so http_proxy and https_proxy environment variables must be set if applicable.
 From within the `mini-mon` directory, to start all the vms run:
 ```
 bin/vup
@@ -99,7 +105,7 @@ A report from the cache is found at http://localhost:3142/acng-report.html
 To develop cookbook changes with Vagrant:
 - Edit Berksfile changing the appropriate cookbook line to a local path, ie `cookbook 'zookeeper', path: '/Users/kuhlmant/src/mon/cookbooks/zookeeper'`
 - Edit your local cookbook as needed.
-- run 'berks update <cookbook_name>' (make sure you have proxy envs set if needed)
+- run 'berks update <cookbook_name>'
 - If the vagrant vm is already up run 'vagrant provision' if not run 'Vagrant up'
 - When finish testing commit and upload your cookbook as normal but don't forget to bump the cookbook version in the metadata.rb.
 

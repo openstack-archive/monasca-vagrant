@@ -5,3 +5,4 @@ templates/output-virtualbox-iso
 templates/packer_cache
 .pydevproject
 .idea
+*.deb

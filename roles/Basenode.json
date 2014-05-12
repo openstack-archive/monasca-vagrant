@@ -11,8 +11,7 @@
   },
   "chef_type": "role",
   "run_list": [
-    "recipe[mini-mon]",
-    "recipe[mon_agent]"
+    "recipe[mini-mon]"
   ],
   "env_run_lists": {
   }

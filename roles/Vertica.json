@@ -10,7 +10,6 @@
   "run_list": [
     "role[Basenode]",
     "recipe[vertica]",
-    "recipe[vertica::console]",
     "recipe[sysctl]"
   ],
   "env_run_lists": {
