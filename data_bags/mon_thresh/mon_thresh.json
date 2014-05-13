@@ -7,16 +7,16 @@
     },
     "event": {
       "group": "thresh-event",
-      "host": "192.168.10.10:9092",
+      "host": "localhost:9092",
       "consumer_topic": "events",
       "producer_topic": "alarm-state-transitions"
     }
   },
   "mysql": {
     "db": "mon",
-    "host": "192.168.10.6:3306"
+    "host": "localhost:3306"
   },
   "zookeeper": {
-    "host": "192.168.10.10:2181"
+    "host": "localhost:2181"
   }
 }

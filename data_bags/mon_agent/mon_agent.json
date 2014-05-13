@@ -2,12 +2,10 @@
   "id" : "mon_agent",
   "dimensions" : "Origin:Mini-mon, Environment:Dev",
   "log_level" : "DEBUG",
-  "use_dd": "no",
-  "dd_url": "https://app.datadoghq.com",
   "api_key": "",
   "send_to_mon_api": "true",
   "api" : {
-    "mon_api_url" : "http://192.168.10.4:8080/v2.0/metrics",
+    "mon_api_url" : "http://localhost:8080/v2.0/metrics",
     "mon_api_project_id" : "82510970543135",
     "use_keystone" : "false",
     "aggregate_metrics" : "true"

@@ -1,0 +1,20 @@
+{
+  "name": "Mini-Mon",
+  "description": "Sets up the entire monitoring stack on one box",
+  "json_class": "Chef::Role",
+  "default_attributes": {
+  },
+  "override_attributes": {
+  },
+  "chef_type": "role",
+  "run_list": [
+    "role[MySQL]",
+    "role[Kafka]",
+    "role[Vertica]",
+    "role[Api]",
+    "role[Persister]",
+    "role[Thresh]"
+  ],
+  "env_run_lists": {
+  }
+}

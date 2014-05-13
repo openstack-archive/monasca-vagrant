@@ -21,9 +21,9 @@
     },
     "vertica": {
         "dbname": "mon",
-        "hostname": "192.168.10.8"
+        "hostname": "localhost"
     },
     "zookeeper": {
-        "hostname": "192.168.10.10"
+        "hostname": "localhost"
     }
 }

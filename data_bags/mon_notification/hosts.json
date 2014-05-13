@@ -1,7 +1,7 @@
 {
   "id" : "hosts",
-  "kafka": "192.168.10.10",
-  "mysql": "192.168.10.6",
+  "kafka": "localhost",
+  "mysql": "localhost",
   "smtp": "localhost",
   "zookeeper": "localhost"
 }

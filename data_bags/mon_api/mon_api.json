@@ -2,16 +2,16 @@
   "id" : "mon_api",
   "vertica" : {
     "dbname" : "mon",
-    "hostname" : "192.168.10.8"
+    "hostname" : "localhost"
   },
   "zookeeper" : {
-    "hostname" : "192.168.10.10"
+    "hostname" : "localhost"
   },
   "mysql": {
-   "hostname":"192.168.10.6",
+   "hostname":"localhost",
    "schema": "mon"
   },
   "kafka": {
-    "hostname": "192.168.10.10"
+    "hostname": "localhost"
   }
 }
