@@ -3,6 +3,9 @@
   "description": "Sets up the entire monitoring stack on one box",
   "json_class": "Chef::Role",
   "default_attributes": {
+    "kafka": {
+      "listen_address": "127.0.0.1"
+    }
   },
   "override_attributes": {
   },
