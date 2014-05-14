@@ -23,6 +23,8 @@ import sys
 import os
 import subprocess
 import time
+from notification import find_notifications
+import platform
 
 
 # export OS_AUTH_TOKEN=82510970543135
@@ -116,7 +118,7 @@ def get_metrics(name, dimensions):
             dimensions_arg = dimensions_arg + ','
         dimensions_arg = dimensions_arg + key + '=' + value
     return run_mon_cli(['measurement-list', '--dimensions',
-                          dimensions_arg, name, '00'])
+                       dimensions_arg, name, '00'])
 
 
 def run_mon_cli(args, useJson=True):
@@ -137,7 +139,7 @@ def run_mon_cli(args, useJson=True):
 def create_notification(notification_name, notification_email_addr):
     print('Creating notification')
     result_json = run_mon_cli(['notification-create', notification_name,
-                         'EMAIL', notification_email_addr])
+                              'EMAIL', notification_email_addr])
 
     # Parse out id
     notification_method_id = result_json['id']
@@ -176,63 +178,103 @@ def wait_for_alarm_state_change(alarm_id, old_state):
             return state
     print('State never changed from %s in %d seconds' % (old_state, x),
           file=sys.stderr)
-    sys.exit(1)
+    return None
+
+
+def check_notifications(alarm_id, state_changes):
+    if platform.node() != 'kafka':
+        print('Must run on the kafka VM to check Notifications, skipping',
+              file=sys.stderr)
+        return True
+    notifications = find_notifications(alarm_id)
+    if len(notifications) != len(state_changes):
+        print('Expected %d notifications but only found %d' %
+              (len(state_changes), len(notifications)), file=sys.stderr)
+        return False
+    index = 0
+    for expected in state_changes:
+        actual = notifications[index]
+        if actual != expected:
+            print('Expected %s but found %d for state change %d' %
+                  (expected, actual, index+1), file=sys.stderr)
+            return False
+        index = index + 1
+    return True
+
+
+def count_metrics(metric_name, metric_dimensions):
+    # Query how many metrics there are for the Alarm
+    metric_json = get_metrics(metric_name, metric_dimensions)
+    if len(metric_json) == 0:
+        print('No measurements received for metric %s ' %
+              (metric_name + str(metric_dimensions)), file=sys.stderr)
+        return None
+
+    return len(metric_json[0]['measurements'])
+
+
+def ensure_at_least(desired, actual):
+    if actual < desired:
+        time.sleep(desired - actual)
 
 
 def main():
     notification_name = 'Jahmon Smoke Test'
     notification_email_addr = 'root@kafka'
     alarm_name = 'high cpu and load'
-    metric_name = 'cpu_system_perc'
+    metric_name = 'load_avg_1_min'
     metric_dimensions = {'hostname': 'thresh'}
     cleanup(notification_name, alarm_name)
 
     # Query how many metrics there are for the Alarm
-    metric_json = get_metrics(metric_name, metric_dimensions)
-    if len(metric_json) == 0:
-        print('No measurements received for metric %s ' %
-              (metric_name + str(metric_dimensions)), file=sys.stderr)
+    initial_num_metrics = count_metrics(metric_name, metric_dimensions)
+    if initial_num_metrics is None:
         return 1
 
     start_time = time.time()
-
-    initial_num_metrics = len(metric_json[0]['measurements'])
 
     # Create Notification through CLI
     notification_method_id = create_notification(notification_name,
                                                  notification_email_addr)
     # Create Alarm through CLI
-    expression = 'max(cpu_system_perc) > 1 and ' + \
-                 'max(load_avg_1_min{hostname=thresh}) > 1'
+    expression = 'max(cpu_system_perc) > 0 and ' + \
+                 'max(load_avg_1_min{hostname=thresh}) > 0'
     description = 'System CPU Utilization exceeds 1% and ' + \
                   'Load exceeds 3 per measurement period'
     alarm_id = create_alarm(alarm_name, expression, notification_method_id,
                             description)
     state = get_alarm_state(alarm_id)
     # Ensure it is created in the right state
-    if state != 'UNDETERMINED':
-        print('Wrong initial alarm state, expected UNDETERMINED but is %s' %
-              state)
+    initial_state = 'UNDETERMINED'
+    states = []
+    if state != initial_state:
+        print('Wrong initial alarm state, expected %s but is %s' %
+              (initial_state, state))
         return 1
+    states.append(initial_state)
 
-    state = wait_for_alarm_state_change(alarm_id, 'UNDETERMINED')
+    state = wait_for_alarm_state_change(alarm_id, initial_state)
+    if state is None:
+        return 1
 
     if state != 'ALARM':
         print('Wrong final state, expected ALARM but was %s' % state,
               file=sys.stderr)
         return 1
+    states.append(state)
 
-    state_changes = ['UNDETERMINED', 'ALARM']
     new_state = 'OK'
-    state_changes.append(new_state)
+    states.append(new_state)
     change_alarm_state(alarm_id, new_state)
     # There is a bug in the API which allows this to work. Soon that
     # will be fixed and this will fail
     if len(sys.argv) > 1:
         final_state = 'ALARM'
-        state_changes.append(final_state)
+        states.append(final_state)
 
         state = wait_for_alarm_state_change(alarm_id, new_state)
+        if state is None:
+            return 1
 
         if state != final_state:
             print('Wrong final state, expected %s but was %s' %
@@ -241,18 +283,20 @@ def main():
 
     # If the alarm changes state too fast, then there isn't time for the new
     # metric to arrive. Unlikely, but it has been seen
+    ensure_at_least(time.time() - start_time, 30)
     change_time = time.time() - start_time
-    if change_time < 30:
-        time.sleep(30 - change_time)
-        change_time = 30
-    metric_json = get_metrics(metric_name, metric_dimensions)
-    final_num_metrics = len(metric_json[0]['measurements'])
+
+    final_num_metrics = count_metrics(metric_name, metric_dimensions)
     if final_num_metrics <= initial_num_metrics:
         print('No new metrics received', file=sys.stderr)
         return 1
     print('Received %d metrics in %d seconds' %
           ((final_num_metrics - initial_num_metrics),  change_time))
-    if not check_alarm_history(alarm_id, state_changes):
+    if not check_alarm_history(alarm_id, states):
+        return 1
+
+    # Notifications are only sent out for the changes, so omit the first state
+    if not check_notifications(alarm_id, states[1:]):
         return 1
 
     return 0

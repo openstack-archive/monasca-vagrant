@@ -10,10 +10,8 @@ from datetime import datetime
 from monclient import client
 import monclient.exc as exc
 
-mon_client = None
 
 def call_mon_api(method, fields):
-
     try:
         resp = method(**fields)
     except exc.HTTPException as he:
@@ -25,7 +23,8 @@ def call_mon_api(method, fields):
 
 
 def create_timestamp(seconds):
-    return pytz.utc.localize(datetime.utcfromtimestamp(seconds)).strftime("%Y-%m-%dT%H:%M:%S%z")
+    utcTimestamp = pytz.utc.localize(datetime.utcfromtimestamp(seconds))
+    return utcTimestamp.strftime("%Y-%m-%dT%H:%M:%S%z")
 
 
 def main():
@@ -35,17 +34,15 @@ def main():
 
     api_version = '2_0'
     endpoint = 'http://192.168.10.4:8080/v2.0'
-    kwargs = {
-              'token': '82510970543135'
-    }
+    kwargs = {'token': '82510970543135'}
     mon_client = client.Client(api_version, endpoint, **kwargs)
 
     metric_start_time = time.time()
     metric_name = sys.argv[1]
     num_metrics_to_send = int(sys.argv[2])
-    dimensions = {'Test_Send':'Number_1'} # Should be arg
+    dimensions = {'Test_Send': 'Number_1'}  # Should be arg
     start_time = time.time()
-    fields = {'name':metric_name}
+    fields = {'name': metric_name}
     fields['dimensions'] = dimensions
     for val in range(0, num_metrics_to_send):
         fields['value'] = str(val)
@@ -61,7 +58,7 @@ def main():
         metric_end_time = metric_start_time + 1
     start_timestamp = create_timestamp(metric_start_time)
     end_timestamp = create_timestamp(metric_end_time)
-    fields = {'name':metric_name}
+    fields = {'name': metric_name}
     fields['dimensions'] = dimensions
     fields['start_time'] = start_timestamp
     fields['end_time'] = end_timestamp
@@ -71,13 +68,14 @@ def main():
             measurements = result[0]['measurements']
             if len(measurements) >= num_metrics_to_send:
                 break
-            print('Found %d of %d metrics so far' % (len(measurements), num_metrics_to_send))
+            print('Found %d of %d metrics so far' %
+                  (len(measurements), num_metrics_to_send))
         time.sleep(1)
 
     if len(result) == 0:
         print('Did not receive any metrics in %d seconds' % i, file=sys.stderr)
         return 1
-        
+
     if len(measurements) != num_metrics_to_send:
         print('Expected %d measurements but found %d' %
               (num_metrics_to_send, len(measurements)), file=sys.stderr)

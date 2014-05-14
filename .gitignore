@@ -6,3 +6,4 @@ templates/packer_cache
 .pydevproject
 .idea
 *.deb
+*.pyc
