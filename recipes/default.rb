@@ -20,6 +20,10 @@ rb.run_action(:create)  # Run during compile time so that apt::cacher-client has
 # Add in the cacher-client, it will do something or nothing depending on the value of node[:apt][:cacher_ipaddress]
 include_recipe('apt::cacher-client')
 
+# Some barebones distros do not yet have this installed
+package 'apt-transport-https' do
+  action :install
+end
 apt_repository 'dev' do
   uri 'https://region-a.geo-1.objects.hpcloudsvc.com/v1/46995959297574/mini-mon/public_repo'
   arch 'amd64'
