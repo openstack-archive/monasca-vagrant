@@ -31,6 +31,8 @@ def chef_solo(chef_dir='/vagrant', run_list='role[Mini-Mon]', proxy=None):
         debian_version = run('cat /etc/debian_version')
         if debian_version == 'cattleprod':
             sudo('echo "7.0" > /etc/debian_version')
+            # Also generate the UTF8 locale
+            sudo('localedef -v -c -i en_US -f UTF-8 en_US.UTF-8')
 
     # Setup solo.rb
     solo_content = '''cookbook_path "{dir}/berks-cookbooks"
