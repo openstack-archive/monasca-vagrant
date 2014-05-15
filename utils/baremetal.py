@@ -27,7 +27,7 @@ def chef_solo(chef_dir='/vagrant', run_list='role[Mini-Mon]', proxy=None):
         This assumes chef solo and other dependencies are setup.
     """
     # Setup solo.rb
-    solo_content = '''cookbook_path "{dir}/cookbooks"
+    solo_content = '''cookbook_path "{dir}/berks-cookbooks"
 role_path "{dir}/roles"
 data_bag_path "{dir}/data_bags"'''.format(dir=chef_dir)
     sudo("echo '%s' > %s/solo.rb" % (solo_content, chef_dir))
@@ -67,7 +67,7 @@ def install(install_dir='/vagrant', proxy=None):
 
         # download cookbooks
         with cd(install_dir):
-            sudo('berks vendor cookbooks')
+            sudo('berks vendor')
 
         # the vertica packages from my.vertica.com are needed, this assumes they are one level up from cwd
         put('../vertica*.deb', install_dir, use_sudo=True)
@@ -83,7 +83,7 @@ def install_berkshelf(proxy=None):
         ruby_check = run('ruby -v')
         if ruby_check.failed:
             # Install both ruby and tools needed to build gems
-            sudo('apt-get install -y ruby ruby-hitimes build-essential')
+            sudo('apt-get install -y ruby ruby-dev ruby-hitimes build-essential')
         else:
             # A better semantic version check like semantic_version module provides would be nice
             version_parts = ruby_check.split()[1].split('.')
