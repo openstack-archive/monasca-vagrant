@@ -1,0 +1,29 @@
+{
+    "id": "mon_persister",
+    "kafka": {
+        "metrics_topic": "metrics",
+        "num_threads": "1",
+        "group_id": "1",
+        "consumer_id": "1"
+    },
+    "disruptor": {
+        "buffer_size": "1048576",
+        "num_processors": "1"
+    },
+    "vertica_output_processor": {
+        "batch_size": "10000"
+    },
+    "deduper_config": {
+        "dedupe_run_frequencey_seconds": "30"
+    },
+    "vertica_metric_repository_config": {
+        "max_cache_size": "2000000"
+    },
+    "vertica": {
+        "dbname": "mon",
+        "hostname": "192.168.10.8"
+    },
+    "zookeeper": {
+        "hostname": "192.168.10.10"
+    }
+}

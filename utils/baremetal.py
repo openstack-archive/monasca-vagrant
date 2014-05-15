@@ -65,10 +65,6 @@ def install(install_dir='/vagrant', proxy=None):
         else:
             sudo('git clone https://github.com/hpcloud-mon/mon-vagrant.git %s' % install_dir)
 
-        # currently the one-vm setup is on a branch
-        with cd(install_dir):
-            sudo('git checkout feature/one-vm')
-
         # download cookbooks
         with cd(install_dir):
             sudo('berks vendor cookbooks')

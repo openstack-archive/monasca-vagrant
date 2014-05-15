@@ -3,20 +3,54 @@
   "description": "Sets up the entire monitoring stack on one box",
   "json_class": "Chef::Role",
   "default_attributes": {
+    "apt": {
+      "periodic_update_min_delay": 60
+    },
     "kafka": {
-      "listen_address": "127.0.0.1"
+      "listen_address": "127.0.0.1",
+      "topics": {
+        "metrics": { "replicas": 1, "partitions": 4 },
+        "events": { "replicas": 1, "partitions": 4 },
+        "alarm-state-transitions": { "replicas": 1, "partitions": 4 },
+        "alarm-notifications": { "replicas": 1, "partitions": 4 }
+      }
+    },
+    "percona": {
+      "backup": {
+        "password": "password"
+      },
+      "cluster": {
+        "package": "percona-xtradb-cluster-56"
+      },
+      "main_config_file": "/etc/mysql/my.cnf",
+      "server": {
+        "bind_address": "0.0.0.0",
+        "debain_password": "password",
+        "replication": {
+          "password": "password"
+        },
+        "root_password": "password",
+        "skip_name_resolve": true
+      }
     }
   },
   "override_attributes": {
   },
   "chef_type": "role",
   "run_list": [
-    "role[MySQL]",
-    "role[Kafka]",
-    "role[Vertica]",
-    "role[Api]",
-    "role[Persister]",
-    "role[Thresh]"
+    "recipe[mini-mon]",
+    "recipe[percona::cluster]",
+    "recipe[mini-mon::mysql_schema]",
+    "recipe[zookeeper]",
+    "recipe[kafka]",
+    "recipe[mini-mon::postfix]",
+    "recipe[mon_notification]",
+    "recipe[vertica]",
+    "recipe[sysctl]",
+    "recipe[mon_api]",
+    "recipe[mon_persister]",
+    "recipe[mon_agent]",
+    "recipe[mon_thresh]"
   ],
   "env_run_lists": {
   }
