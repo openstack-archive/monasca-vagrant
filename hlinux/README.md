@@ -5,6 +5,7 @@ hLinux can be installed and run as the base OS for all the vm(s) defined in mini
 Before running this you must create a hLinux box as describe below.
 
 As of the last testing there are a couple of minor problems:
+- The HP proxy can cause trouble if not using an externally accessible hLinux apt repo.
 - The vboxsf filesystem driver is not working correctly in hLinux, this prevents home directory syncing.
 - Slow network performance of the hLinux vbox image makes some tasks annoying.
 
