@@ -1,8 +1,8 @@
 .vagrant
 Berksfile.lock
 .project
-templates/output-virtualbox-iso
-templates/packer_cache
+hlinux/templates/output-virtualbox-iso
+hlinux/templates/packer_cache
 .pydevproject
 .idea
 *.deb
