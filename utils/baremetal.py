@@ -26,6 +26,12 @@ def chef_solo(chef_dir='/vagrant', run_list='role[Mini-Mon]', proxy=None):
     """Runs chef-solo
         This assumes chef solo and other dependencies are setup.
     """
+    with settings(hide('running', 'output', 'warnings'), warn_only=True):
+        # The hLinux version messes with the lsb codename which some things depend on, this fixes it
+        debian_version = run('cat /etc/debian_version')
+        if debian_version == 'cattleprod':
+            sudo('echo "7.0" > /etc/debian_version')
+
     # Setup solo.rb
     solo_content = '''cookbook_path "{dir}/berks-cookbooks"
 role_path "{dir}/roles"
@@ -72,7 +78,7 @@ def install(install_dir='/vagrant', proxy=None):
         # the vertica packages from my.vertica.com are needed, this assumes they are one level up from cwd
         put('../vertica*.deb', install_dir, use_sudo=True)
 
-        execute(chef_solo, proxy)
+        execute(chef_solo, proxy=proxy)
 
 
 @task
