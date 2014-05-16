@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 #
 """smoke
-<<<<<<< HEAD
     Runs a smoke test of the monitoring installation on mini-mon by ensuring
     metrics are flowing and creating a new notification, alarm and that the
     Threshold Engine changes the state of the alarm.  This requires the mon
@@ -12,22 +11,6 @@
 
     TODO:
         1. Add check of notification history when that is implemented
-=======
-    Runs a smoke test of the jahmon installation on mini-mon by ensuring
-    metrics are flowing and creating a new notification, alarm and that the
-    Threshold Engine changes the state of the alarm.  This requires the mon
-    CLI and must be run on one of the mini-mon VMs. Tested running on kafka VM.
-    Get it by following the instructions on
-    https://wiki.hpcloud.net/display/iaas/Monitoring+CLI.
-    If you want to see the notification, you must install postfix on the kakfa
-    VM, configure it to be local, and modify /etc/mon/notification.yaml to use
-    localhost for the email server, then restart
-
-    TODO:
-        1. Add check of notification history when that is implemented
-        2. Add check of mail getting to root when postfix is added mini-mon.
-           This script will have to run on the kafka VM
->>>>>>> 1a09176381b6f8d5b29589afbecf15558859787c
 """
 
 from __future__ import print_function
@@ -39,21 +22,10 @@ import time
 from notification import find_notifications
 import platform
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 1a09176381b6f8d5b29589afbecf15558859787c
 # export OS_AUTH_TOKEN=82510970543135
 # export OS_NO_CLIENT_AUTH=1
 # export MON_API_URL=http://192.168.10.4:8080/v2.0/
 
-<<<<<<< HEAD
-=======
-os.environ['OS_AUTH_TOKEN'] = '82510970543135'
-os.environ['OS_NO_CLIENT_AUTH'] = '1'
-os.environ['MON_API_URL'] = 'http://192.168.10.4:8080/v2.0/'
-
->>>>>>> 1a09176381b6f8d5b29589afbecf15558859787c
 
 def change_alarm_state(alarm_id, new_state):
     print('Changing Alarm state to %s' % new_state)
@@ -201,20 +173,12 @@ def wait_for_alarm_state_change(alarm_id, old_state):
 
 
 def check_notifications(alarm_id, state_changes):
-<<<<<<< HEAD
-    hostname = platform.node()
-    if hostname != 'kafka' and hostname != 'mini-mon':
-        print('Must run on the kafka VM to check Notifications, skipping',
+    if not os.path.isfile('/etc/mon/notification.yaml'):
+        print('Notification Engine not installed on this VM,' +
+              ' skipping Notifications test',
               file=sys.stderr)
         return True
     notifications = find_notifications(alarm_id, "root")
-=======
-    if platform.node() != 'kafka':
-        print('Must run on the kafka VM to check Notifications, skipping',
-              file=sys.stderr)
-        return True
-    notifications = find_notifications(alarm_id)
->>>>>>> 1a09176381b6f8d5b29589afbecf15558859787c
     if len(notifications) != len(state_changes):
         print('Expected %d notifications but only found %d' %
               (len(state_changes), len(notifications)), file=sys.stderr)
@@ -227,10 +191,7 @@ def check_notifications(alarm_id, state_changes):
                   (expected, actual, index+1), file=sys.stderr)
             return False
         index = index + 1
-<<<<<<< HEAD
     print('Received email notifications as expected')
-=======
->>>>>>> 1a09176381b6f8d5b29589afbecf15558859787c
     return True
 
 
@@ -251,16 +212,17 @@ def ensure_at_least(desired, actual):
 
 
 def main():
-<<<<<<< HEAD
-    # These need to be set because we are invoking the CLI as a process
-    if platform.node() != 'mini-mon':
+    # Determine if we are running on mutiple VMs or just the one
+    if os.path.isfile('/etc/mon/mon-api-config.yml'):
+        api_host = 'localhost'
+        metric_host = subprocess.check_output(['hostname', '-f']).strip()
+        mail_host = 'localhost'
+    else:
         api_host = '192.168.10.4'
         metric_host = 'thresh'
         mail_host = 'kafka'
-    else:
-        api_host = 'localhost'
-        metric_host = 'mini-mon'
-        mail_host = 'localhost'
+
+    # These need to be set because we are invoking the CLI as a process
     os.environ['OS_AUTH_TOKEN'] = '82510970543135'
     os.environ['OS_NO_CLIENT_AUTH'] = '1'
     os.environ['MON_API_URL'] = 'http://' + api_host + ':8080/v2.0/'
@@ -270,13 +232,6 @@ def main():
     alarm_name = 'high cpu and load'
     metric_name = 'load_avg_1_min'
     metric_dimensions = {'hostname': metric_host}
-=======
-    notification_name = 'Jahmon Smoke Test'
-    notification_email_addr = 'root@kafka'
-    alarm_name = 'high cpu and load'
-    metric_name = 'load_avg_1_min'
-    metric_dimensions = {'hostname': 'thresh'}
->>>>>>> 1a09176381b6f8d5b29589afbecf15558859787c
     cleanup(notification_name, alarm_name)
 
     # Query how many metrics there are for the Alarm
@@ -291,11 +246,7 @@ def main():
                                                  notification_email_addr)
     # Create Alarm through CLI
     expression = 'max(cpu_system_perc) > 0 and ' + \
-<<<<<<< HEAD
                  'max(load_avg_1_min{hostname=' + metric_host + '}) > 0'
-=======
-                 'max(load_avg_1_min{hostname=thresh}) > 0'
->>>>>>> 1a09176381b6f8d5b29589afbecf15558859787c
     description = 'System CPU Utilization exceeds 1% and ' + \
                   'Load exceeds 3 per measurement period'
     alarm_id = create_alarm(alarm_name, expression, notification_method_id,
