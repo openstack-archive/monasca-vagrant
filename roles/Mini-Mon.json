@@ -25,7 +25,7 @@
       "main_config_file": "/etc/mysql/my.cnf",
       "server": {
         "bind_address": "0.0.0.0",
-        "debain_password": "password",
+        "query_cache_size": "0",
         "replication": {
           "password": "password"
         },
