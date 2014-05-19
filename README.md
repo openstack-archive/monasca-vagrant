@@ -25,7 +25,7 @@ Install's a mini monitoring environment based on vagrant. Intended for developme
 git clone https://github.com/hpcloud-mon/mon-vagrant
 ```
 Vertica must be downloaded from the [Vertica site](https://my.vertica.com/). Download these packages and place in the root of this repository.
-- vertica_7.0.1-0_amd64.db
+- vertica_7.0.1-0_amd64.deb
 - vertica-R-lang_7.0.1_amd64.deb
 
 The vertica::console recipe is not enabled by default but if it is added this package is also needed.
