@@ -40,8 +40,8 @@ def set_optional_field(name, value, fields):
         fields[name] = value
 
 
-def create(mon_client, name, description, expression, ok_actions,
-           alarm_actions, undetermined_actions):
+def create(mon_client, name, description, expression, ok_actions=None,
+           alarm_actions=None, undetermined_actions=None):
     fields = {}
     fields['name'] = name
     fields['expression'] = expression
@@ -51,3 +51,11 @@ def create(mon_client, name, description, expression, ok_actions,
     set_optional_field('undetermined_actions', undetermined_actions, fields)
     result = mon_client.alarms.create(**fields)
     return result['id']
+
+
+def find_alarm_byname(mon_client, alarm_name):
+    alarms = mon_client.alarms.list(**{})
+    for alarm in alarms:
+        if alarm['name'] == alarm_name:
+            return alarm
+    return None

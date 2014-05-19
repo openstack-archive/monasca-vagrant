@@ -7,16 +7,9 @@ from __future__ import print_function
 import sys
 import time
 from monclient import client
-from notification import find_notifications
+import notification
 import alarm
-
-
-def find_alarm_id(mon_client):
-    result = mon_client.alarms.list(**{})
-    if len(result) == 0:
-        print('No existing alarms, create one and rerun test', file=sys.stderr)
-        return None
-    return result[0]['id']
+import os
 
 
 def main():
@@ -24,26 +17,46 @@ def main():
         print('usage: %s count [alarm-id]' % sys.argv[0], file=sys.stderr)
         return 1
 
+    if not os.path.isfile('/etc/mon/notification.yaml'):
+        print('Must be run on a VM with Notification Engine installed',
+              file=sys.stderr)
+        return 1
+        
+    # Determine if we are running on mutiple VMs or just the one
+    if os.path.isfile('/etc/mon/mon-api-config.yml'):
+        api_host = 'localhost'
+    else:
+        api_host = '192.168.10.4'
+
     api_version = '2_0'
-    endpoint = 'http://192.168.10.4:8080/v2.0'
+    endpoint = 'http://' + api_host + ':8080/v2.0'
     kwargs = {'token': '82510970543135'}
     global mon_client
     mon_client = client.Client(api_version, endpoint, **kwargs)
 
     num_cycles = int(sys.argv[1])
-    if len(sys.argv) > 2:
-        alarm_id = sys.argv[2]
+
+    alarm_name = 'notification_cycleTest'
+    alarm_json = alarm.find_alarm_byname(mon_client, alarm_name)
+    if alarm_json is not None:
+        alarm_id = alarm_json['id']
     else:
-        alarm_id = find_alarm_id(mon_client)
-        if alarm_id is None:
-            return 1
+        existing = notification.find_by_name(mon_client, alarm_name)
+        if existing is not None:
+            notification_id = existing['id']
+        else:
+            notification_id = notification.create(mon_client, alarm_name,
+                                                  "root@localhost")
+        alarm_id = alarm.create(mon_client, alarm_name, None, 'max(cc) > 100',
+                                notification_id, notification_id,
+                                notification_id)
 
     user = 'root'
     start_time = time.time()
     initial_state = alarm.get_state(mon_client, alarm_id)
     state = initial_state
 
-    existing_notifications = find_notifications(alarm_id, user)
+    existing_notifications = notification.find_notifications(alarm_id, user)
     notifications_sent = num_cycles * 2
     for _ in range(0, notifications_sent):
         if state == 'OK':
@@ -57,7 +70,7 @@ def main():
           ((time.time() - start_time), num_cycles * 2))
 
     for i in range(0, 30):
-        notifications = find_notifications(alarm_id, user)
+        notifications = notification.find_notifications(alarm_id, user)
         notifications_found = len(notifications) - len(existing_notifications)
         if notifications_found >= notifications_sent:
             break

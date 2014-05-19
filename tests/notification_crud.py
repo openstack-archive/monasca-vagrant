@@ -14,18 +14,6 @@ import monclient.exc as exc
 import alarm
 
 
-def call_mon_api(method, fields):
-
-    try:
-        resp = method(**fields)
-    except exc.HTTPException as he:
-        print(he.code)
-        print(he.message)
-        sys.exit(1)
-    else:
-        return resp
-
-
 def cycle_states(mon_client, alarm_id, states):
     print('Cycling alarm states through %s' % (states))
     for state in states:

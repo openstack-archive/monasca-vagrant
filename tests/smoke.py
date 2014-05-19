@@ -14,31 +14,16 @@
 """
 
 from __future__ import print_function
-import json
 import sys
 import os
 import subprocess
 import time
+import cli_wrapper
 from notification import find_notifications
-import platform
 
 # export OS_AUTH_TOKEN=82510970543135
 # export OS_NO_CLIENT_AUTH=1
 # export MON_API_URL=http://192.168.10.4:8080/v2.0/
-
-
-def change_alarm_state(alarm_id, new_state):
-    print('Changing Alarm state to %s' % new_state)
-    result_json = run_mon_cli(['alarm-patch', '--state', new_state, alarm_id])
-    if result_json['state'] != new_state:
-        print('Alarm patch failed, expected state of %s but was %s' %
-              (result_json['state'], new_state), file=sys.stderr)
-        return 1
-
-
-def get_alarm_state(alarm_id):
-    result_json = run_mon_cli(['alarm-show', alarm_id])
-    return result_json['state']
 
 
 def check_alarm_history(alarm_id, states):
@@ -46,7 +31,7 @@ def check_alarm_history(alarm_id, states):
     print('Checking Alarm History')
     # May take some time for Alarm history to flow all the way through
     for _ in range(0, 10):
-        result_json = run_mon_cli(['alarm-history', alarm_id])
+        result_json = cli_wrapper.run_mon_cli(['alarm-history', alarm_id])
         if len(result_json) >= transitions:
             break
         time.sleep(4)
@@ -80,27 +65,6 @@ def check_expected(expected, actual, what):
     return False
 
 
-def create_alarm(name, expression, notification_method_id, description=None):
-    args = ['alarm-create']
-    if (description):
-            args.append('--description')
-            args.append(description)
-    args.append('--alarm-actions')
-    args.append(notification_method_id)
-    args.append('--ok-actions')
-    args.append(notification_method_id)
-    args.append('--undetermined-actions')
-    args.append(notification_method_id)
-    args.append(name)
-    args.append(expression)
-    print('Creating alarm')
-    result_json = run_mon_cli(args)
-
-    # Parse out id
-    alarm_id = result_json['id']
-    return alarm_id
-
-
 def get_metrics(name, dimensions):
     print('Getting metrics for %s ' % (name + str(dimensions)))
     dimensions_arg = ''
@@ -108,54 +72,13 @@ def get_metrics(name, dimensions):
         if dimensions_arg != '':
             dimensions_arg = dimensions_arg + ','
         dimensions_arg = dimensions_arg + key + '=' + value
-    return run_mon_cli(['measurement-list', '--dimensions',
-                       dimensions_arg, name, '00'])
-
-
-def run_mon_cli(args, useJson=True):
-    if useJson:
-        args.insert(0, '--json')
-    args.insert(0, 'mon')
-    try:
-        stdout = subprocess.check_output(args)
-        if useJson:
-            return json.loads(stdout)
-        else:
-            return stdout
-    except subprocess.CalledProcessError as e:
-        print(e, file=sys.stderr)
-        sys.exit(1)
-
-
-def create_notification(notification_name, notification_email_addr):
-    print('Creating notification')
-    result_json = run_mon_cli(['notification-create', notification_name,
-                              'EMAIL', notification_email_addr])
-
-    # Parse out id
-    notification_method_id = result_json['id']
-    return notification_method_id
-
-
-def find_id_for_name(object_json, name):
-    for obj in object_json:
-        this_name = obj['name']
-        if name == this_name:
-            return obj['id']
-    return None
+    return cli_wrapper.run_mon_cli(['measurement-list', '--dimensions',
+                                    dimensions_arg, name, '00'])
 
 
 def cleanup(notification_name, alarm_name):
-    # Delete our alarm if it already exists
-    alarm_json = run_mon_cli(['alarm-list'])
-    alarm_id = find_id_for_name(alarm_json, alarm_name)
-    if alarm_id:
-        run_mon_cli(['alarm-delete', alarm_id], useJson=False)
-    # Delete our notification if it already exists
-    notification_json = run_mon_cli(['notification-list'])
-    notification_id = find_id_for_name(notification_json, notification_name)
-    if notification_id:
-        run_mon_cli(['notification-delete', notification_id], useJson=False)
+    cli_wrapper.delete_alarm_if_exists(alarm_name)
+    cli_wrapper.delete_notification_if_exists(notification_name)
 
 
 def wait_for_alarm_state_change(alarm_id, old_state):
@@ -163,7 +86,7 @@ def wait_for_alarm_state_change(alarm_id, old_state):
     print('Waiting for alarm to change state from %s' % old_state)
     for x in range(0, 250):
         time.sleep(1)
-        state = get_alarm_state(alarm_id)
+        state = cli_wrapper.get_alarm_state(alarm_id)
         if state != old_state:
             print('Alarm state changed to %s in %d seconds' % (state, x))
             return state
@@ -242,16 +165,19 @@ def main():
     start_time = time.time()
 
     # Create Notification through CLI
-    notification_method_id = create_notification(notification_name,
-                                                 notification_email_addr)
+    notification_id = cli_wrapper.create_notification(notification_name,
+                                                      notification_email_addr)
     # Create Alarm through CLI
     expression = 'max(cpu_system_perc) > 0 and ' + \
                  'max(load_avg_1_min{hostname=' + metric_host + '}) > 0'
     description = 'System CPU Utilization exceeds 1% and ' + \
                   'Load exceeds 3 per measurement period'
-    alarm_id = create_alarm(alarm_name, expression, notification_method_id,
-                            description)
-    state = get_alarm_state(alarm_id)
+    alarm_id = cli_wrapper.create_alarm(alarm_name, expression,
+                                        description=description,
+                                        ok_notif_id=notification_id,
+                                        alarm_notif_id=notification_id,
+                                        undetermined_notif_id=notification_id)
+    state = cli_wrapper.get_alarm_state(alarm_id)
     # Ensure it is created in the right state
     initial_state = 'UNDETERMINED'
     states = []
@@ -273,7 +199,7 @@ def main():
 
     new_state = 'OK'
     states.append(new_state)
-    change_alarm_state(alarm_id, new_state)
+    cli_wrapper.change_alarm_state(alarm_id, new_state)
     # There is a bug in the API which allows this to work. Soon that
     # will be fixed and this will fail
     if len(sys.argv) > 1:
@@ -291,12 +217,13 @@ def main():
 
     # If the alarm changes state too fast, then there isn't time for the new
     # metric to arrive. Unlikely, but it has been seen
-    ensure_at_least(time.time() - start_time, 30)
+    ensure_at_least(time.time() - start_time, 35)
     change_time = time.time() - start_time
 
     final_num_metrics = count_metrics(metric_name, metric_dimensions)
     if final_num_metrics <= initial_num_metrics:
-        print('No new metrics received', file=sys.stderr)
+        print('No new metrics received in %d seconds' % change_time,
+              file=sys.stderr)
         return 1
     print('Received %d metrics in %d seconds' %
           ((final_num_metrics - initial_num_metrics),  change_time))
