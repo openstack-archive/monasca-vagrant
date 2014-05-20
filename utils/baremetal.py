@@ -50,18 +50,10 @@ data_bag_path "{dir}/data_bags"'''.format(dir=chef_dir)
         sudo('chef-solo -c {dir}/solo.rb -j {dir}/node.json'.format(dir=chef_dir))
 
 
-@task(default=True)
-def install(install_dir='/vagrant', proxy=None):
-    """Installs the latest mini-mon and bits necessary to run chef-solo and runs chef-solo on the box.
-        proxy is an optional proxy url used for http and https, it is not used for apt as that is assumed to be
-        correctly setup.
-        install_dir defaults to /vagrant to match assumptions from mini-mon even though vagrant is not used here
+@task
+def git_mini_mon(install_dir, proxy=None):
+    """Download mini-mon from git
     """
-    if proxy is not None:
-        abort('Proxy support is incomplete.')
-    execute(install_deps, proxy)
-
-    #Clone mini-mon
     with prefix(proxy_string(proxy)):
         # Update the install dir if it already has code, otherwise check out
         with settings(hide('running', 'output', 'warnings'), warn_only=True):
@@ -73,6 +65,20 @@ def install(install_dir='/vagrant', proxy=None):
         else:
             sudo('git clone https://github.com/hpcloud-mon/mon-vagrant.git %s' % install_dir)
 
+@task(default=True)
+def install(install_dir='/vagrant', proxy=None):
+    """Installs the latest mini-mon and bits necessary to run chef-solo and runs chef-solo on the box.
+        proxy is an optional proxy url used for http and https, it is not used for apt as that is assumed to be
+        correctly setup.
+        install_dir defaults to /vagrant to match assumptions from mini-mon even though vagrant is not used here
+    """
+    if proxy is not None:
+        abort('Proxy support is incomplete.')
+    execute(install_deps, proxy)
+    execute(git_mini_mon, install_dir, proxy)
+
+    #Clone mini-mon
+    with prefix(proxy_string(proxy)):
         # download cookbooks
         with cd(install_dir):
             sudo('berks vendor')

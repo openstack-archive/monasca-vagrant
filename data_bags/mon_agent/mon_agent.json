@@ -7,7 +7,6 @@
   "api" : {
     "mon_api_url" : "http://localhost:8080/v2.0/metrics",
     "mon_api_project_id" : "82510970543135",
-    "use_keystone" : "false",
-    "aggregate_metrics" : "true"
+    "use_keystone" : "false"
   }
 }
