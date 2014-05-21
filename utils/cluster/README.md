@@ -17,4 +17,3 @@ The goal of this fabric script is to setup a test cluster on baremetal leveragin
 - Setup the Vertica database schema
 - Setup the mysql database schema
 - Restart any services which require vertica or mysql
-
