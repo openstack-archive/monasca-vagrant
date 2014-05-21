@@ -51,7 +51,7 @@ data_bag_path "{dir}/data_bags"'''.format(dir=chef_dir)
 
 
 @task
-def git_mini_mon(install_dir, proxy=None):
+def git_mini_mon(install_dir, branch=None, proxy=None):
     """Download mini-mon from git
     """
     with prefix(proxy_string(proxy)):
@@ -61,9 +61,13 @@ def git_mini_mon(install_dir, proxy=None):
 
         if install_dir_check.succeeded:
             with cd(install_dir):
-                sudo('git pull -f origin master')
+                sudo('git checkout master; git pull -f origin master')
         else:
             sudo('git clone https://github.com/hpcloud-mon/mon-vagrant.git %s' % install_dir)
+
+        if branch is not None:
+            with cd(install_dir):
+                sudo('git checkout %s' % branch)
 
 @task(default=True)
 def install(install_dir='/vagrant', proxy=None):
