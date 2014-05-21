@@ -38,7 +38,7 @@
       }
     },
     "vertica": {
-      "standalone": false
+      "cluster": true
     },
     "zookeeper": {
       "cluster": "mon"
