@@ -19,6 +19,7 @@
     "role[Basenode]",
     "recipe[zookeeper]",
     "recipe[kafka]",
+    "recipe[kafka::create_topics]",
     "recipe[mini-mon::postfix]",
     "recipe[mon_notification]"
   ],
