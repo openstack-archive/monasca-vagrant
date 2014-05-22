@@ -7,3 +7,4 @@ hlinux/templates/packer_cache
 .idea
 *.deb
 *.pyc
+utils/cluster/data_bags/vertica/ssh_key.json
