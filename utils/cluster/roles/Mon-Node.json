@@ -10,10 +10,10 @@
       "cluster": "mon",
       "listen_address": "127.0.0.1",
       "topics": {
-        "metrics": { "replicas": 1, "partitions": 4 },
-        "events": { "replicas": 1, "partitions": 4 },
-        "alarm-state-transitions": { "replicas": 1, "partitions": 4 },
-        "alarm-notifications": { "replicas": 1, "partitions": 4 }
+        "metrics": { "replicas": 3, "partitions": 4 },
+        "events": { "replicas": 3, "partitions": 4 },
+        "alarm-state-transitions": { "replicas": 3, "partitions": 4 },
+        "alarm-notifications": { "replicas": 3, "partitions": 4 }
       }
     },
     "percona": {
@@ -59,8 +59,8 @@
     "recipe[sysctl]",
     "recipe[mon_api]",
     "recipe[mon_persister]",
-    "recipe[mon_agent]",
-    "recipe[mon_thresh]"
+    "recipe[mon_thresh]",
+    "recipe[mon_agent]"
   ],
   "env_run_lists": {
   }
