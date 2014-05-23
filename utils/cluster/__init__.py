@@ -52,7 +52,13 @@ class SetupCluster(Task):
             sudo('mkdir %s' % self.cluster_dir)
 
         with cd(self.mini_mon_dir):
-            sudo('berks install')
+            with settings(hide('running', 'output', 'warnings'), warn_only=True):
+                berks_check = sudo('ls Berksfile.lock')
+
+            if berks_check.succeeded:
+                sudo('berks update')
+            else:
+                sudo('berks install')
             sudo('berks vendor %s/berks-cookbooks' % self.cluster_dir)
 
         # the vertica packages from my.vertica.com are needed, this assumes they are one level up from cwd

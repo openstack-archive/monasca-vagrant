@@ -4,7 +4,11 @@
         "metrics_topic": "metrics",
         "num_threads": "1",
         "group_id": "1",
-        "consumer_id": "1"
+        "consumer_id": {
+            "mon-ae1test-kafka0001.useast.hpcloud.net": 0,
+            "mon-ae1test-kafka0002.useast.hpcloud.net": 1,
+            "mon-ae1test-kafka0003.useast.hpcloud.net": 2
+        }
     },
     "disruptor": {
         "buffer_size": "1048576",
