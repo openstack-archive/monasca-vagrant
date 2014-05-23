@@ -33,6 +33,7 @@
         "replication": {
           "password": "password"
         },
+        "role": "cluster",
         "root_password": "password",
         "skip_name_resolve": true
       }
