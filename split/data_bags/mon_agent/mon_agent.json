@@ -7,6 +7,5 @@
     "mon_api_url" : "http://192.168.10.4:8080/v2.0",
     "mon_api_project_id" : "82510970543135",
     "use_keystone" : "false",
-    "aggregate_metrics" : "true"
   }
 }
