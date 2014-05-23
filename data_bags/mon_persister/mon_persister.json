@@ -4,7 +4,7 @@
         "metrics_topic": "metrics",
         "num_threads": "1",
         "group_id": "1",
-        "consumer_id": "1"
+        "consumer_id": 1
     },
     "disruptor": {
         "buffer_size": "1048576",
