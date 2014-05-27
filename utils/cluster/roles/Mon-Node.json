@@ -8,7 +8,7 @@
     },
     "kafka": {
       "cluster": "mon",
-      "listen_address": "127.0.0.1",
+      "listen_interface": "eth2",
       "topics": {
         "metrics": { "replicas": 3, "partitions": 64 },
         "events": { "replicas": 3, "partitions": 12 },
