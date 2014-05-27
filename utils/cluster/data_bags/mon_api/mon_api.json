@@ -12,6 +12,6 @@
    "schema": "mon"
   },
   "kafka": {
-    "hostname": "localhost"
+    "hostname": "10.22.156.16"
   }
 }
