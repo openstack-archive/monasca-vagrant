@@ -5,13 +5,13 @@
     "hostname" : "localhost"
   },
   "zookeeper" : {
-    "hostname" : "localhost"
+    "hostname" : "10.22.156.14,10.22.156.15,10.22.156.16"
   },
   "mysql": {
    "hostname":"localhost",
    "schema": "mon"
   },
   "kafka": {
-    "hostname": "10.22.156.16"
+    "hostname": "10.22.156.14,10.22.156.15,10.22.156.16"
   }
 }
