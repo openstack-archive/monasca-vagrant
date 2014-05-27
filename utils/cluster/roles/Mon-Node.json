@@ -24,7 +24,7 @@
         "package": "percona-xtradb-cluster-56",
         "wsrep_cluster_address": "gcomm://10.22.156.14,10.22.156.15,10.22.156.16",
         "wsrep_cluster_name": "mon",
-        "wsrep_sst_method": "xtrabackup-v2",
+        "wsrep_sst_method": "rsync",
         "wsrep_provider": "/usr/lib/libgalera_smm.so"
       },
       "main_config_file": "/etc/mysql/my.cnf",
