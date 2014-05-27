@@ -1,0 +1,17 @@
+{
+  "id" : "mon_api",
+  "vertica" : {
+    "dbname" : "mon",
+    "hostname" : "localhost"
+  },
+  "zookeeper" : {
+    "hostname" : "localhost"
+  },
+  "mysql": {
+   "hostname":"localhost",
+   "schema": "mon"
+  },
+  "kafka": {
+    "hostname": "10.22.156.16"
+  }
+}

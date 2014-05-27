@@ -4,6 +4,7 @@
   "json_class": "Chef::Role",
   "default_attributes": {
     "kafka": {
+      "listen_interface": "eth1",
       "topics": {
         "metrics": { "replicas": 1, "partitions": 4 },
         "events": { "replicas": 1, "partitions": 4 },

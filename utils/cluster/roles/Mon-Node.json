@@ -1,0 +1,65 @@
+{
+  "name": "Mon-Node",
+  "description": "Sets up one box in a Monitoring Cluster",
+  "json_class": "Chef::Role",
+  "default_attributes": {
+    "apt": {
+      "periodic_update_min_delay": 60
+    },
+    "kafka": {
+      "cluster": "mon",
+      "listen_interface": "eth2",
+      "topics": {
+        "metrics": { "replicas": 3, "partitions": 64 },
+        "events": { "replicas": 3, "partitions": 12 },
+        "alarm-state-transitions": { "replicas": 3, "partitions": 12 },
+        "alarm-notifications": { "replicas": 3, "partitions": 12 }
+      }
+    },
+    "percona": {
+      "backup": {
+        "password": "password"
+      },
+      "cluster": {
+        "package": "percona-xtradb-cluster-56",
+        "wsrep_cluster_address": "gcomm://10.22.156.14,10.22.156.15,10.22.156.16",
+        "wsrep_cluster_name": "mon",
+        "wsrep_sst_method": "rsync",
+        "wsrep_provider": "/usr/lib/libgalera_smm.so"
+      },
+      "main_config_file": "/etc/mysql/my.cnf",
+      "server": {
+        "bind_address": "0.0.0.0",
+        "replication": {
+          "password": "password"
+        },
+        "role": "cluster",
+        "root_password": "password",
+        "skip_name_resolve": true
+      }
+    },
+    "vertica": {
+      "cluster": true
+    },
+    "zookeeper": {
+      "cluster": "mon"
+    }
+  },
+  "override_attributes": {
+  },
+  "chef_type": "role",
+  "run_list": [
+    "recipe[mini-mon]",
+    "recipe[percona::cluster]",
+    "recipe[zookeeper]",
+    "recipe[kafka]",
+    "recipe[mini-mon::postfix]",
+    "recipe[mon_notification]",
+    "recipe[vertica]",
+    "recipe[sysctl]",
+    "recipe[mon_api]",
+    "recipe[mon_persister]"
+  ],
+  "env_run_lists": {
+  }
+}

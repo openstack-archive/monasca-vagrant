@@ -50,6 +50,25 @@ data_bag_path "{dir}/data_bags"'''.format(dir=chef_dir)
         sudo('chef-solo -c {dir}/solo.rb -j {dir}/node.json'.format(dir=chef_dir))
 
 
+@task
+def git_mini_mon(install_dir, branch=None, proxy=None):
+    """Download mini-mon from git
+    """
+    with prefix(proxy_string(proxy)):
+        # Update the install dir if it already has code, otherwise check out
+        with settings(hide('running', 'output', 'warnings'), warn_only=True):
+            install_dir_check = run('ls %s' % install_dir)
+
+        if install_dir_check.succeeded:
+            with cd(install_dir):
+                sudo('git checkout master; git pull -f origin master')
+        else:
+            sudo('git clone https://github.com/hpcloud-mon/mon-vagrant.git %s' % install_dir)
+
+        if branch is not None:
+            with cd(install_dir):
+                sudo('git checkout %s' % branch)
+
 @task(default=True)
 def install(install_dir='/vagrant', proxy=None):
     """Installs the latest mini-mon and bits necessary to run chef-solo and runs chef-solo on the box.
@@ -60,19 +79,10 @@ def install(install_dir='/vagrant', proxy=None):
     if proxy is not None:
         abort('Proxy support is incomplete.')
     execute(install_deps, proxy)
+    execute(git_mini_mon, install_dir, proxy)
 
     #Clone mini-mon
     with prefix(proxy_string(proxy)):
-        # Update the install dir if it already has code, otherwise check out
-        with settings(hide('running', 'output', 'warnings'), warn_only=True):
-            install_dir_check = run('ls %s' % install_dir)
-
-        if install_dir_check.succeeded:
-            with cd(install_dir):
-                sudo('git pull -f origin master')
-        else:
-            sudo('git clone https://github.com/hpcloud-mon/mon-vagrant.git %s' % install_dir)
-
         # download cookbooks
         with cd(install_dir):
             sudo('berks vendor')
