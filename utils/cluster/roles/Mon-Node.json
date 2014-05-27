@@ -51,7 +51,6 @@
   "run_list": [
     "recipe[mini-mon]",
     "recipe[percona::cluster]",
-    "recipe[mini-mon::mysql_schema]",
     "recipe[zookeeper]",
     "recipe[kafka]",
     "recipe[mini-mon::postfix]",
