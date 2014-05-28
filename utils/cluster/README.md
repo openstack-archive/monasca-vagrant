@@ -23,6 +23,9 @@ The goal of this fabric script is to setup a test cluster on baremetal leveragin
 - Setup the mysql database schema - the mini-mon::mysql_schema tecipe can be run on 1 machine
 - Restart any services which require vertica, mysql or kafka
 
-
 ## Optional Configuration
 - Add in the Vertica Console to one of the machines. This can be done with vertica::console recipe
+
+## Known Issues
+- If a client connects to kafka before the topics are made in some situations the topics are automatically created and can end up
+  as the wrong size or without replicas.
