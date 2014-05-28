@@ -11,7 +11,7 @@ cookbook 'mon_agent', git: 'https://github.com/hpcloud-mon/cookbooks-mon_agent'
 cookbook 'mon_notification', git: 'https://github.com/hpcloud-mon/cookbooks-mon_notification'
 cookbook 'mon_persister', git: 'https://github.com/hpcloud-mon/cookbooks-mon_persister.git'
 cookbook 'mon_thresh', git: 'https://github.com/hpcloud-mon/cookbooks-mon_thresh'
-cookbook 'percona', git: 'https://github.com/tkuhlman/chef-percona', branch: "feature/mini-mon"
+cookbook 'percona', git: 'https://github.com/phlipper/chef-percona'
 cookbook 'vertica', git: 'https://github.com/hpcloud-mon/cookbooks-vertica'
 cookbook 'zookeeper', git: 'https://github.com/hpcloud-mon/cookbooks-zookeeper'
 
