@@ -83,6 +83,13 @@ To develop cookbook changes with Vagrant:
 - If the vagrant vm is already up run 'vagrant provision' if not run 'Vagrant up'
 - When finish testing commit and upload your cookbook as normal but don't forget to bump the cookbook version in the metadata.rb.
 
+## Running behind a Web Proxy
+If you are behind a proxy you can install the `vagrant-proxyconf` pluging to have Vagrant honor standard proxy-related environment variables and set the
+vm to use them also.
+```
+vagrant plugin install vagrant-proxyconf
+```
+
 # Alternate Vagrant Configurations
 To run any of these alternate configs, simply run the Vagrant commands from within the subdir, though note the vertica debs must be copied into
 the subdir also.
