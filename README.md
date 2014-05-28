@@ -11,7 +11,8 @@
   - [Updating](#updating)
   - [Improving Provisioning Speed](#improving-provisioning-speed)
   - [Cookbook Development](#cookbook-development)
-- [Alternate Setups](#alternate-setups)
+  - [Running behind a Web Proxy](#running-behind-a-web-proxy)
+- [Alternate Vagrant Configurations](#alternate-vagrant-configurations)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
