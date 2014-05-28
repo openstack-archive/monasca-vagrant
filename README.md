@@ -45,7 +45,7 @@ brew cask install vagrant
 
 ### Setup Berkshelf
 ```
-vagrant plugin install vagrant-berkshelf
+vagrant plugin install vagrant-berkshelf --plugin-version '>= 2.0.1'
 gem install berkshelf
 ```
 
