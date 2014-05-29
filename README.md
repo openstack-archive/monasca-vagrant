@@ -27,7 +27,7 @@ git clone https://github.com/hpcloud-mon/mon-vagrant
 ```
 Vertica must be downloaded from the [Vertica site](https://my.vertica.com/). Download these packages and place in the root of this repository.
 - vertica_7.0.1-0_amd64.deb
-- vertica-R-lang_7.0.1_amd64.deb
+- vertica-r-lang_7.0.1-0_amd64.deb
 
 The vertica::console recipe is not enabled by default but if it is added this package is also needed.
 - vertica-console_7.0.1-0_amd64.deb
@@ -46,13 +46,14 @@ brew cask install vagrant
 
 ### Setup Berkshelf
 ```
-vagrant plugin install vagrant-berkshelf
+vagrant plugin install vagrant-berkshelf --plugin-version '>= 2.0.1'
 gem install berkshelf
 ```
 
 # Using mini-mon
 
-- Your home dir is synced to `/vagrant_home` on the vm
+- Your host OS home dir is synced to `/vagrant_home` on the vm.
+- The root dir of the mon-vagrant repo on your host OS is synced to `/vagrant` on the vm.
 - The vm will have an ip of 196.168.10.4 that can be access from other services running on the host.
 - Run `vagrant ssh` to login
 - Run `vagrant help` for more info
