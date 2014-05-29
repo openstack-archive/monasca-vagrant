@@ -51,7 +51,8 @@ gem install berkshelf
 
 # Using mini-mon
 
-- Your home dir is synced to `/vagrant_home` on the vm
+- Your host OS home dir is synced to `/vagrant_home` on the vm.
+- The root dir of the mon-vagrant repo on your host OS is synced to `/vagrant` on the vm.
 - The vm will have an ip of 196.168.10.4 that can be access from other services running on the host.
 - Run `vagrant ssh` to login
 - Run `vagrant help` for more info
