@@ -38,6 +38,7 @@
   "chef_type": "role",
   "run_list": [
     "recipe[mini-mon]",
+    "recipe[mini-mon::keystone]",
     "recipe[percona::cluster]",
     "recipe[mini-mon::mysql_schema]",
     "recipe[zookeeper]",

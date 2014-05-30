@@ -9,5 +9,6 @@ apt cookbook
 Recipes
 ---------
 - default - configures base apt repostories needed for mini-mon as well as option apt cache
+- keystone - simple keystone installation
 - mysql_schema - Defines the mysql_schema used by mini-mon
 - postfix - extremely simple postfix install
