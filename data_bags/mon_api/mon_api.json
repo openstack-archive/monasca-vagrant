@@ -1,5 +1,6 @@
 {
   "id" : "mon_api",
+  "api_region": "useast",
   "vertica" : {
     "dbname" : "mon",
     "hostname" : "localhost"
