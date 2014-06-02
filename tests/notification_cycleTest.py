@@ -6,10 +6,9 @@
 from __future__ import print_function
 import sys
 import time
-from monclient import client
 import notification
 import alarm
-import os
+import utils
 
 
 def main():
@@ -17,23 +16,10 @@ def main():
         print('usage: %s count [alarm-id]' % sys.argv[0], file=sys.stderr)
         return 1
 
-    if not os.path.isfile('/etc/mon/notification.yaml'):
-        print('Must be run on a VM with Notification Engine installed',
-              file=sys.stderr)
+    if not utils.ensure_has_notification_engine():
         return 1
-        
-    # Determine if we are running on mutiple VMs or just the one
-    if os.path.isfile('/etc/mon/mon-api-config.yml'):
-        api_host = 'localhost'
-    else:
-        api_host = '192.168.10.4'
 
-    api_version = '2_0'
-    endpoint = 'http://' + api_host + ':8080/v2.0'
-    kwargs = {'token': '82510970543135'}
-    global mon_client
-    mon_client = client.Client(api_version, endpoint, **kwargs)
-
+    mon_client = utils.create_mon_client()
     num_cycles = int(sys.argv[1])
 
     alarm_name = 'notification_cycleTest'

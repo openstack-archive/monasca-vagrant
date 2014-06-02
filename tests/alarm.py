@@ -1,5 +1,9 @@
 from __future__ import print_function
 import sys
+#
+"""
+    Utility methods for CRUD of alarms
+"""
 
 
 def get_state(mon_client, alarm_id):
