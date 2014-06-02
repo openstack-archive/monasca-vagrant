@@ -17,11 +17,11 @@ def get(mon_client, alarm_id):
 
 
 def disable(mon_client, alarm_id):
-    patch(mon_client, alarm_id, {'enabled': False})
+    patch(mon_client, alarm_id, {'actions_enabled': False})
 
 
 def enable(mon_client, alarm_id):
-    patch(mon_client, alarm_id, {'enabled': True})
+    patch(mon_client, alarm_id, {'actions_enabled': True})
 
 
 def set_state(mon_client, alarm_id, state):
