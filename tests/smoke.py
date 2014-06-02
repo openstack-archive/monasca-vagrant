@@ -19,50 +19,12 @@ import os
 import subprocess
 import time
 import cli_wrapper
+import utils
 from notification import find_notifications
 
 # export OS_AUTH_TOKEN=82510970543135
 # export OS_NO_CLIENT_AUTH=1
 # export MON_API_URL=http://192.168.10.4:8080/v2.0/
-
-
-def check_alarm_history(alarm_id, states):
-    transitions = len(states) - 1
-    print('Checking Alarm History')
-    # May take some time for Alarm history to flow all the way through
-    for _ in range(0, 10):
-        result_json = cli_wrapper.run_mon_cli(['alarm-history', alarm_id])
-        if len(result_json) >= transitions:
-            break
-        time.sleep(4)
-
-    result = True
-    if not check_expected(transitions, len(result_json),
-                          'number of history entries'):
-        return False
-    result_json.sort(key=lambda x: x['timestamp'])
-    for i in range(0, transitions):
-        old_state = states[i]
-        new_state = states[i+1]
-        alarm_json = result_json[i]
-        if not check_expected(old_state, alarm_json['old_state'], 'old_state'):
-            result = False
-        if not check_expected(new_state, alarm_json['new_state'], 'new_state'):
-            result = False
-        if not check_expected(alarm_id, alarm_json['alarm_id'], 'alarm_id'):
-            result = False
-
-    if result:
-        print('Alarm History is OK')
-    return result
-
-
-def check_expected(expected, actual, what):
-    if (expected == actual):
-        return True
-    print("Incorrect value for alarm history %s expected '%s' but was '%s'" %
-          (what, str(expected), str(actual)), file=sys.stderr)
-    return False
 
 
 def get_metrics(name, dimensions):
@@ -135,20 +97,13 @@ def ensure_at_least(desired, actual):
 
 
 def main():
-    # Determine if we are running on mutiple VMs or just the one
-    if os.path.isfile('/etc/mon/mon-api-config.yml'):
-        api_host = 'localhost'
-        metric_host = subprocess.check_output(['hostname', '-f']).strip()
-        mail_host = 'localhost'
-    else:
-        api_host = '192.168.10.4'
-        metric_host = 'thresh'
-        mail_host = 'kafka'
+    if not utils.ensure_has_notification_engine():
+        return 1
 
-    # These need to be set because we are invoking the CLI as a process
-    os.environ['OS_AUTH_TOKEN'] = '82510970543135'
-    os.environ['OS_NO_CLIENT_AUTH'] = '1'
-    os.environ['MON_API_URL'] = 'http://' + api_host + ':8080/v2.0/'
+    mail_host = 'localhost'
+    metric_host = subprocess.check_output(['hostname', '-f']).strip()
+
+    utils.setup_cli()
 
     notification_name = 'Jahmon Smoke Test'
     notification_email_addr = 'root@' + mail_host
@@ -177,14 +132,11 @@ def main():
                                         ok_notif_id=notification_id,
                                         alarm_notif_id=notification_id,
                                         undetermined_notif_id=notification_id)
-    state = cli_wrapper.get_alarm_state(alarm_id)
     # Ensure it is created in the right state
     initial_state = 'UNDETERMINED'
-    states = []
-    if state != initial_state:
-        print('Wrong initial alarm state, expected %s but is %s' %
-              (initial_state, state))
+    if not utils.check_alarm_state(alarm_id, initial_state):
         return 1
+    states = []
     states.append(initial_state)
 
     state = wait_for_alarm_state_change(alarm_id, initial_state)
@@ -227,7 +179,7 @@ def main():
         return 1
     print('Received %d metrics in %d seconds' %
           ((final_num_metrics - initial_num_metrics),  change_time))
-    if not check_alarm_history(alarm_id, states):
+    if not utils.check_alarm_history(alarm_id, states):
         return 1
 
     # Notifications are only sent out for the changes, so omit the first state

@@ -5,13 +5,12 @@
 """
 from __future__ import print_function
 import sys
-import platform
 import os
 import time
-from monclient import client
 import notification
 import monclient.exc as exc
 import alarm
+import utils
 
 
 def cycle_states(mon_client, alarm_id, states):
@@ -70,7 +69,7 @@ def check_notifications(alarm_id, email1, email2, email3, state1, state2,
     return True
 
 
-def print_actions(state, action_ids):
+def print_actions(mon_client, state, action_ids):
     addresses = []
     for action_id in action_ids:
         action_notification = notification.get(mon_client, action_id)
@@ -80,32 +79,21 @@ def print_actions(state, action_ids):
 
 def print_notification_setup(mon_client, alarm_id):
     alarm_data = alarm.get(mon_client, alarm_id)
-    print_actions('ALARM', alarm_data['alarm_actions'])
-    print_actions('OK', alarm_data['ok_actions'])
-    print_actions('UNDETERMINED', alarm_data['undetermined_actions'])
+    print_actions(mon_client, 'ALARM', alarm_data['alarm_actions'])
+    print_actions(mon_client, 'OK', alarm_data['ok_actions'])
+    print_actions(mon_client, 'UNDETERMINED',
+                  alarm_data['undetermined_actions'])
 
 
 def main():
-    hostname = platform.node()
-
-    if hostname == 'mini-mon':
-        api_host = '192.168.10.4'
-    elif hostname == 'kafka':
-        api_host = 'localhost'
-    else:
-        print('This test must be run on the kafka or mini-mon VM, aborting',
-              file=sys.stderr)
+    if not utils.ensure_has_notification_engine():
         return 1
 
     # Delete notification for OK.Cycle OK, ALARM, UNDETERMINED
     # Ensure proper notifications got written for ALARM, UNDETERMINED
 
     states = ['OK', 'ALARM', 'UNDETERMINED']
-    api_version = '2_0'
-    endpoint = 'http://' + api_host + ':8080/v2.0'
-    kwargs = {'token': '82510970543135'}
-    global mon_client
-    mon_client = client.Client(api_version, endpoint, **kwargs)
+    mon_client = utils.create_mon_client()
 
     try:
         # Create 3 notifications with different emails, root, kafka, mon-agent
