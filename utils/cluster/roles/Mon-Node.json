@@ -59,7 +59,8 @@
     "recipe[vertica::backup]",
     "recipe[sysctl]",
     "recipe[mon_api]",
-    "recipe[mon_persister]"
+    "recipe[mon_persister]",
+    "recipe[mon_agent]"
   ],
   "env_run_lists": {
   }
