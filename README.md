@@ -94,8 +94,9 @@ vagrant plugin install vagrant-proxyconf
 
 # Alternate Vagrant Configurations
 To run any of these alternate configs, simply run the Vagrant commands from within the subdir, though note the vertica debs must be copied into
-the subdir also.
+the subdir also. See the README.md in the subdir for more details
 
-- A Vagrant config for running the various monitoring components split into their own vms is available in the split subdir.
-- A Vagrant config for testing hLinux is available in the hlinux subdir
+- HPCloud subdir - Runs a vm in the HP Public Cloud rather than using virtual box
+- split subdir - The various monitoring components split into their own vms.
+- hlinux subdir - For testing hLinux, see the
 - Baremetal - actually not using Vagrant at all, see the baremetal fabric task in the utils directory.
