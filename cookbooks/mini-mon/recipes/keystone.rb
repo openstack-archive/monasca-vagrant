@@ -14,10 +14,18 @@ end
 python 'make default keystone user' do
   action :run
   code <<-EOH
+import keystoneclient
 from keystoneclient.v2_0 import client
 import sys
-key = client.Client(token='ADMIN', endpoint='http://127.0.0.1:35357/v2.0/')
-for user in key.users.list():
+try:
+    key = client.Client(token='ADMIN', endpoint='http://127.0.0.1:35357/v2.0/')
+    user_list = key.users.list()
+except keystoneclient.exceptions:
+    time.sleep(2)  # Sometimes chef is too fast and the service is not yet up
+    key = client.Client(token='ADMIN', endpoint='http://127.0.0.1:35357/v2.0/')
+    user_list = key.users.list()
+
+for user in user_list:
     if user.name == 'mini-mon':
         sys.exit(0)
 
