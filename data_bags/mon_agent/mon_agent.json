@@ -1,11 +1,8 @@
 {
   "id" : "mon_agent",
-  "dimensions" : "service:mini-mon",
-  "log_level" : "DEBUG",
-  "api_key": "",
-  "api" : {
-    "mon_api_url" : "http://localhost:8080/v2.0",
-    "mon_api_project_id" : "82510970543135",
-    "use_keystone" : "false"
-  }
+  "keystone_url": "https://localhost:35357/v3/auth/tokens",
+  "user": "mini-mon",
+  "password": "password",
+  "mon_api_url" : "http://localhost:8080/v2.0",
+  "service": "mini-mon"
 }
