@@ -1,13 +1,8 @@
 {
   "id": "mon_agent",
-  "dimensions": "Environment:Dev",
-  "log_level": "INFO",
-  "api_key": "",
-  "send_to_mon_api": "true",
-  "api": {
-    "mon_api_url": "http://localhost:8080/v2.0/metrics",
-    "mon_api_project_id": "82510970543135",
-    "use_keystone": "False",
-    "keystone_url": "https://10.22.156.20:35357/v3/auth/tokens"
-  }
+  "keystone_url": "https://10.22.156.20:35357/v3/auth/tokens",
+  "user": "admin",
+  "password": "password",
+  "mon_api_url": "http://localhost:8080/v2.0/metrics",
+  "service": "demo"
 }
