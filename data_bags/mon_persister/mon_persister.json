@@ -1,7 +1,7 @@
 {
     "id": "mon_persister",
     "alarm_history": {
-        "topic": "alarm_state_transitions"
+        "topic": "alarm-state-transitions"
     },
     "metrics": {
         "topic": "metrics"
