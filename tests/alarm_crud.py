@@ -53,6 +53,7 @@ def main():
     # Add Alarm
     alarm_id = cli_wrapper.create_alarm(alarm_name, expression,
                                         description=description)
+    print('Created Alarm with id %s' % alarm_id)
 
     # Ensure it is created in the right state
     initial_state = 'UNDETERMINED'
@@ -82,11 +83,13 @@ def main():
     states.append('ALARM')
 
     # Modify Alarm by adding new expression that will cause it to go OK
+    print('Modify Alarm expression so it will go to OK')
     new_metric_name = 'other_metric'
     new_dimension = 'dim=42'
     new_expression = '%s and max(%s{%s}) > 100' % (expression,
                                                    new_metric_name,
                                                    new_dimension)
+
     alarm_json = cli_wrapper.patch_alarm(alarm_id, '--expression',
                                          new_expression)
     if alarm_json['expression'] != new_expression:
@@ -96,6 +99,7 @@ def main():
 
     # Output metrics that will cause it to go OK
     # Wait for it to change to OK
+
     if not output_metrics(alarm_id, 'OK', [[metric_name, base_dimension],
                                            [new_metric_name, new_dimension]]):
         return 1
@@ -103,9 +107,26 @@ def main():
     states.append('OK')
 
     # Modify Alarm by deleting expression that will cause Alarm to go ALARM
+    print('Delete Alarm sub expression so it will go to ALARM')
     cli_wrapper.patch_alarm(alarm_id, '--expression', expression)
 
     # Output metrics that will cause it to go ALARM
+    # Wait for it to change to ALARM
+    print('Output extra dimensions to make sure match occurs')
+    extra_dimension = base_dimension + ',Extra=More'
+    if not output_metrics(alarm_id, 'ALARM',
+                          [[metric_name, extra_dimension]]):
+        return 1
+
+    states.append('ALARM')
+
+    # Modify Alarm by setting alarm state to OK
+    print('Set Alarm to OK, wait for transition back to ALARM')
+
+    cli_wrapper.change_alarm_state(alarm_id, 'OK')
+    states.append('OK')
+
+    # Output metrics that will cause it to go back to ALARM
     # Wait for it to change to ALARM
     if not output_metrics(alarm_id, 'ALARM',
                           [[metric_name, base_dimension],
@@ -116,6 +137,7 @@ def main():
 
     # Query History
     # Delete ALARM
+    print('Delete alarm')
     cli_wrapper.run_mon_cli(['alarm-delete', alarm_id], useJson=False)
 
     # Ensure it can't be queried

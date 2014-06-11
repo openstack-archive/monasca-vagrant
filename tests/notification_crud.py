@@ -21,7 +21,7 @@ def cycle_states(mon_client, alarm_id, states):
 
 def check_notification(alarm_id, user, expected_state, existing):
     for i in range(0, 20):
-        notifications = notification.find_notifications(alarm_id, user)
+        notifications = utils.find_notifications(alarm_id, user)
         if len(notifications) > existing:
             break
         time.sleep(1)
