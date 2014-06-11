@@ -30,7 +30,7 @@ end
 # Note: The permissions below are quite insecure but this is sufficient for mini-mon
 directory '/root' do
   action :create
-  mode 755
+  mode 0755
 end
 file '/root/.my.cnf' do
   action :create_if_missing
