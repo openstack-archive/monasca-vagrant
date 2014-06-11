@@ -10,11 +10,14 @@
         "buffer_size": "1048576",
         "num_processors": "1"
     },
-    "vertica_output_processor": {
+    "output_processor": {
         "batch_size": "10000"
     },
     "deduper_config": {
         "dedupe_run_frequencey_seconds": "30"
+    },
+    "database_configuration": {
+        "database_type": "vertica"
     },
     "vertica_metric_repository_config": {
         "max_cache_size": "2000000"
