@@ -33,7 +33,7 @@ directory '/root' do
   mode 755
 end
 file '/root/.my.cnf' do
-  action :create
+  action :create_if_missing
   owner "root"
   group "root"
   mode "0644"
