@@ -3,6 +3,7 @@
   "keystone_url": "https://10.22.156.20:35357/v3/auth/tokens",
   "user": "admin",
   "password": "password",
+  "project_name": "demo",
   "mon_api_url": "http://localhost:8080/v2.0/metrics",
   "service": "demo"
 }
