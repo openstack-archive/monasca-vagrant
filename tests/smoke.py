@@ -20,7 +20,6 @@ import subprocess
 import time
 import cli_wrapper
 import utils
-from notification import find_notifications
 
 # export OS_AUTH_TOKEN=82510970543135
 # export OS_NO_CLIENT_AUTH=1
@@ -63,7 +62,7 @@ def check_notifications(alarm_id, state_changes):
               ' skipping Notifications test',
               file=sys.stderr)
         return True
-    notifications = find_notifications(alarm_id, "root")
+    notifications = utils.find_notifications(alarm_id, "root")
     if len(notifications) != len(state_changes):
         print('Expected %d notifications but only found %d' %
               (len(state_changes), len(notifications)), file=sys.stderr)

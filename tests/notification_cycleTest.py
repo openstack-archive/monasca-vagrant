@@ -42,7 +42,7 @@ def main():
     initial_state = alarm.get_state(mon_client, alarm_id)
     state = initial_state
 
-    existing_notifications = notification.find_notifications(alarm_id, user)
+    existing_notifications = utils.find_notifications(alarm_id, user)
     notifications_sent = num_cycles * 2
     for _ in range(0, notifications_sent):
         if state == 'OK':
@@ -56,7 +56,7 @@ def main():
           ((time.time() - start_time), num_cycles * 2))
 
     for i in range(0, 30):
-        notifications = notification.find_notifications(alarm_id, user)
+        notifications = utils.find_notifications(alarm_id, user)
         notifications_found = len(notifications) - len(existing_notifications)
         if notifications_found >= notifications_sent:
             break

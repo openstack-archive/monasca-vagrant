@@ -2,6 +2,8 @@ from __future__ import print_function
 import sys
 import time
 import os
+import json
+import subprocess
 import cli_wrapper
 from monclient import client
 
@@ -21,31 +23,37 @@ def check_alarm_history(alarm_id, states):
         time.sleep(4)
 
     result = True
-    if not check_expected(transitions, len(result_json),
-                          'number of history entries'):
+    if transitions != len(result_json):
+        print('Wrong number of history entries, expected %d but was %d' %
+              (transitions, len(result_json)), file=sys.stderr)
         return False
-    result_json.sort(key=lambda x: x['timestamp'])
+    # Alarm history is reverse sorted by date
+    index = transitions - 1
     for i in range(0, transitions):
         old_state = states[i]
         new_state = states[i+1]
-        alarm_json = result_json[i]
-        if not check_expected(old_state, alarm_json['old_state'], 'old_state'):
+        alarm_json = result_json[index]
+        if not check_expected(old_state, alarm_json['old_state'], 'old_state',
+                              i):
             result = False
-        if not check_expected(new_state, alarm_json['new_state'], 'new_state'):
+        if not check_expected(new_state, alarm_json['new_state'], 'new_state',
+                              i):
             result = False
-        if not check_expected(alarm_id, alarm_json['alarm_id'], 'alarm_id'):
+        if not check_expected(alarm_id, alarm_json['alarm_id'], 'alarm_id',
+                              i):
             result = False
+        index = index - 1
 
     if result:
         print('Alarm History is OK')
     return result
 
 
-def check_expected(expected, actual, what):
+def check_expected(expected, actual, what, index):
     if (expected == actual):
         return True
-    print("Incorrect value for alarm history %s expected '%s' but was '%s'" %
-          (what, str(expected), str(actual)), file=sys.stderr)
+    print('Wrong %s for alarm history expected %s but was %s transition %d' %
+          (what, expected, actual, index+1), file=sys.stderr)
     return False
 
 
@@ -90,3 +98,17 @@ def ensure_has_notification_engine():
               file=sys.stderr)
         return False
     return True
+
+
+def find_notifications(alarm_id, user):
+    args = ['sudo', 'cat', '/var/mail/' + user]
+    result = []
+    try:
+        stdout = subprocess.check_output(args)
+    except subprocess.CalledProcessError as e:
+        print(e, file=sys.stderr)
+        sys.exit(1)
+    for line in stdout.splitlines():
+        if alarm_id in line:
+            result.append(json.loads(line)['state'])
+    return result
