@@ -3,6 +3,7 @@
   "keystone_url": "https://localhost:35357/v3/auth/tokens",
   "user": "mini-mon",
   "password": "password",
+  "project_name": "mini-mon",
   "mon_api_url" : "http://localhost:8080/v2.0",
   "service": "mini-mon"
 }
