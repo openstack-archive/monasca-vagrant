@@ -1,0 +1,32 @@
+{
+  "name": "Thresh-Nimbus",
+  "description": "Sets up storm Nimbus and mon-thresh",
+  "json_class": "Chef::Role",
+  "default_attributes": {
+    "java": {
+      "install_flavor": "openjdk",
+      "jdk_version": "7"
+    },
+    "storm": {
+      "nimbus": {
+        "host": "10.22.156.11"
+      },
+      "zookeeper": {
+        "hosts": [
+          "10.22.156.17",
+          "10.22.156.18"
+        ]
+      }
+    }
+  },
+  "override_attributes": {
+  },
+  "chef_type": "role",
+  "run_list": [
+    "recipe[storm::nimbus]",
+    "recipe[storm::ui]",
+    "recipe[mon-thresh]"
+  ],
+  "env_run_lists": {
+  }
+}

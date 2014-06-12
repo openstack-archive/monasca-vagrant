@@ -1,15 +1,20 @@
 {
-  "name": "Thresh",
-  "description": "Sets up Thresh",
+  "name": "Thresh-Supervisor",
+  "description": "Sets up storm supervisor",
   "json_class": "Chef::Role",
   "default_attributes": {
+    "java": {
+      "install_flavor": "openjdk",
+      "jdk_version": "7"
+    },
     "storm": {
       "nimbus": {
-        "host": "192.168.10.14"
+        "host": "10.22.156.11"
       },
       "zookeeper": {
         "hosts": [
-          "192.168.10.10"
+          "10.22.156.17",
+          "10.22.156.18"
         ]
       }
     }
@@ -18,9 +23,7 @@
   },
   "chef_type": "role",
   "run_list": [
-    "role[Basenode]",
-    "recipe[storm::singlenode]",
-    "recipe[mon_thresh]"
+    "recipe[storm::supervisor]"
   ],
   "env_run_lists": {
   }

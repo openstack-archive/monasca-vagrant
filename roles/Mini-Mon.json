@@ -31,6 +31,16 @@
         "root_password": "password",
         "skip_name_resolve": true
       }
+    },
+    "storm": {
+      "nimbus": {
+        "host": "127.0.0.1"
+      },
+      "zookeeper": {
+        "hosts": [
+          "127.0.0.1"
+        ]
+      }
     }
   },
   "override_attributes": {
@@ -50,8 +60,9 @@
     "recipe[sysctl]",
     "recipe[mon_api]",
     "recipe[mon_persister]",
-    "recipe[mon_agent]",
-    "recipe[mon_thresh]"
+    "recipe[storm::singlenode]",
+    "recipe[mon_thresh]",
+    "recipe[mon_agent]"
   ],
   "env_run_lists": {
   }
