@@ -98,5 +98,4 @@ the subdir also. See the README.md in the subdir for more details
 
 - HPCloud subdir - Runs a vm in the HP Public Cloud rather than using virtual box
 - split subdir - The various monitoring components split into their own vms.
-- hlinux subdir - For testing hLinux, see the
 - Baremetal - actually not using Vagrant at all, see the baremetal fabric task in the utils directory.

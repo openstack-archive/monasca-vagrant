@@ -14,6 +14,6 @@ Vagrant.configure("2") do |config|
     hp.ssh_private_key_path = "~/.ssh/id_rsa"
     hp.ssh_username = "ubuntu"
     hp.security_groups = ["default"]
-    hp.image = "Ubuntu Server 12.04.4 LTS (amd64 20140408) - Partner Image"
+    hp.image = "Ubuntu Server 12.04 LTS (amd64 20140606) - Partner Image"
   end
 end
