@@ -40,6 +40,9 @@
       "nimbus": {
         "host": "127.0.0.1"
       },
+      "ui": {
+        "port": "8088"
+      },
       "zookeeper": {
         "quorum": [
           "127.0.0.1"
