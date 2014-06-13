@@ -1,15 +1,4 @@
-# Install a simple keystone just using sqlite, then setup a user mini-mon/password
-
-package 'keystone' do
-  action :install
-end
-
-service 'keystone' do
-  action [ :enable, :start ]
-end
-
-# The python-keystoneclient that comes with precise is broken by a newer python-prettytable needed by python-monclient, so cmdline interaction is messed
-# up, using the api directly is fine though
+# Sets up a user mini-mon username/password in keystone
 
 python 'make default keystone user' do
   action :run
