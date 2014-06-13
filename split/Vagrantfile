@@ -1,12 +1,13 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+Dir.chdir ".."
+
 VAGRANTFILE_API_VERSION = "2" # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Settings for all vms
   config.berkshelf.enabled = true
-  config.berkshelf.berksfile_path = "../Berksfile"
 
   # Handle local proxy settings
   if Vagrant.has_plugin?("vagrant-proxyconf")
@@ -21,8 +22,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
   end
 
-  config.vm.box = "precise64"
-  config.vm.box_url = "http://files.vagrantup.com/precise64.box"
   config.vm.synced_folder "~/", "/vagrant_home"
   config.vm.provider "virtualbox" do |vb|
     vb.customize ["modifyvm", :id, "--memory", "768"]
@@ -31,6 +30,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # VM specific settings, these machines come up in order they are specified.
   config.vm.define "mysql" do |mysql|
     mysql.vm.hostname = 'mysql'
+    mysql.vm.box = "precise64"
+    mysql.vm.box_url = "http://files.vagrantup.com/precise64.box"
     mysql.vm.network :private_network, ip: "192.168.10.6"
     mysql.vm.provision :chef_solo do |chef|
       chef.roles_path = "roles"
@@ -41,6 +42,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.define "kafka" do |kafka|
     kafka.vm.hostname = 'kafka'
+    kafka.vm.box = "precise64"
+    kafka.vm.box_url = "http://files.vagrantup.com/precise64.box"
     kafka.vm.network :private_network, ip: "192.168.10.10"
     kafka.vm.provision :chef_solo do |chef|
       chef.roles_path = "roles"
@@ -54,6 +57,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.define "vertica" do |vertica|
     vertica.vm.hostname = 'vertica'
+    vertica.vm.box = "precise64"
+    vertica.vm.box_url = "http://files.vagrantup.com/precise64.box"
     vertica.vm.network :private_network, ip: "192.168.10.8"
     vertica.vm.provision :chef_solo do |chef|
       chef.roles_path = "roles"
@@ -67,6 +72,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.define "api" do |api|
     api.vm.hostname = 'api'
+    api.vm.box = "precise64"
+    api.vm.box_url = "http://files.vagrantup.com/precise64.box"
     api.vm.network :private_network, ip: "192.168.10.4"
     api.vm.provision :chef_solo do |chef|
       chef.roles_path = "roles"
@@ -75,8 +82,26 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
   end
 
+  config.vm.define "devstack" do |devstack|
+    devstack.vm.hostname = 'devstack'
+    devstack.vm.box = "cyrusbio/devstack"
+    devstack.vm.network :private_network, ip: "192.168.10.5"
+    devstack.vm.network :private_network, ip: "10.1.2.44"
+    devstack.vm.provider "virtualbox" do |vb|
+      vb.memory = 5280
+      vb.cpus = 4
+    end
+    devstack.vm.provision :chef_solo do |chef|
+      chef.roles_path = "roles"
+      chef.data_bags_path = "data_bags"
+      chef.add_role "Devstack"
+    end
+  end
+
   config.vm.define "persister" do |persister|
     persister.vm.hostname = 'persister'
+    persister.vm.box = "precise64"
+    persister.vm.box_url = "http://files.vagrantup.com/precise64.box"
     persister.vm.network :private_network, ip: "192.168.10.12"
     persister.vm.provision :chef_solo do |chef|
       chef.roles_path = "roles"
@@ -90,6 +115,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.define "thresh" do |thresh|
     thresh.vm.hostname = 'thresh'
+    thresh.vm.box = "precise64"
+    thresh.vm.box_url = "http://files.vagrantup.com/precise64.box"
     thresh.vm.network :private_network, ip: "192.168.10.14"
     thresh.vm.provision :chef_solo do |chef|
       chef.roles_path = "roles"
