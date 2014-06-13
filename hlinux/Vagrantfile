@@ -1,12 +1,14 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+# Set working dir to root of repo
+Dir.chdir ".."
+
 VAGRANTFILE_API_VERSION = "2" # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Settings for all vms
   config.berkshelf.enabled = true
-  config.berkshelf.berksfile_path = "../Berksfile"
 
   config.vm.box = "hlinux"
   config.vm.guest = :debian   # bypass vagrant guest type autodetection
