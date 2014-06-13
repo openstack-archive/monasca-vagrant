@@ -1,0 +1,20 @@
+{
+  "name": "Devstack",
+  "description": "Sets up a devstack server for keystone and UI",
+  "json_class": "Chef::Role",
+  "default_attributes": {
+    "apt": {
+      "periodic_update_min_delay": 60
+    }
+  },
+  "override_attributes": {
+  },
+  "chef_type": "role",
+  "run_list": [
+    "recipe[devstack]",
+    "recipe[devstack::mon-ui]",
+    "recipe[devstack::keystone]"
+  ],
+  "env_run_lists": {
+  }
+}
