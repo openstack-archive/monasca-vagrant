@@ -16,11 +16,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.hostname = 'mini-mon'
   config.vm.synced_folder ".", "/vagrant"  # needed to get vertica packages but otherwise unneeded
 
-  config.vm.provision :shell, path: "./HPCloud/chef-solo-bootstrap.sh"
+  config.vm.provision :shell, path: "./chef-solo-bootstrap.sh"
 
   config.vm.provision :chef_solo do |chef|
-    chef.roles_path = "./roles"
-    chef.data_bags_path = "./data_bags"
+    chef.roles_path = "../roles"
+    chef.data_bags_path = "../data_bags"
     chef.add_role "Mini-Mon"
   end
 end
