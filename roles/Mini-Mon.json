@@ -6,6 +6,10 @@
     "apt": {
       "periodic_update_min_delay": 60
     },
+    "java": {
+      "install_flavor": "openjdk",
+      "jdk_version": "7"
+    },
     "kafka": {
       "listen_address": "127.0.0.1",
       "topics": {
@@ -60,7 +64,8 @@
     "recipe[sysctl]",
     "recipe[mon_api]",
     "recipe[mon_persister]",
-    "recipe[storm::singlenode]",
+    "recipe[storm::nimbus]",
+    "recipe[storm::supervisor]",
     "recipe[mon_thresh]",
     "recipe[mon_agent]"
   ],

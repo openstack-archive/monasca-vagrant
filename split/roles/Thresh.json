@@ -3,6 +3,10 @@
   "description": "Sets up Thresh",
   "json_class": "Chef::Role",
   "default_attributes": {
+    "java": {
+      "install_flavor": "openjdk",
+      "jdk_version": "7"
+    },
     "storm": {
       "nimbus": {
         "host": "192.168.10.14"
