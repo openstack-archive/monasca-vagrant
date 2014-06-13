@@ -12,7 +12,8 @@
         "host": "10.22.156.11"
       },
       "zookeeper": {
-        "hosts": [
+        "quorum": [
+          "10.22.156.11",
           "10.22.156.17",
           "10.22.156.18"
         ]
@@ -24,7 +25,6 @@
   "chef_type": "role",
   "run_list": [
     "recipe[storm::nimbus]",
-    "recipe[storm::ui]",
     "recipe[mon-thresh]"
   ],
   "env_run_lists": {

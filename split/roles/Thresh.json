@@ -8,7 +8,7 @@
         "host": "192.168.10.14"
       },
       "zookeeper": {
-        "hosts": [
+        "quorum": [
           "192.168.10.10"
         ]
       }
@@ -19,7 +19,8 @@
   "chef_type": "role",
   "run_list": [
     "role[Basenode]",
-    "recipe[storm::singlenode]",
+    "recipe[storm::nimbus]",
+    "recipe[storm::supervisor]",
     "recipe[mon_thresh]"
   ],
   "env_run_lists": {
