@@ -1,18 +1,21 @@
 {
   "id" : "mon_api",
   "api_region": "useast",
+  "database-configuration": {
+    "database-type": "vertica"
+  },
   "vertica" : {
     "dbname" : "mon",
-    "hostname" : "192.168.10.8"
+    "hostname" : "localhost"
   },
   "zookeeper" : {
-    "hostname" : "192.168.10.10"
+    "hostname" : "localhost"
   },
   "mysql": {
-   "hostname":"192.168.10.6",
+   "hostname":"localhost",
    "schema": "mon"
   },
   "kafka": {
-    "hostname": "192.168.10.10"
+    "hostname": "localhost"
   }
 }
