@@ -33,7 +33,6 @@ class SetupCluster(Task):
         """Setup a cluster running monitoring.
         """
         self.cluster_dir = '/var/tmp/chef-Mon-Node'
-        self.cluster_hosts = None
         self.mini_mon_dir = '/vagrant'  # mini_mon_dir is /vagrant to match assumptions in mini-mon
         self.vertica_packages = ['vertica_7.0.1-0_amd64.deb', 'vertica-r-lang_7.0.1-0_amd64.deb']
 
@@ -41,8 +40,6 @@ class SetupCluster(Task):
         """Installs the latest cookbooks and dependencies to run chef-solo and runs chef-solo on each box.
             The data bags in the cluster subdir should be properly setup for the environment before running.
         """
-        self.cluster_hosts = env.hosts
-
         execute(install_deps)
         execute(git_mini_mon, self.mini_mon_dir, 'feature/cluster')
 
@@ -73,6 +70,12 @@ class SetupCluster(Task):
         put('%s/cluster/roles' % os.path.dirname(env.real_fabfile), self.cluster_dir, use_sudo=True)
 
         execute(chef_solo, self.cluster_dir, "role[Mon-Node]")
+        if len(env.hosts) > 1:
+            execute(chef_solo, self.cluster_dir, "role[Thresh-Nimbus]", host=env.hosts[0])
+            execute(chef_solo, self.cluster_dir, "role[Thresh-Supervisor]", hosts=env.hosts[1:])
+        else:
+            puts('Only one host specified, the Thresh roles will not be run as they require at least two hosts')
+            
 
 
 setup = SetupCluster()
