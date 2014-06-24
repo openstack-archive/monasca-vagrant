@@ -14,14 +14,13 @@ The goal of this fabric script is to setup a test cluster on baremetal leveragin
     - nodes data bag
 - From the utils directory (or specifying that fabfile) start the install script
   - `fab cluster.setup -H host1,host2,host3`
-- create kafka topics - kafka::create_topics recipe can be run on 1 machine
-- Setup the Vertica database schema - the vertica::create_db recipe and scripts can be used for reference but won't work for a cluster
-  - The problems with the script are:
-    - The create_db command needs all ips specified for the -s arg, they are comma seperated
-    - The symbolic linking of ssl cert/key needs to be done on each node
-    - The restart policy should be set to ksafe rather than always
-- Setup the mysql database schema - the mini-mon::mysql_schema tecipe can be run on 1 machine
-- Restart any services which require vertica, mysql or kafka
+  - 3 hosts is the minimum needed for a fully HA cluster.
+  - All 3 machines will run the Mon-Node role, host1 will also run the Thresh-Nimbus role and remaining hosts the Thresh-Supervisor role
+- After the cluster is up and running some additional configuration steps are needed to setup kafka topics and databases.
+  - On one of the machines run the recipes:
+    - kafka::create_topics
+    - mini-mon::mysql_schema
+    - vertica::create_db 
 
 ## Optional Configuration
 - Add in the Vertica Console to one of the machines. This can be done with vertica::console recipe
