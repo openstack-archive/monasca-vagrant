@@ -1,6 +1,6 @@
 {
-  "name": "Thresh",
-  "description": "Sets up Thresh",
+  "name": "Thresh-Supervisor",
+  "description": "Sets up storm supervisor",
   "json_class": "Chef::Role",
   "default_attributes": {
     "java": {
@@ -9,14 +9,13 @@
     },
     "storm": {
       "nimbus": {
-        "host": "192.168.10.14"
-      },
-      "ui": {
-        "port": "8088"
+        "host": "10.22.156.11"
       },
       "zookeeper": {
         "quorum": [
-          "192.168.10.10"
+          "10.22.156.11",
+          "10.22.156.17",
+          "10.22.156.18"
         ]
       }
     }
@@ -25,10 +24,7 @@
   },
   "chef_type": "role",
   "run_list": [
-    "role[Basenode]",
-    "recipe[storm::nimbus]",
-    "recipe[storm::supervisor]",
-    "recipe[mon_thresh]"
+    "recipe[storm::supervisor]"
   ],
   "env_run_lists": {
   }

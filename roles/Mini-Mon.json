@@ -6,6 +6,10 @@
     "apt": {
       "periodic_update_min_delay": 60
     },
+    "java": {
+      "install_flavor": "openjdk",
+      "jdk_version": "7"
+    },
     "kafka": {
       "listen_address": "127.0.0.1",
       "topics": {
@@ -31,6 +35,19 @@
         "root_password": "password",
         "skip_name_resolve": true
       }
+    },
+    "storm": {
+      "nimbus": {
+        "host": "127.0.0.1"
+      },
+      "ui": {
+        "port": "8088"
+      },
+      "zookeeper": {
+        "quorum": [
+          "127.0.0.1"
+        ]
+      }
     }
   },
   "override_attributes": {
@@ -50,8 +67,10 @@
     "recipe[sysctl]",
     "recipe[mon_api]",
     "recipe[mon_persister]",
-    "recipe[mon_agent]",
-    "recipe[mon_thresh]"
+    "recipe[storm::nimbus]",
+    "recipe[storm::supervisor]",
+    "recipe[mon_thresh]",
+    "recipe[mon_agent]"
   ],
   "env_run_lists": {
   }
