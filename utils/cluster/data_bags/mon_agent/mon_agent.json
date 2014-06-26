@@ -1,6 +1,6 @@
 {
   "id": "mon_agent",
-  "keystone_url": "https://10.22.156.20:35357/v3/auth/tokens",
+  "keystone_url": "http://10.22.156.20:35357/v3/auth/tokens",
   "username": "admin",
   "password": "password",
   "project_name": "demo",
