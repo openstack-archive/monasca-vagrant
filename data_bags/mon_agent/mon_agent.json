@@ -4,6 +4,6 @@
   "username": "mini-mon",
   "password": "password",
   "project_name": "mini-mon",
-  "mon_api_url" : "http://localhost:8080/v2.0",
+  "mon_api_url" : "http://192.168.10.4:8080/v2.0",
   "service": "mini-mon"
 }
