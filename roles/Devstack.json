@@ -13,7 +13,8 @@
   "run_list": [
     "recipe[devstack]",
     "recipe[devstack::mon-ui]",
-    "recipe[devstack::keystone]"
+    "recipe[devstack::keystone]",
+    "recipe[mon_agent]"
   ],
   "env_run_lists": {
   }
