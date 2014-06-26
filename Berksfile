@@ -5,6 +5,7 @@ if Gem::Specification::find_by_name('berkshelf').version.to_s[0] == '3'
 end
 
 cookbook 'mini-mon', path: './cookbooks/mini-mon'
+cookbook 'devstack', path: './cookbooks/devstack'
 cookbook 'mon_api', git: 'https://github.com/hpcloud-mon/cookbooks-mon_api'
 cookbook 'kafka', git: 'https://github.com/hpcloud-mon/cookbooks-kafka'
 cookbook 'mon_agent', git: 'https://github.com/hpcloud-mon/cookbooks-mon_agent'

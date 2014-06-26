@@ -43,6 +43,8 @@ The `vertica::console` recipe is not enabled by default, but if it is added, thi
 ## Install Vagrant
 
 ### Install VirtualBox and Vagrant
+Note: Vagrant version 1.5.0 or higher is required.
+
 #### MacOS
 The following steps assume you have [Homebrew](http://brew.sh/) installed.  Otherwise, install [VirtualBox](http://www.virtualbox.org) and [Vagrant](http://www.vagrantup.com) manually from their websites, then continue with Set Up Berkshelf below.
 
@@ -80,8 +82,9 @@ sudo gem install berkshelf
 
 - Your host OS home dir is synced to `/vagrant_home` on the VM.
 - The root dir of the mon-vagrant repo on your host OS is synced to `/vagrant` on the VM.
-- The VM will have an IP of 196.168.10.4 that can be access from other services running on the host.
-- Run `vagrant ssh` to log in
+- The main VM will have an IP of 192.168.10.4 that can be access from other services running on the host.
+- An additional VM running DevStack will be created at 192.168.10.5
+- Run `vagrant ssh <host>` to log in, where `<host>` is either `mini-mon` or `devstack`
 - Run `vagrant help` for more info
 
 ## Updating
