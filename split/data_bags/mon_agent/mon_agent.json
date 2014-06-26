@@ -1,6 +1,6 @@
 {
   "id" : "mon_agent",
-  "keystone_url": "https://192.168.10.4:35357/v3/auth/tokens",
+  "keystone_url": "https://192.168.10.5:35357/v3/auth/tokens",
   "user": "mini-mon",
   "password": "password",
   "project_name": "mini-mon",
