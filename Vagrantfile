@@ -22,23 +22,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.synced_folder "~/", "/vagrant_home"
 
-  # One vm running all the services
-  config.vm.define "mini-mon" do |mm|
-    mm.vm.hostname = 'mini-mon'
-    mm.vm.box = "precise64"
-    mm.vm.box_url = "http://files.vagrantup.com/precise64.box"
-    mm.vm.network :private_network, ip: "192.168.10.4"
-    mm.vm.provider "virtualbox" do |vb|
-      vb.memory = 6144
-      vb.cpus = 4
-    end
-    mm.vm.provision :chef_solo do |chef|
-      chef.roles_path = "roles"
-      chef.data_bags_path = "data_bags"
-      chef.add_role "Mini-Mon"
-    end
-  end
-
   # One vm just for devstack (to access the UI)
   config.vm.define "devstack" do |ds|
     ds.vm.hostname = "devstack"
@@ -53,6 +36,23 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       chef.roles_path = "roles"
       chef.data_bags_path = "data_bags"
       chef.add_role "Devstack"
+    end
+  end
+
+  # One vm running all the services
+  config.vm.define "mini-mon" do |mm|
+    mm.vm.hostname = 'mini-mon'
+    mm.vm.box = "precise64"
+    mm.vm.box_url = "http://files.vagrantup.com/precise64.box"
+    mm.vm.network :private_network, ip: "192.168.10.4"
+    mm.vm.provider "virtualbox" do |vb|
+      vb.memory = 6144
+      vb.cpus = 4
+    end
+    mm.vm.provision :chef_solo do |chef|
+      chef.roles_path = "roles"
+      chef.data_bags_path = "data_bags"
+      chef.add_role "Mini-Mon"
     end
   end
 
