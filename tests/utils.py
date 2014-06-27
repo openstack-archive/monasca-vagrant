@@ -78,8 +78,10 @@ def setup_cli():
     api_host = get_api_host()
 
     # These need to be set because we are invoking the CLI as a process
-    os.environ['OS_AUTH_TOKEN'] = '82510970543135'
-    os.environ['OS_NO_CLIENT_AUTH'] = '1'
+    os.environ['OS_USERNAME'] = 'mini-mon'
+    os.environ['OS_PASSWORD'] = 'password'
+    os.environ['OS_TENANT_NAME'] = 'mini-mon'
+    os.environ['OS_AUTH_URL'] = 'http://192.168.10.5:35357/v2.0/'
     os.environ['MON_API_URL'] = 'http://' + api_host + ':8080/v2.0/'
 
 
