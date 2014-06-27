@@ -28,7 +28,7 @@
   "chef_type": "role",
   "run_list": [
     "recipe[storm::nimbus]",
-    "recipe[mon-thresh]"
+    "recipe[mon_thresh]"
   ],
   "env_run_lists": {
   }
