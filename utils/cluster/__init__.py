@@ -34,7 +34,6 @@ class SetupCluster(Task):
         """
         self.cluster_dir = '/var/tmp/chef-Mon-Node'
         self.mini_mon_dir = '/vagrant'  # mini_mon_dir is /vagrant to match assumptions in mini-mon
-        self.vertica_packages = ['vertica_7.0.1-0_amd64.deb', 'vertica-r-lang_7.0.1-0_amd64.deb']
 
     def run(self):
         """Installs the latest cookbooks and dependencies to run chef-solo and runs chef-solo on each box.
@@ -43,31 +42,8 @@ class SetupCluster(Task):
         execute(install_deps)
         execute(git_mini_mon, self.mini_mon_dir)
 
-        # download cookbooks
-        with settings(hide('running', 'output', 'warnings'), warn_only=True):
-            sudo('rm -r %s' % self.cluster_dir)
-            sudo('mkdir %s' % self.cluster_dir)
-
-        with cd(self.mini_mon_dir):
-            with settings(hide('running', 'output', 'warnings'), warn_only=True):
-                berks_check = sudo('ls Berksfile.lock')
-
-            if berks_check.succeeded:
-                sudo('berks update')
-            else:
-                sudo('berks install')
-            sudo('berks vendor %s/berks-cookbooks' % self.cluster_dir)
-
-        # the vertica packages from my.vertica.com are needed, this assumes they are one level up from cwd
-        for deb in self.vertica_packages:
-            with settings(hide('running', 'output', 'warnings'), warn_only=True):
-                if run('ls %s/%s' %(self.mini_mon_dir, deb)).failed:
-                    puts('Uploading %s' % deb)
-                    put('../../vertica*.deb', self.mini_mon_dir, use_sudo=True)
-
-        # Copy roles and data bags - assumes you are running from the utils directory
-        put('%s/cluster/data_bags' % os.path.dirname(env.real_fabfile), self.cluster_dir, use_sudo=True)
-        put('%s/cluster/roles' % os.path.dirname(env.real_fabfile), self.cluster_dir, use_sudo=True)
+        execute(prep_chef, self.cluster_dir, self.mini_mon_dir)
+        execute(copy_vertica, self.mini_mon_dir)
 
         execute(chef_solo, self.cluster_dir, "role[Mon-Node]")
         if len(env.hosts) > 1:
@@ -76,6 +52,42 @@ class SetupCluster(Task):
         else:
             puts('Only one host specified, the Thresh roles will not be run as they require at least two hosts')
             
+
+@task
+def prep_chef(cluster_dir, berks_dir):
+    """ Pull down cookbooks with bershelf and put roles/data bags in place.
+    """
+    # download cookbooks
+    with settings(hide('running', 'output', 'warnings'), warn_only=True):
+        sudo('rm -r %s' % cluster_dir)
+        sudo('mkdir %s' % cluster_dir)
+
+    with cd(berks_dir):
+        with settings(hide('running', 'output', 'warnings'), warn_only=True):
+            berks_check = sudo('ls Berksfile.lock')
+
+        if berks_check.succeeded:
+            sudo('berks update')
+        else:
+            sudo('berks install')
+        sudo('berks vendor %s/berks-cookbooks' % cluster_dir)
+
+    # Copy roles and data bags - assumes you are running from the utils directory
+    put('%s/cluster/data_bags' % os.path.dirname(env.real_fabfile), cluster_dir, use_sudo=True)
+    put('%s/cluster/roles' % os.path.dirname(env.real_fabfile), cluster_dir, use_sudo=True)
+
+@task
+def copy_vertica(dest_dir):
+    """Copies vertica debs to the remote box
+    """
+    vertica_packages = ['vertica_7.0.1-0_amd64.deb', 'vertica-r-lang_7.0.1-0_amd64.deb']
+
+    # the vertica packages from my.vertica.com are needed, this assumes they are one level up from cwd
+    for deb in vertica_packages:
+        with settings(hide('running', 'output', 'warnings'), warn_only=True):
+            if run('ls %s/%s' %(dest_dir, deb)).failed:
+                puts('Uploading %s' % deb)
+                put('../../vertica*.deb', dest_dir, use_sudo=True)
 
 
 setup = SetupCluster()
