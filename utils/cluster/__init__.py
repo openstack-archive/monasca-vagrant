@@ -41,7 +41,7 @@ class SetupCluster(Task):
             The data bags in the cluster subdir should be properly setup for the environment before running.
         """
         execute(install_deps)
-        execute(git_mini_mon, self.mini_mon_dir, 'feature/cluster')
+        execute(git_mini_mon, self.mini_mon_dir)
 
         # download cookbooks
         with settings(hide('running', 'output', 'warnings'), warn_only=True):

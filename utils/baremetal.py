@@ -67,6 +67,10 @@ def git_mini_mon(install_dir, branch=None, proxy=None):
 
         if branch is not None:
             with cd(install_dir):
+                with settings(hide('everything'), warn_only=True):
+                    branch_exists = sudo('git branch| grep %s' % branch)
+                if branch_exists.failed:
+                   sudo('git branch {branch} origin/{branch}'.format(branch=branch))
                 sudo('git checkout %s' % branch)
 
 @task(default=True)
