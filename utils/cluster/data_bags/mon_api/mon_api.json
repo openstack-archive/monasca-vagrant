@@ -1,6 +1,9 @@
 {
   "id" : "mon_api",
   "api_region": "useast",
+  "database-configuration": {
+    "database-type": "vertica"
+  },
   "vertica" : {
     "dbname" : "mon",
     "hostname" : "localhost"
