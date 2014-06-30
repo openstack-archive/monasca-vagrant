@@ -26,5 +26,9 @@ The goal of this fabric script is to setup a test cluster on baremetal leveragin
 - Add in the Vertica Console to one of the machines. This can be done with vertica::console recipe
 
 ## Known Issues
+- runit used for the storm cookbook needs a newer version for chef 11 and even the newer version has errors on hLinux.
 - If a client connects to kafka before the topics are made in some situations the topics are automatically created and can end up
   as the wrong size or without replicas.
+- The percona cluster can be fickle regarding how to start it up properly this at times interferes with the cookbook. A workaround is
+  to initially set the wsrep_cluster_address to just gcomm://
+- Various cookbooks were pinned to older versions to accomodate the old chef used in the precise vagrant image, these can be unpinned.
