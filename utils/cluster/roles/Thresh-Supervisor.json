@@ -9,7 +9,9 @@
     },
     "storm": {
       "nimbus": {
-        "host": "10.22.156.11"
+        "host": {
+          "fqdn": "10.22.156.11"
+        }
       },
       "zookeeper": {
         "quorum": [
