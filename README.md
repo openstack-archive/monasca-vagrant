@@ -84,6 +84,7 @@ sudo gem install berkshelf
 - The root dir of the mon-vagrant repo on your host OS is synced to `/vagrant` on the VM.
 - The main VM will have an IP of 192.168.10.4 that can be access from other services running on the host.
 - An additional VM running DevStack will be created at 192.168.10.5
+- You can access UI by navigating to http://192.168.10.5 and logging in as mini-mon with password
 - Run `vagrant ssh <host>` to log in, where `<host>` is either `mini-mon` or `devstack`
 - Run `vagrant help` for more info
 
