@@ -3,10 +3,6 @@
     "alarm_history": {
         "topic": "alarm-state-transitions"
     },
-    "influxdb": {
-      "dbname": "mon",
-      "hostname": "localhost"
-    },
     "metrics": {
         "topic": "metrics"
     },

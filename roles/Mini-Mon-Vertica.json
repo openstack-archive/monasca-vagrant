@@ -11,7 +11,7 @@
       "jdk_version": "7"
     },
     "kafka": {
-      "listen_address": "192.168.10.4",
+      "listen_address": "127.0.0.1",
       "topics": {
         "metrics": { "replicas": 1, "partitions": 4 },
         "events": { "replicas": 1, "partitions": 4 },
@@ -62,11 +62,10 @@
     "recipe[kafka::create_topics]",
     "recipe[mini-mon::postfix]",
     "recipe[mon_notification]",
-    "recipe[influxdb]",
-    "recipe[mini-mon::influxdb]",
+    "recipe[vertica]",
     "recipe[sysctl]",
-    "recipe[mon_persister]",
     "recipe[mon_api]",
+    "recipe[mon_persister]",
     "recipe[storm::nimbus]",
     "recipe[storm::supervisor]",
     "recipe[mon_thresh]",

@@ -31,15 +31,6 @@ Installs a mini monitoring environment based on Vagrant. Intended for developmen
 ```
 git clone https://github.com/hpcloud-mon/mon-vagrant
 ```
-Vertica must be downloaded from the [Vertica site](https://my.vertica.com/). Download these packages and place in the root of this repository.
-
-- `vertica_7.0.1-0_amd64.deb`
-- `vertica-r-lang_7.0.1-0_amd64.deb`
-
-The `vertica::console` recipe is not enabled by default, but if it is added, this package is also needed.
-
-- `vertica-console_7.0.1-0_amd64.deb`
-
 ## Install Vagrant
 
 ### Install VirtualBox and Vagrant
@@ -130,6 +121,24 @@ VM to use them also.
 ```
 vagrant plugin install vagrant-proxyconf
 ```
+
+# Vertica
+Vertica is supported instead of influxdb, this is especially useful for large deployments.
+
+Before using Vertica must be downloaded from the [Vertica site](https://my.vertica.com/). Download these packages and place in the root of this repository.
+
+- `vertica_7.0.1-0_amd64.deb`
+- `vertica-r-lang_7.0.1-0_amd64.deb`
+
+The `vertica::console` recipe is not enabled by default, but if it is added, this package is also needed.
+
+- `vertica-console_7.0.1-0_amd64.deb`
+
+After the vertica packages are installed the configuration must be changed to run Vertica. Roles and data_bags for this setup are provided, copy them
+in place with the following commands then run `vagrant up` as normal.
+- `cp roles/Mini-Mon-Vertica.json roles/Mini-Mon.json`
+- `cp data_bags/mon_persister/mon_persister-Vertica.json data_bags/mon_persister/mon_persister.json`
+- `cp data_bags/mon_api/mon_api-Vertica.json data_bags/mon_api/mon_api.json`
 
 # Alternate Vagrant Configurations
 To run any of these alternate configs, simply run the Vagrant commands from within the subdir.  Note that the Vertica debs must be _copied_

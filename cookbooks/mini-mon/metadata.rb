@@ -4,5 +4,6 @@ maintainer_email "hpcs-mon@hp.com"
 license          "All rights reserved"
 description      "Base setup for all vagrant boxes"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          "0.0.8"
+version          "0.0.9"
 depends          "apt"
+depends          "influxdb"

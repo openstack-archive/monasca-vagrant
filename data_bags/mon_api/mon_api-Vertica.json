@@ -2,9 +2,9 @@
   "id" : "mon_api",
   "api_region": "useast",
   "database-configuration": {
-    "database-type": "influxdb"
+    "database-type": "vertica"
   },
-  "influxdb" : {
+  "vertica" : {
     "dbname" : "mon",
     "hostname" : "localhost"
   },
@@ -16,6 +16,6 @@
    "schema": "mon"
   },
   "kafka": {
-    "hostname": "192.168.10.4"
+    "hostname": "localhost"
   }
 }
