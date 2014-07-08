@@ -132,9 +132,10 @@ vagrant plugin install vagrant-proxyconf
 ```
 
 # Alternate Vagrant Configurations
-To run any of these alternate configs, simply run the Vagrant commands from within the subdir.  Note that the Vertica debs must be _copied_ (not symlinked) into
-the subdir as well. See the README.md in the subdir for more details.
+To run any of these alternate configs, simply run the Vagrant commands from within the subdir.  Note that the Vertica debs must be _copied_
+(not symlinked) into the subdir as well. See the README.md in the subdir for more details.
 
-- `HPCloud` subdir - Runs a VM in the HP Public Cloud rather than using VirtualBox
 - `split` subdir - The various monitoring components split into their own VMs
-- `Baremetal` - Actually not using Vagrant at all; see the baremetal fabric task in the `utils` directory
+
+In the past other alternative setups were working including running mini-mon in HP Public Cloud and scripts for putting it on baremetal. These are no
+longer supported.

@@ -1,9 +1,0 @@
-{
-  "id": "mon_agent",
-  "keystone_url": "http://10.22.156.20:35357/v3",
-  "username": "admin",
-  "password": "password",
-  "project_name": "demo",
-  "mon_api_url": "http://localhost:8080/v2.0",
-  "service": "demo"
-}

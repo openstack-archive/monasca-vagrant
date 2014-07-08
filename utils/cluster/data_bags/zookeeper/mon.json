@@ -1,8 +1,0 @@
-{
-  "id" : "mon",
-  "servers": {
-    "mon-ae1test-vertica0001.useast.hpcloud.net" : { "id": 0, "ip": "10.22.156.11" },
-    "mon-ae1test-api0001.useast.hpcloud.net" : { "id": 1, "ip": "10.22.156.17" },
-    "mon-ae1test-api0002.useast.hpcloud.net" : { "id": 2, "ip": "10.22.156.18" }
-  }
-}
