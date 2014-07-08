@@ -11,7 +11,7 @@
       "jdk_version": "7"
     },
     "kafka": {
-      "listen_address": "127.0.0.1",
+      "listen_address": "192.168.10.4",
       "topics": {
         "metrics": { "replicas": 1, "partitions": 4 },
         "events": { "replicas": 1, "partitions": 4 },

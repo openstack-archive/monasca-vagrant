@@ -22,7 +22,7 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-Installs a mini monitoring environment based on Vagrant. Intended for development and monitoring of the monitoring infrastructure.
+Installs a mini monitoring environment based on Vagrant. Intended for development of the monitoring infrastructure.
 
 # Installation
 

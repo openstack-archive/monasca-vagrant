@@ -7,7 +7,7 @@
     },
     "event": {
       "group": "thresh-event",
-      "host": "localhost:9092",
+      "host": "192.168.10.4:9092",
       "consumer_topic": "events",
       "producer_topic": "alarm-state-transitions"
     }

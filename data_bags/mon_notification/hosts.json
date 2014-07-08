@@ -1,7 +1,7 @@
 {
   "id" : "hosts",
   "kafka": {
-    "url": "localhost",
+    "url": "192.168.10.4",
     "alarm_topic": "alarm-state-transitions",
     "notification_topic": "alarm-notifications"
   },
