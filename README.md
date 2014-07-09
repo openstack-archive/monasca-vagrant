@@ -134,17 +134,16 @@ The `vertica::console` recipe is not enabled by default, but if it is added, thi
 
 - `vertica-console_7.0.1-0_amd64.deb`
 
-After the vertica packages are installed the configuration must be changed to run Vertica. Roles and data_bags for this setup are provided, copy them
-in place with the following commands then run `vagrant up` as normal.
-- `cp roles/Mini-Mon-Vertica.json roles/Mini-Mon.json`
-- `cp data_bags/mon_persister/mon_persister-Vertica.json data_bags/mon_persister/mon_persister.json`
-- `cp data_bags/mon_api/mon_api-Vertica.json data_bags/mon_api/mon_api.json`
+After the vertica packages are installed the configuration must be changed to run Vertica. Specifically besides starting Vertica the data bags
+for the mon_api and the mon_persister need to be updated so these services use Vertica rather than InfluxDB.
+
+The alternative split setup is configured for running Vertica.
 
 # Alternate Vagrant Configurations
 To run any of these alternate configs, simply run the Vagrant commands from within the subdir.  Note that the Vertica debs must be _copied_
 (not symlinked) into the subdir as well. See the README.md in the subdir for more details.
 
-- `split` subdir - The various monitoring components split into their own VMs
+- `split` subdir - The various monitoring components split into their own VMs. The split setup runs Vertica by default rather than influxdb.
 
 In the past other alternative setups were working including running mini-mon in HP Public Cloud and scripts for putting it on baremetal. These are no
 longer supported.
