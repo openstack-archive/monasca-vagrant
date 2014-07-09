@@ -26,7 +26,7 @@
         "dedupe_run_frequencey_seconds": "30"
     },
     "database_configuration": {
-        "database_type": "vertica"
+        "database_type": "influxdb"
     },
     "vertica_metric_repository_config": {
         "max_cache_size": "2000000"
