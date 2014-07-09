@@ -42,8 +42,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # One vm running all the services
   config.vm.define "mini-mon" do |mm|
     mm.vm.hostname = 'mini-mon'
-    mm.vm.box = "precise64"
-    mm.vm.box_url = "http://files.vagrantup.com/precise64.box"
+    mm.vm.box = "kuhlmant/precise64_chef11"
     mm.vm.network :private_network, ip: "192.168.10.4"
     mm.vm.provider "virtualbox" do |vb|
       vb.memory = 6144
