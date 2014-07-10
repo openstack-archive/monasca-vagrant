@@ -10,6 +10,9 @@
       "config": {
         "logging": {
           "file": "/opt/influxdb/shared/influxdb.log"
+        },
+        "raft": {
+          "port": 9090
         }
       }
     },
