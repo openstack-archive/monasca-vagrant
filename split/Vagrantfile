@@ -88,6 +88,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       vb.memory = 5280
       vb.cpus = 4
     end
+    # Upgrade to chef 11, this is only needed because all vms share a bershelf config and though most of the cookbooks are unused
+    # by devstack it still chokes on ones that don't compile with chef 10
+    ds.vm.provision "shell", inline: "curl -L https://www.opscode.com/chef/install.sh | bash"
     devstack.vm.provision :chef_solo do |chef|
       chef.roles_path = "roles"
       chef.data_bags_path = "data_bags"
