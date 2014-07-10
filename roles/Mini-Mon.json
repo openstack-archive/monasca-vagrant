@@ -6,6 +6,13 @@
     "apt": {
       "periodic_update_min_delay": 60
     },
+    "influxdb": {
+      "config": {
+        "logging": {
+          "file": "/opt/influxdb/shared/influxdb.log"
+        }
+      }
+    },
     "java": {
       "install_flavor": "openjdk",
       "jdk_version": "7"
