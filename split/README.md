@@ -5,7 +5,7 @@ monitoring system can scale but also is useful for some development scenarios.
 - Your home dir is synced to `/vagrant_home` on each vm
 - Vms created
   - `api` at `192.168.10.4`
-  - `kafka` at `192.168.10.10` - mon-notification runs on this box also
+  - `kafka` at `192.168.10.10` - monasca-notification runs on this box also
   - `mysql` at `192.168.10.6`
   - `persister` at `192.168.10.12`
   - `thresh` at `192.168.10.14`

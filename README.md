@@ -29,7 +29,7 @@ Installs a mini monitoring environment based on Vagrant. Intended for developmen
 ## Get the Code
 
 ```
-git clone https://github.com/hpcloud-mon/mon-vagrant
+git clone https://github.com/stackforge/monasca-vagrant
 ```
 ## Install Vagrant
 
@@ -72,7 +72,7 @@ sudo gem install berkshelf
 # Using mini-mon
 
 - Your host OS home dir is synced to `/vagrant_home` on the VM.
-- The root dir of the mon-vagrant repo on your host OS is synced to `/vagrant` on the VM.
+- The root dir of the monasca-vagrant repo on your host OS is synced to `/vagrant` on the VM.
 - The main VM will have an IP of 192.168.10.4 that can be access from other services running on the host.
 - An additional VM running DevStack will be created at 192.168.10.5
 - You can access UI by navigating to http://192.168.10.5 and logging in as mini-mon with password
@@ -135,7 +135,7 @@ The `vertica::console` recipe is not enabled by default, but if it is added, thi
 - `vertica-console_7.0.1-0_amd64.deb`
 
 After the vertica packages are installed the configuration must be changed to run Vertica. Specifically besides starting Vertica the data bags
-for the mon_api and the mon_persister need to be updated so these services use Vertica rather than InfluxDB.
+for the monasca_api and the monasca_persister need to be updated so these services use Vertica rather than InfluxDB.
 
 The alternative split setup is configured for running Vertica.
 
