@@ -6,6 +6,7 @@ end
 
 cookbook 'mini-mon', path: './cookbooks/mini-mon'
 cookbook 'devstack', path: './cookbooks/devstack'
+cookbook 'ds-build', path: './cookbooks/ds-build'
 cookbook 'mon_api', git: 'https://github.com/hpcloud-mon/cookbooks-mon_api'
 cookbook 'kafka', git: 'https://github.com/hpcloud-mon/cookbooks-kafka'
 cookbook 'mon_agent', git: 'https://github.com/hpcloud-mon/cookbooks-mon_agent'

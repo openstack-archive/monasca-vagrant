@@ -144,6 +144,7 @@ To run any of these alternate configs, simply run the Vagrant commands from with
 (not symlinked) into the subdir as well. See the README.md in the subdir for more details.
 
 - `split` subdir - The various monitoring components split into their own VMs. The split setup runs Vertica by default rather than influxdb.
+- `ds-build` subdir - This is used for building a new devstack server image.  It does not typically need to be run.
 
 In the past other alternative setups were working including running mini-mon in HP Public Cloud and scripts for putting it on baremetal. These are no
 longer supported.

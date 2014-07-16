@@ -11,6 +11,9 @@ monitoring system can scale but also is useful for some development scenarios.
   - `thresh` at `192.168.10.14`
   - `vertica` at `192.168.10.8`
     - The management console is at https://192.168.10.8:5450
+  - `devstack` at `192.168.10.5`
+    - The web interface is at http://192.168.0.5
+    - username `admin`, password `admin`
 - Run `vagrant help` for more info
 - Run `vagrant ssh <vm name>` to login to a particular vm
 - Can also run `ssh vagrant@<ip address>` to login 

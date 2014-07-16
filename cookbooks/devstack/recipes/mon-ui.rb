@@ -15,11 +15,13 @@ execute "ln -sv /usr/local/lib/python2.7/dist-packages/monitoring /opt/stack/hor
 execute "ln -sv /usr/local/lib/python2.7/dist-packages/cosmos/overcloud  /opt/stack/horizon/openstack_dashboard/dashboards/overcloud"
 
 # install grafana and integrate with horizon
-execute "git clone https://github.com/hpcloud-mon/grafana.git /opt/stack/grafana"
-execute "cp /opt/stack/grafana/src/config.sample.js /opt/stack/grafana/src/config.js"
-execute "mkdir -p /opt/stack/horizon/grafana/static"
-execute "touch /opt/stack/horizon/grafana/__init__.py"
-execute "ln -sv /opt/stack/grafana/src /opt/stack/horizon/grafana/static/grafana"
+if !::File.exists?("/opt/stack/horizon/grafana/static/grafana")
+    execute "git clone https://github.com/hpcloud-mon/grafana.git /opt/stack/grafana"
+    execute "cp /opt/stack/grafana/src/config.sample.js /opt/stack/grafana/src/config.js"
+    execute "mkdir -p /opt/stack/horizon/grafana/static"
+    execute "touch /opt/stack/horizon/grafana/__init__.py"
+    execute "ln -sv /opt/stack/grafana/src /opt/stack/horizon/grafana/static/grafana"
+end
 
 # Bounce the webserver
 service "apache2" do

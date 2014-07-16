@@ -1,6 +1,6 @@
 {
-  "name": "Devstack",
-  "description": "Sets up a devstack server for keystone and UI",
+  "name": "Devstack-Build",
+  "description": "Builds up a devstack server with all available services running",
   "json_class": "Chef::Role",
   "default_attributes": {
     "apt": {
@@ -11,10 +11,8 @@
   },
   "chef_type": "role",
   "run_list": [
-    "recipe[devstack]",
-    "recipe[devstack::mon-ui]",
-    "recipe[devstack::keystone]",
-    "recipe[mon_agent]"
+    "recipe[mini-mon]",
+    "recipe[ds-build]"
   ],
   "env_run_lists": {
   }

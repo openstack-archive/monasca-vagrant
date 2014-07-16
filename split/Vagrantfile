@@ -40,6 +40,22 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
   end
 
+  config.vm.define "devstack" do |devstack|
+    devstack.vm.hostname = 'devstack'
+    devstack.vm.box = "monasca/devstack"
+    devstack.vm.network :private_network, ip: "192.168.10.5"
+    devstack.vm.provider "virtualbox" do |vb|
+      vb.memory = 5280
+      vb.cpus = 4
+    end
+    devstack.vm.provision :chef_solo do |chef|
+      chef.roles_path = "roles"
+      chef.data_bags_path = "data_bags"
+      chef.add_role "Devstack"
+      chef.arguments = '--force-formatter'
+    end
+  end
+
   config.vm.define "kafka" do |kafka|
     kafka.vm.hostname = 'kafka'
     kafka.vm.box = "kuhlmant/precise64_chef11"
@@ -76,25 +92,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       chef.roles_path = "roles"
       chef.data_bags_path = "data_bags"
       chef.add_role "Api"
-    end
-  end
-
-  config.vm.define "devstack" do |devstack|
-    devstack.vm.hostname = 'devstack'
-    devstack.vm.box = "cyrusbio/devstack"
-    devstack.vm.network :private_network, ip: "192.168.10.5"
-    devstack.vm.network :private_network, ip: "10.1.2.44"
-    devstack.vm.provider "virtualbox" do |vb|
-      vb.memory = 5280
-      vb.cpus = 4
-    end
-    # Upgrade to chef 11, this is only needed because all vms share a bershelf config and though most of the cookbooks are unused
-    # by devstack it still chokes on ones that don't compile with chef 10
-    ds.vm.provision "shell", inline: "curl -L https://www.opscode.com/chef/install.sh | bash"
-    devstack.vm.provision :chef_solo do |chef|
-      chef.roles_path = "roles"
-      chef.data_bags_path = "data_bags"
-      chef.add_role "Devstack"
     end
   end
 

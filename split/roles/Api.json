@@ -9,8 +9,7 @@
   "chef_type": "role",
   "run_list": [
     "role[Basenode]",
-    "recipe[mon_api]",
-    "recipe[mini-mon::keystone]"
+    "recipe[mon_api]"
   ],
   "env_run_lists": {
   }
