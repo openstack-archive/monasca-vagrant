@@ -57,7 +57,7 @@ def wait_for_alarm_state_change(alarm_id, old_state):
 
 
 def check_notifications(alarm_id, state_changes):
-    if not os.path.isfile('/etc/mon/notification.yaml'):
+    if not os.path.isfile('/etc/monasca/notification.yaml'):
         print('Notification Engine not installed on this VM,' +
               ' skipping Notifications test',
               file=sys.stderr)

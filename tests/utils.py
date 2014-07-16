@@ -95,7 +95,7 @@ def create_mon_client():
 
 
 def ensure_has_notification_engine():
-    if not os.path.isfile('/etc/mon/notification.yaml'):
+    if not os.path.isfile('/etc/monasca/notification.yaml'):
         print('Must be run on a VM with Notification Engine installed',
               file=sys.stderr)
         return False

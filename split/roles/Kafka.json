@@ -22,7 +22,7 @@
     "recipe[kafka]",
     "recipe[kafka::create_topics]",
     "recipe[mini-mon::postfix]",
-    "recipe[mon_notification]"
+    "recipe[monasca_notification]"
   ],
   "env_run_lists": {
   }
