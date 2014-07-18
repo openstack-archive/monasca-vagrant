@@ -80,7 +80,7 @@
     "recipe[storm::nimbus]",
     "recipe[storm::supervisor]",
     "recipe[mon_thresh]",
-    "recipe[mon_agent]"
+    "recipe[monasca_agent]"
   ],
   "env_run_lists": {
   }
