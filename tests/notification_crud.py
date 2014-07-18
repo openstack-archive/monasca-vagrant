@@ -8,7 +8,7 @@ import sys
 import os
 import time
 import notification
-import monclient.exc as exc
+import monascaclient.exc as exc
 import alarm
 import utils
 
@@ -96,10 +96,10 @@ def main():
     mon_client = utils.create_mon_client()
 
     try:
-        # Create 3 notifications with different emails, root, kafka, mon-agent
+        # Create 3 notifications with different emails, root, kafka, monasca-agent
         email1 = "root"
         email2 = "kafka"
-        email3 = "mon-agent"
+        email3 = "monasca-agent"
         notification_id_1 = find_or_create_notification(mon_client, email1,
                                                         email1 + "@localhost")
         notification_id_2 = find_or_create_notification(mon_client, email2,

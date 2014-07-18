@@ -5,7 +5,7 @@ import os
 import json
 import subprocess
 import cli_wrapper
-from monclient import client
+from monascaclient import client
 
 """
     Utility methods for testing
