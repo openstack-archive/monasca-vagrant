@@ -7,8 +7,8 @@ import sys
 import time
 import pytz
 from datetime import datetime
-from monclient import client
-import monclient.exc as exc
+from monascaclient import client
+import monascaclient.exc as exc
 
 
 def call_mon_api(method, fields):

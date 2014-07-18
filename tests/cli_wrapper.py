@@ -37,7 +37,7 @@ def delete_notification_if_exists(notification_name):
 def run_mon_cli(args, useJson=True):
     if useJson:
         args.insert(0, '--json')
-    args.insert(0, 'mon')
+    args.insert(0, 'monasca')
     try:
         stdout = subprocess.check_output(args)
         if useJson:
