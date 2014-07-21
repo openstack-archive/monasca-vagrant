@@ -6,7 +6,7 @@
     "notification_topic": "alarm-notifications"
   },
   "mysql": {
-    "url": "localhost",
+    "url": "192.168.10.4",
     "user": "notification",
     "password": "password",
     "database": "mon"
