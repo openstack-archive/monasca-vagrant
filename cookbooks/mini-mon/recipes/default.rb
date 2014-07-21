@@ -31,3 +31,18 @@ apt_repository 'dev' do
   components ['release']
   key 'https://region-a.geo-1.objects.hpcloudsvc.com/v1/46995959297574/mini-mon/public_repo/mon.gpg'
 end
+
+# In some instances when behind a proxy pip times out, increase the timeout
+directory "/root/.pip" do
+  action :create
+  owner "root"
+  group "root"
+  mode "0755"
+end
+file '/root/.pip/pip.conf' do
+  action :create
+  owner "root"
+  group "root"
+  mode "0644"
+  content "[global]\ntimeout = 180\n"
+end
