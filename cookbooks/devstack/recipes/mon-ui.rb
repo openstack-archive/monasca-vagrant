@@ -2,7 +2,7 @@
 
 # Grab the necessary packages
 include_recipe "python"
-['monitoring-plugin','python-monclient'].each do |pkg|
+['monasca-ui','python-monascaclient'].each do |pkg|
     python_pip pkg do
         action :install
     end
