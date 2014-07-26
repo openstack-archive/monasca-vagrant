@@ -1,0 +1,11 @@
+Verified+2: Jenkins
+Code-Review+1: Rob Raymond <rob.raymond@hp.com>
+Workflow+1: Rob Raymond <rob.raymond@hp.com>
+Code-Review+2: Cindy O'Neill <cindy.o-neill@hp.com>
+Workflow+1: Cindy O'Neill <cindy.o-neill@hp.com>
+Code-Review+1: David Schroeder <david.schroeder@hp.com>
+Submitted-by: Jenkins
+Submitted-at: Sat, 26 Jul 2014 02:58:44 +0000
+Reviewed-on: https://review.openstack.org/109732
+Project: stackforge/monasca-vagrant
+Branch: refs/heads/master
