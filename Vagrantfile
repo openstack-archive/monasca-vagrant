@@ -7,6 +7,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Settings for all vms
   config.berkshelf.enabled = true
 
+  if Vagrant.has_plugin?("vagrant-cachier")
+    config.cache.scope = :box
+  end
+
   # Handle local proxy settings
   if Vagrant.has_plugin?("vagrant-proxyconf")
     if ENV["http_proxy"]

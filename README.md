@@ -88,12 +88,18 @@ When someone updates the config, this process should allow you to bring up an up
 - `vagrant up`
 
 ## Improving Provisioning Speed
-The slowest part of the provisioning process is the downloading of deb packages. To speed this up a local apt-cacher-ng can be used.
-### Linux (Ubuntu)
+
+The slowest part of the provisioning process is the downloading of deb packages.
+
+### Local cache
+
+To speed this up a local apt-cacher-ng can be used.
+
+#### Linux (Ubuntu)
 ```
 sudo apt-get install apt-cacher-ng
 ```
-### MacOS
+#### MacOS
 ```
 brew install apt-cacher-ng
 ```
@@ -101,6 +107,16 @@ Run `apt-cacher-ng -c /usr/local/etc/apt-cacher-ng/` or optionally follow the in
 That is all that is needed.  From now on, the cache will be used.
 
 A report from the cache is found at http://localhost:3142/acng-report.html
+
+### vagrant-cachier
+
+Instead of using apt-cacher-ng you can also use the Vagrant plugin
+`vagrant-cachier` available at https://github.com/fgrehm/vagrant-cachier. To
+use it with this Vagrant box you simply have to install the plugin.
+
+```
+sudo vagrant plugin install vagrant-cachier
+```
 
 ## Cookbook Development
 
