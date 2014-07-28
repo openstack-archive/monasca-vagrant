@@ -12,12 +12,16 @@
       - [MacOS](#macos-1)
       - [Linux (Ubuntu)](#linux-ubuntu-1)
 - [Using mini-mon](#using-mini-mon)
+  - [Internal Endpoints](#internal-endpoints)
   - [Updating](#updating)
   - [Improving Provisioning Speed](#improving-provisioning-speed)
-    - [Linux (Ubuntu)](#linux-ubuntu-2)
-    - [MacOS](#macos-2)
+    - [Local cache](#local-cache)
+      - [Linux (Ubuntu)](#linux-ubuntu-2)
+      - [MacOS](#macos-2)
+    - [vagrant-cachier](#vagrant-cachier)
   - [Cookbook Development](#cookbook-development)
   - [Running behind a Web Proxy](#running-behind-a-web-proxy)
+- [Vertica](#vertica)
 - [Alternate Vagrant Configurations](#alternate-vagrant-configurations)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -78,6 +82,11 @@ sudo gem install berkshelf
 - You can access UI by navigating to http://192.168.10.5 and logging in as mini-mon with password
 - Run `vagrant ssh <host>` to log in, where `<host>` is either `mini-mon` or `devstack`
 - Run `vagrant help` for more info
+
+## Internal Endpoints
+- Influxdb is available at http://192.168.10.4:8083 with root/root as user/password
+- The Monasca-api is available at http://192.168.10.4:8080
+- The keystone credentials used are mini-mon/password in the mini-mon project. The keystone services in 192.168.10.5 on standard ports.
 
 ## Updating
 When someone updates the config, this process should allow you to bring up an updated VM.
