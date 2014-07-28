@@ -34,4 +34,6 @@ if !::File.exists?("/home/vagrant/devstack/stack-screenrc")
     execute "/home/vagrant/autostack.sh vagrant"
 end
 
-
+# Make sure a 'localhost' entry exists in /etc/hosts
+# It sometimes gets overridden by vagrant
+execute "sed -i 's/^127.0.0.1.*/127.0.0.1 devstack localhost/' /etc/hosts"
