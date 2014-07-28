@@ -84,6 +84,7 @@ When someone updates the config, this process should allow you to bring up an up
 
 - `git pull`
 - `berks update`
+- `vagrant box update`
 - `vagrant destroy <vm>` Where `<vm>` is the name of the VM being updated, for example 'vertica'
 - `vagrant up`
 
