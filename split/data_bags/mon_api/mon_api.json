@@ -6,16 +6,16 @@
   },
   "vertica" : {
     "dbname" : "mon",
-    "hostname" : "localhost"
+    "hostname" : "192.168.10.8"
   },
   "zookeeper" : {
-    "hostname" : "localhost"
+    "hostname" : "192.168.10.10"
   },
   "mysql": {
-   "hostname":"localhost",
+   "hostname":"192.168.10.6",
    "schema": "mon"
   },
   "kafka": {
-    "hostname": "localhost"
+    "hostname": "192.168.10.10"
   }
 }
