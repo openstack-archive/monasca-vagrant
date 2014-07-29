@@ -3,6 +3,11 @@
 
 VAGRANTFILE_API_VERSION = "2" # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 
+unless Vagrant.has_plugin?("vagrant-berkshelf")
+  raise "The needed plugin vagrant-berkshelf is not available.
+         Install it by calling 'vagrant plugin install vagrant-berkshelf'."
+end
+
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Settings for all vms
   config.berkshelf.enabled = true
