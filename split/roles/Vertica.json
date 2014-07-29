@@ -10,6 +10,7 @@
   "run_list": [
     "role[Basenode]",
     "recipe[vertica]",
+    "recipe[monasca_schema::vertica]",
     "recipe[sysctl]"
   ],
   "env_run_lists": {
