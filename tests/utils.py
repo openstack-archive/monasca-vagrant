@@ -82,7 +82,7 @@ def setup_cli():
     os.environ['OS_PASSWORD'] = 'password'
     os.environ['OS_TENANT_NAME'] = 'mini-mon'
     os.environ['OS_AUTH_URL'] = 'http://192.168.10.5:35357/v2.0/'
-    os.environ['MON_API_URL'] = 'http://' + api_host + ':8080/v2.0/'
+    os.environ['MONASCA_API_URL'] = 'http://' + api_host + ':8080/v2.0/'
     os.environ['http_proxy'] = ''
     os.environ['https_proxy'] = ''
     os.environ['HTTP_PROXY'] = ''
