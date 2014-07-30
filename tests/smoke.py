@@ -90,7 +90,7 @@ def count_metrics(metric_name, metric_dimensions):
     return len(metric_json[0]['measurements'])
 
 
-def ensure_at_least(desired, actual):
+def ensure_at_least(actual, desired):
     if actual < desired:
         time.sleep(desired - actual)
 
@@ -104,7 +104,7 @@ def main():
 
     utils.setup_cli()
 
-    notification_name = 'Jahmon Smoke Test'
+    notification_name = 'Monasca Smoke Test'
     notification_email_addr = 'root@' + mail_host
     alarm_name = 'high cpu and load'
     metric_name = 'load_avg_1_min'
