@@ -1,9 +1,9 @@
 {
   "id" : "monasca_agent",
   "keystone_url": "http://192.168.10.5:35357/v3",
-  "username": "mini-mon",
+  "username": "monasca-agent",
   "password": "password",
-  "project_name": "mini-mon",
+  "project_name": "monasca-agent",
   "monasca_api_url" : "http://192.168.10.4:8080/v2.0",
-  "service": "mini-mon"
+  "service": "monasca-agent"
 }
