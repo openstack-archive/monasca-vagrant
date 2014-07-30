@@ -23,7 +23,7 @@ import utils
 
 # export OS_AUTH_TOKEN=82510970543135
 # export OS_NO_CLIENT_AUTH=1
-# export MON_API_URL=http://192.168.10.4:8080/v2.0/
+# export MONASCA_API_URL=http://192.168.10.4:8080/v2.0/
 
 
 def get_metrics(name, dimensions):
