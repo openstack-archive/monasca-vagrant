@@ -11,7 +11,6 @@
   },
   "chef_type": "role",
   "run_list": [
-    "recipe[devstack]",
     "recipe[devstack::mon-ui]",
     "recipe[devstack::keystone]",
     "recipe[monasca_agent]"
