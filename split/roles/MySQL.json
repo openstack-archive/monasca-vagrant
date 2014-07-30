@@ -27,7 +27,8 @@
   "run_list": [
     "role[Basenode]",
     "recipe[percona::cluster]",
-    "recipe[monasca_schema::mysql]"
+    "recipe[monasca_schema::mysql]",
+    "recipe[mini-mon::mysql_client]"
   ],
   "env_run_lists": {
   }
