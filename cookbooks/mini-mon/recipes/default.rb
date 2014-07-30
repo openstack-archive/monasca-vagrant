@@ -21,10 +21,8 @@ rb.run_action(:create)  # Run during compile time so that apt::cacher-client has
 include_recipe('apt::cacher-client')
 
 # Install package dependencies
-['apt-transport-https', 'libxml2-dev', 'libxslt1-dev'].each do |pkg|
-  package pkg do
-    action :install
-  end
+package 'apt-transport-https' do
+  action :install
 end
 
 apt_repository 'dev' do
