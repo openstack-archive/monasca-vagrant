@@ -5,5 +5,5 @@
   "password": "password",
   "project_name": "mini-mon",
   "monasca_api_url" : "http://192.168.10.4:8080/v2.0",
-  "service": "mini-mon"
+  "service": "monitoring"
 }
