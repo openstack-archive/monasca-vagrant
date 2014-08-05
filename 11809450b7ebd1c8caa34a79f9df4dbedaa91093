@@ -1,0 +1,8 @@
+Verified+2: Jenkins
+Code-Review+2: Derrick Johnson <derrick.johnson@hp.com>
+Workflow+1: Derrick Johnson <derrick.johnson@hp.com>
+Submitted-by: Jenkins
+Submitted-at: Tue, 05 Aug 2014 01:45:35 +0000
+Reviewed-on: https://review.openstack.org/110776
+Project: stackforge/monasca-vagrant
+Branch: refs/heads/master
