@@ -9,6 +9,7 @@ import pytz
 from datetime import datetime
 from monascaclient import client
 import monascaclient.exc as exc
+import utils
 
 
 def call_mon_api(method, fields):
@@ -32,10 +33,7 @@ def main():
         print('usage: %s metric_name count' % sys.argv[0], file=sys.stderr)
         return 1
 
-    api_version = '2_0'
-    endpoint = 'http://192.168.10.4:8080/v2.0'
-    kwargs = {'token': '82510970543135'}
-    mon_client = client.Client(api_version, endpoint, **kwargs)
+    mon_client = utils.create_mon_client()
 
     metric_start_time = time.time()
     metric_name = sys.argv[1]
@@ -83,7 +81,7 @@ def main():
     print('Took %d seconds for metrics to fully arrive' % i)
     expected = num_metrics_to_send - 1
     result = 0
-    for index in range(0, num_metrics_to_send):
+    for index in range(num_metrics_to_send, 0):
         value = measurements[index]
         if value[2] != expected:
             print('Expected %d but found %d for %d' %
