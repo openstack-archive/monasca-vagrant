@@ -6,10 +6,17 @@ import json
 import subprocess
 import cli_wrapper
 from monascaclient import client
+from monagent.common.keystone import Keystone
 
 """
     Utility methods for testing
 """
+
+
+OS_USERNAME = 'mini-mon'
+OS_PASSWORD = 'password'
+OS_TENANT_NAME = 'mini-mon'
+OS_AUTH_URL = 'http://192.168.10.5:35357/'
 
 
 def check_alarm_history(alarm_id, states):
@@ -78,10 +85,11 @@ def setup_cli():
     api_host = get_api_host()
 
     # These need to be set because we are invoking the CLI as a process
-    os.environ['OS_USERNAME'] = 'mini-mon'
-    os.environ['OS_PASSWORD'] = 'password'
-    os.environ['OS_TENANT_NAME'] = 'mini-mon'
-    os.environ['OS_AUTH_URL'] = 'http://192.168.10.5:35357/v2.0/'
+    os.environ['OS_USERNAME'] = OS_USERNAME
+    os.environ['OS_PASSWORD'] = OS_PASSWORD
+    os.environ['OS_TENANT_NAME'] = OS_TENANT_NAME
+    # I don't know v2.0 is needed for CLI, but v3 if client accessed directly
+    os.environ['OS_AUTH_URL'] = OS_AUTH_URL + 'v2.0/'
     os.environ['MONASCA_API_URL'] = 'http://' + api_host + ':8080/v2.0/'
     os.environ['http_proxy'] = ''
     os.environ['https_proxy'] = ''
@@ -92,10 +100,23 @@ def setup_cli():
 def create_mon_client():
     api_host = get_api_host()
 
+    # See above comment for v3 vs v2.0
+    token = get_token(OS_USERNAME, OS_PASSWORD, OS_TENANT_NAME,
+                      OS_AUTH_URL + 'v3/')
+
     api_version = '2_0'
     endpoint = 'http://' + api_host + ':8080/v2.0'
-    kwargs = {'token': '82510970543135'}
+    kwargs = {'token': token}
     return client.Client(api_version, endpoint, **kwargs)
+
+
+def get_token(os_username, os_password, os_tenant_name, os_auth_url):
+    keystone = Keystone(os_auth_url,
+                        os_username,
+                        os_password,
+                        os_tenant_name)
+
+    return keystone.refresh_token()
 
 
 def ensure_has_notification_engine():
