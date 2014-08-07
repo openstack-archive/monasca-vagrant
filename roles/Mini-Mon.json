@@ -81,7 +81,7 @@
     "recipe[mon_api]",
     "recipe[storm::nimbus]",
     "recipe[storm::supervisor]",
-    "recipe[mon_thresh]",
+    "recipe[monasca_thresh]",
     "recipe[monasca_agent]"
   ],
   "env_run_lists": {
