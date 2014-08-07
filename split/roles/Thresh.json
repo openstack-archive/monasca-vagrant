@@ -30,7 +30,7 @@
     "role[Basenode]",
     "recipe[storm::nimbus]",
     "recipe[storm::supervisor]",
-    "recipe[mon_thresh]"
+    "recipe[monasca_thresh]"
   ],
   "env_run_lists": {
   }
