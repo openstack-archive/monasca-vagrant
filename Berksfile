@@ -13,7 +13,7 @@ cookbook 'monasca_agent', git: 'https://github.com/stackforge/cookbook-monasca-a
 cookbook 'monasca_notification', git: 'https://github.com/stackforge/cookbook-monasca-notification'
 cookbook 'mon_persister', git: 'https://github.com/stackforge/cookbook-monasca-persister.git'
 cookbook 'monasca_schema', git: 'https://github.com/hpcloud-mon/cookbook-monasca-schema'
-cookbook 'monasca_thresh', git: 'https://github.com/hpcloud-monasca/cookbook-mon-thresh'
+cookbook 'monasca_thresh', git: 'https://github.com/stackforge/cookbook-monasca-thresh.git'
 cookbook 'storm', git: 'https://github.com/tkuhlman/storm'
 cookbook 'vertica', git: 'https://github.com/hpcloud-mon/cookbooks-vertica'
 cookbook 'zookeeper', git: 'https://github.com/hpcloud-mon/cookbooks-zookeeper'
