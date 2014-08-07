@@ -11,12 +11,12 @@ end
 # Set up symlinks
 # Use 'execute' resource because chef does not support symlinking directories
 if !::File.exists?("/opt/stack/horizon/monitoring")
-    execute "ln -sfv /usr/local/lib/python2.7/dist-packages/enabled/* /opt/stack/horizon/openstack_dashboard/local/enabled/"
+    execute "ln -sfv /usr/local/share/monasca/ui/enabled/* /opt/stack/horizon/openstack_dashboard/local/enabled/"
     execute "ln -sv /usr/local/lib/python2.7/dist-packages/monitoring /opt/stack/horizon/monitoring"
 end
-if ::File.exists?("/usr/local/lib/python2.7/dist-packages/monitoring/local_settings.py") && 
+if ::File.exists?("/usr/local/share/monasca/ui/local_settings.py") && 
    ::File.readlines("/opt/stack/horizon/openstack_dashboard/local/local_settings.py").grep(/MONITORING_SERVICES/).size == 0
-    execute "cat /usr/local/lib/python2.7/dist-packages/monitoring/local_settings.py >> /opt/stack/horizon/openstack_dashboard/local/local_settings.py"
+    execute "cat /usr/local/share/monasca/ui/local_settings.py >> /opt/stack/horizon/openstack_dashboard/local/local_settings.py"
 end
 
 # install grafana and integrate with horizon
