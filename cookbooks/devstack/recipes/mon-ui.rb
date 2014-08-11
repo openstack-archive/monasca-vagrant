@@ -22,7 +22,7 @@ end
 # install grafana and integrate with horizon
 if !::File.exists?("/usr/local/lib/python2.7/dist-packages/monitoring/static/grafana")
     execute "git clone https://github.com/hpcloud-mon/grafana.git /opt/stack/grafana"
-    execute "cp /opt/stack/grafana/src/config.sample.js /opt/stack/grafana/src/config.js"
+    execute "cp /opt/stack/grafana/src/config.monasca.js /opt/stack/grafana/src/config.js"
     execute "ln -sv /opt/stack/grafana/src /usr/local/lib/python2.7/dist-packages/monitoring/static/grafana"
 end
 
