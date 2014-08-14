@@ -19,5 +19,6 @@ cookbook 'vertica', git: 'https://github.com/hpcloud-mon/cookbooks-vertica'
 cookbook 'zookeeper', git: 'https://github.com/hpcloud-mon/cookbooks-zookeeper'
 
 # Community cookbooks
+cookbook 'apt', '= 2.4.0' 
 cookbook 'influxdb', git: 'https://github.com/SimpleFinance/chef-influxdb'
 cookbook 'percona', git: 'https://github.com/phlipper/chef-percona'
