@@ -12,7 +12,9 @@
       - [MacOS](#macos-1)
       - [Linux (Ubuntu)](#linux-ubuntu-1)
 - [Using mini-mon](#using-mini-mon)
-  - [Internal Endpoints](#internal-endpoints)
+  - [Starting mini-mon](#starting-mini-mon)
+  - [Mini-mon access information](#mini-mon-access-information)
+    - [Internal Endpoints](#internal-endpoints)
   - [Updating](#updating)
   - [Improving Provisioning Speed](#improving-provisioning-speed)
     - [Local cache](#local-cache)
@@ -74,16 +76,19 @@ sudo gem install berkshelf
 ```
 
 # Using mini-mon
+## Starting mini-mon
+- After installing to start just run `vagrant up`. The first run will download required vagrant boxes.
+- Run `vagrant help` for more info on standard vagrant commands.
 
+## Mini-mon access information
 - Your host OS home dir is synced to `/vagrant_home` on the VM.
 - The root dir of the monasca-vagrant repo on your host OS is synced to `/vagrant` on the VM.
 - The main VM will have an IP of 192.168.10.4 that can be access from other services running on the host.
 - An additional VM running DevStack will be created at 192.168.10.5
-- You can access UI by navigating to http://192.168.10.5 and logging in as mini-mon with password
 - Run `vagrant ssh <host>` to log in, where `<host>` is either `mini-mon` or `devstack`
-- Run `vagrant help` for more info
 
-## Internal Endpoints
+### Internal Endpoints
+- You can access UI by navigating to http://192.168.10.5 and logging in as mini-mon with password
 - Influxdb is available at http://192.168.10.4:8083 with root/root as user/password
 - The Monasca-api is available at http://192.168.10.4:8080
 - The keystone credentials used are mini-mon/password in the mini-mon project. The keystone services in 192.168.10.5 on standard ports.
