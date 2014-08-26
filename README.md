@@ -54,6 +54,7 @@ brew cask install vagrant
 
 #### Linux (Ubuntu)
 ```
+# You need the ruby (>1.9) and ruby-dev packages installed for these commands to complete
 # For Ubuntu 12.04, you may need to install ruby 1.9 first
 sudo apt-get install ruby1.9.3
 sudo update-alternatives --set ruby /usr/bin/ruby1.9.1
@@ -66,12 +67,12 @@ wget $latest && sudo dpkg -i `basename $latest`
 ### Set Up Berkshelf
 #### MacOS
 ```
-vagrant plugin install vagrant-berkshelf --plugin-version '>= 2.0.1'
+vagrant plugin install vagrant-berkshelf --plugin-version '= 2.0.1'
 gem install berkshelf
 ```
 #### Linux (Ubuntu)
 ```
-sudo vagrant plugin install vagrant-berkshelf --plugin-version '>= 2.0.1'
+sudo vagrant plugin install vagrant-berkshelf --plugin-version '= 2.0.1'
 sudo gem install berkshelf
 ```
 
