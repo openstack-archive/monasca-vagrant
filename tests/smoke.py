@@ -20,13 +20,14 @@ import subprocess
 import time
 import cli_wrapper
 import utils
+import datetime
 
 # export OS_AUTH_TOKEN=82510970543135
 # export OS_NO_CLIENT_AUTH=1
 # export MONASCA_API_URL=http://192.168.10.4:8080/v2.0/
 
 
-def get_metrics(name, dimensions):
+def get_metrics(name, dimensions, since):
     print('Getting metrics for %s ' % (name + str(dimensions)))
     dimensions_arg = ''
     for key, value in dimensions.iteritems():
@@ -34,7 +35,7 @@ def get_metrics(name, dimensions):
             dimensions_arg = dimensions_arg + ','
         dimensions_arg = dimensions_arg + key + '=' + value
     return cli_wrapper.run_mon_cli(['measurement-list', '--dimensions',
-                                    dimensions_arg, name, '00'])
+                                    dimensions_arg, name, since])
 
 
 def cleanup(notification_name, alarm_name):
@@ -71,7 +72,7 @@ def check_notifications(alarm_id, state_changes):
     for expected in state_changes:
         actual = notifications[index]
         if actual != expected:
-            print('Expected %s but found %d for state change %d' %
+            print('Expected %s but found %s for state change %d' %
                   (expected, actual, index+1), file=sys.stderr)
             return False
         index = index + 1
@@ -79,9 +80,9 @@ def check_notifications(alarm_id, state_changes):
     return True
 
 
-def count_metrics(metric_name, metric_dimensions):
+def count_metrics(metric_name, metric_dimensions, since):
     # Query how many metrics there are for the Alarm
-    metric_json = get_metrics(metric_name, metric_dimensions)
+    metric_json = get_metrics(metric_name, metric_dimensions, since)
     if len(metric_json) == 0:
         print('No measurements received for metric %s ' %
               (metric_name + str(metric_dimensions)), file=sys.stderr)
@@ -112,10 +113,14 @@ def main():
     cleanup(notification_name, alarm_name)
 
     # Query how many metrics there are for the Alarm
-    initial_num_metrics = count_metrics(metric_name, metric_dimensions)
-    if initial_num_metrics is None:
+    hour_ago = datetime.datetime.now() - datetime.timedelta(hours=1)
+    hour_ago_str = hour_ago.strftime('%Y-%m-%dT%H:%M:%S')
+    initial_num_metrics = count_metrics(metric_name, metric_dimensions,
+                                        hour_ago_str)
+    if initial_num_metrics is None or initial_num_metrics == 0:
+        print('No metric %s with dimensions %s received in last hour' %
+              (metric_name, metric_dimensions), file=sys.stderr)
         return 1
-
     start_time = time.time()
 
     # Create Notification through CLI
@@ -171,7 +176,8 @@ def main():
     ensure_at_least(time.time() - start_time, 35)
     change_time = time.time() - start_time
 
-    final_num_metrics = count_metrics(metric_name, metric_dimensions)
+    final_num_metrics = count_metrics(metric_name, metric_dimensions,
+                                      hour_ago_str)
     if final_num_metrics <= initial_num_metrics:
         print('No new metrics received in %d seconds' % change_time,
               file=sys.stderr)
