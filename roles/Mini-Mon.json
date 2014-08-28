@@ -77,7 +77,7 @@
     "recipe[influxdb]",
     "recipe[monasca_schema::influxdb]",
     "recipe[sysctl]",
-    "recipe[mon_persister]",
+    "recipe[monasca_persister]",
     "recipe[mon_api]",
     "recipe[storm::nimbus]",
     "recipe[storm::supervisor]",

@@ -1,25 +1,20 @@
 {
-    "id": "mon_persister",
+    "id": "monasca_persister",
     "alarm_history": {
-        "topic": "alarm-state-transitions"
+        "topic": "alarm-state-transitions",
+        "num_threads": "1",
+        "batch_size": "1000",
+        "maxBatchTime": "15"
     },
     "metrics": {
-        "topic": "metrics"
+        "topic": "metrics",
+        "num_threads": "2",
+        "batch_size": "10000",
+        "maxBatchTime": "30"
     },
     "kafka": {
-        "num_threads": "1",
         "group_id": "1",
         "consumer_id": 1
-    },
-    "disruptor": {
-        "buffer_size": "1048576",
-        "num_processors": "1"
-    },
-    "output_processor": {
-        "batch_size": "10000"
-    },
-    "deduper_config": {
-        "dedupe_run_frequencey_seconds": "30"
     },
     "database_configuration": {
         "database_type": "vertica"

@@ -9,7 +9,7 @@
   "chef_type": "role",
   "run_list": [
     "role[Basenode]",
-    "recipe[mon_persister]",
+    "recipe[monasca_persister]",
     "recipe[sysctl]"
   ],
   "env_run_lists": {

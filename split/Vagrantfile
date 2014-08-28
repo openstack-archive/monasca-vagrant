@@ -47,7 +47,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       chef.data_bags_path = "data_bags"
       chef.add_role "MySQL"
     end
+    mysql.vm.network "forwarded_port", guest: 3306, host: 43305
   end
+
 
   config.vm.define "devstack" do |devstack|
     devstack.vm.hostname = 'devstack'
@@ -116,6 +118,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     persister.vm.provider "virtualbox" do |vb|
       vb.memory = 1024
     end
+    persister.vm.network "forwarded_port", guest: 8091, host: 8091
   end
 
   config.vm.define "thresh" do |thresh|
