@@ -20,5 +20,5 @@ cookbook 'zookeeper', git: 'https://github.com/hpcloud-mon/cookbooks-zookeeper'
 
 # Community cookbooks
 cookbook 'apt', '= 2.4.0' 
-cookbook 'influxdb', git: 'https://github.com/SimpleFinance/chef-influxdb'
+cookbook 'influxdb', git: 'https://github.com/SimpleFinance/chef-influxdb', tag: "2.1.1"
 cookbook 'percona', git: 'https://github.com/phlipper/chef-percona', tag: "0.15.5"

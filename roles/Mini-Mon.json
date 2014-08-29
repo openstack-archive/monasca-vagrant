@@ -14,7 +14,8 @@
         "raft": {
           "port": 9090
         }
-      }
+      },
+      "version": "0.7.3"
     },
     "java": {
       "install_flavor": "openjdk",
