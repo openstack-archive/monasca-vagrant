@@ -1,0 +1,16 @@
+{
+  "id" : "agent_plugin_config",
+  "devstack": {
+    "mysql": {
+      "user": "root",
+      "password": "pass"
+    },
+    "rabbitmq": {
+      "user": "guest",
+      "password": "pass",
+      "nodes": "rabbit@devstack",
+      "queues": "conductor",
+      "exchanges": "nova,cinder,ceilometer,glance,keystone,neutron,heat,ironic,openstack"
+    }
+  }
+}
