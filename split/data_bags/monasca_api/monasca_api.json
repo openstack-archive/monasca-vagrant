@@ -1,5 +1,5 @@
 {
-  "id" : "mon_api",
+  "id" : "monasca_api",
   "api_region": "useast",
   "database-configuration": {
     "database-type": "vertica"

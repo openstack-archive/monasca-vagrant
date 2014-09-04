@@ -79,7 +79,7 @@
     "recipe[monasca_schema::influxdb]",
     "recipe[sysctl]",
     "recipe[monasca_persister]",
-    "recipe[mon_api]",
+    "recipe[monasca_api]",
     "recipe[storm::nimbus]",
     "recipe[storm::supervisor]",
     "recipe[monasca_thresh]",
