@@ -33,7 +33,7 @@ import datetime
 import psutil
 
 process_list = ('monasca-persister', 'monasca-notification', 'kafka', 'zookeeper.jar',
-                'mon-api', 'influxdb', 'apache-storm', 'mysqld')
+                'monasca-api', 'influxdb', 'apache-storm', 'mysqld')
 
 
 def get_metrics(name, dimensions, since):
