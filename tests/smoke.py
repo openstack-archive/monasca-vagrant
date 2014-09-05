@@ -108,7 +108,7 @@ def main():
     notification_name = 'Monasca Smoke Test'
     notification_email_addr = 'root@' + mail_host
     alarm_name = 'high cpu and load'
-    metric_name = 'load_avg_1_min'
+    metric_name = 'cpu.load_avg_1_min'
     metric_dimensions = {'hostname': metric_host}
     cleanup(notification_name, alarm_name)
 
@@ -127,8 +127,8 @@ def main():
     notification_id = cli_wrapper.create_notification(notification_name,
                                                       notification_email_addr)
     # Create Alarm through CLI
-    expression = 'max(cpu_system_perc) > 0 and ' + \
-                 'max(load_avg_1_min{hostname=' + metric_host + '}) > 0'
+    expression = 'max(cpu.system_perc) > 0 and ' + \
+                 'max(cpu.load_avg_1_min{hostname=' + metric_host + '}) > 0'
     description = 'System CPU Utilization exceeds 1% and ' + \
                   'Load exceeds 3 per measurement period'
     alarm_id = cli_wrapper.create_alarm(alarm_name, expression,
