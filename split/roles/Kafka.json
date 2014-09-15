@@ -8,6 +8,8 @@
       "topics": {
         "metrics": { "replicas": 1, "partitions": 4 },
         "events": { "replicas": 1, "partitions": 4 },
+        "raw-events": { "replicas": 1, "partitions": 4 },
+        "transformed-events": { "replicas": 1, "partitions": 4 },
         "alarm-state-transitions": { "replicas": 1, "partitions": 4 },
         "alarm-notifications": { "replicas": 1, "partitions": 4 }
       }
