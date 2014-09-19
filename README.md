@@ -54,14 +54,14 @@ brew cask install vagrant
 
 #### Linux (Ubuntu)
 ```
-# You need the ruby (>1.9) and ruby-dev packages installed for these commands to complete
-# For Ubuntu 12.04, you may need to install ruby 1.9 first
+# You need the ruby (>1.9), ruby-dev and build-essential packages installed for these commands to complete
+
+# Specifically for Ubuntu 12.04, you may need to install ruby 1.9 first
 sudo apt-get install ruby1.9.3
 sudo update-alternatives --set ruby /usr/bin/ruby1.9.1
 
 sudo apt-get install virtualbox
-latest=`curl -s http://www.vagrantup.com/downloads.html |tr " " "\n" |grep 'x86_64.deb' |cut -d'"' -f2`
-wget $latest && sudo dpkg -i `basename $latest`
+#Download and install latest vagrant from http://www.vagrantup.com/downloads.html
 ```
 
 ### Set Up Berkshelf
