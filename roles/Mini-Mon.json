@@ -6,6 +6,24 @@
     "apt": {
       "periodic_update_min_delay": 60
     },
+    "monasca_agent": {
+      "plugin": {
+        "host_alive": {
+          "init_config": {
+            "ssh_port": 22,
+            "ssh_timeout": 0.5,
+            "ping_timeout": 1
+          },
+          "instances": {
+            "devstack": {
+              "name": "devstack",
+              "host_name": "192.168.10.5",
+              "alive_test": "ssh"
+            }
+          }
+        }
+      }
+    },
     "influxdb": {
       "config": {
         "logging": {

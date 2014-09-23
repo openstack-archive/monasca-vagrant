@@ -5,6 +5,24 @@
   "default_attributes": {
     "apt": {
       "periodic_update_min_delay": 60
+    },
+    "monasca_agent": {
+      "plugin": {
+        "host_alive": {
+          "init_config": {
+            "ssh_port": 22,
+            "ssh_timeout": 0.5,
+            "ping_timeout": 1
+          },
+          "instances": {
+            "thresh": {
+              "name": "thresh",
+              "host_name": "192.168.10.14",
+              "alive_test": "ssh"
+            }
+          }
+        }
+      }
     }
   },
   "override_attributes": {

@@ -3,6 +3,29 @@
   "description": "Sets up the Monitoring Api",
   "json_class": "Chef::Role",
   "default_attributes": {
+    "monasca_agent": {
+      "plugin": {
+        "host_alive": {
+          "init_config": {
+            "ssh_port": 22,
+            "ssh_timeout": 0.5,
+            "ping_timeout": 1
+          },
+          "instances": {
+            "mysql": {
+              "name": "mysql",
+              "host_name": "192.168.10.6",
+              "alive_test": "ssh"
+            },
+            "kafka": {
+              "name": "kafka",
+              "host_name": "192.168.10.10",
+              "alive_test": "ssh"
+            }
+          }
+        }
+      }
+    }
   },
   "override_attributes": {
   },
