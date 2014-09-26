@@ -22,9 +22,8 @@ import cli_wrapper
 import utils
 import datetime
 
-# export OS_AUTH_TOKEN=82510970543135
-# export OS_NO_CLIENT_AUTH=1
-# export MONASCA_API_URL=http://192.168.10.4:8080/v2.0/
+process_list = ('monasca-persister','monasca-notification','kafka','zookeeper.jar',
+                'mon-api','influxdb','apache-storm', 'mysql')
 
 
 def get_metrics(name, dimensions, since):
@@ -58,26 +57,29 @@ def wait_for_alarm_state_change(alarm_id, old_state):
 
 
 def check_notifications(alarm_id, state_changes):
-    if not os.path.isfile('/etc/monasca/notification.yaml'):
+   if not os.path.isfile('/etc/monasca/notification.yaml'):
         print('Notification Engine not installed on this VM,' +
               ' skipping Notifications test',
               file=sys.stderr)
         return True
-    notifications = utils.find_notifications(alarm_id, "root")
-    if len(notifications) != len(state_changes):
+
+   notifications = utils.find_notifications(alarm_id,"root")
+   if len(notifications) != len(state_changes):
         print('Expected %d notifications but only found %d' %
               (len(state_changes), len(notifications)), file=sys.stderr)
         return False
-    index = 0
-    for expected in state_changes:
+
+   index = 0
+   for expected in state_changes:
         actual = notifications[index]
         if actual != expected:
             print('Expected %s but found %s for state change %d' %
                   (expected, actual, index+1), file=sys.stderr)
             return False
         index = index + 1
-    print('Received email notifications as expected')
-    return True
+   print('Received email notifications as expected')
+
+   return True
 
 
 def count_metrics(metric_name, metric_dimensions, since):
@@ -90,21 +92,11 @@ def count_metrics(metric_name, metric_dimensions, since):
 
     return len(metric_json[0]['measurements'])
 
-
 def ensure_at_least(actual, desired):
     if actual < desired:
         time.sleep(desired - actual)
 
-
-def main():
-    if not utils.ensure_has_notification_engine():
-        return 1
-
-    mail_host = 'localhost'
-    metric_host = subprocess.check_output(['hostname', '-f']).strip()
-
-    utils.setup_cli()
-
+def smoke_test(mail_host, metric_host):
     notification_name = 'Monasca Smoke Test'
     notification_email_addr = 'root@' + mail_host
     alarm_name = 'high cpu and load'
@@ -117,16 +109,19 @@ def main():
     hour_ago_str = hour_ago.strftime('%Y-%m-%dT%H:%M:%S')
     initial_num_metrics = count_metrics(metric_name, metric_dimensions,
                                         hour_ago_str)
+
     if initial_num_metrics is None or initial_num_metrics == 0:
         print('No metric %s with dimensions %s received in last hour' %
               (metric_name, metric_dimensions), file=sys.stderr)
         return 1
+
     start_time = time.time()
 
     # Create Notification through CLI
     notification_id = cli_wrapper.create_notification(notification_name,
                                                       notification_email_addr)
-    # Create Alarm through CLI
+
+       # Create Alarm through CLI
     expression = 'max(cpu.system_perc) > 0 and ' + \
                  'max(cpu.load_avg_1_min{hostname=' + metric_host + '}) > 0'
     description = 'System CPU Utilization exceeds 1% and ' + \
@@ -192,6 +187,56 @@ def main():
         return 1
 
     return 0
+
+def find_processes():
+    # find_process is meant to validate all the required processes are running before starting the smoke test
+
+    return_flag = 0
+    process_missing = []
+    args = ['sudo', 'ps', '-ef']
+
+    stdout = subprocess.check_output(args)
+
+    for process in process_list:  # process_list is a global defined at top of module
+        process_found_flag = 0
+
+        for line in stdout.splitlines():
+            if process in line:
+                process_found_flag = 1
+                break
+
+        if process_found_flag == 0:
+            process_missing.append(process)
+
+
+    if len(process_missing) > 0:   # if processes were not found
+        print ('Process = %s Not Found' % process_missing)
+        return_flag = 1
+    else:
+        print ('All Processes Found')
+
+    return return_flag
+
+
+
+def main():
+    test_flag = 0
+
+    # May be able to delete this test because the find_process check should validate the notification engine present.
+    if not utils.ensure_has_notification_engine():
+        return 1
+
+    utils.setup_cli()
+
+    test_flag = find_processes()
+
+    mail_host = 'localhost'
+    metric_host = subprocess.check_output(['hostname', '-f']).strip()
+
+
+    if not test_flag:
+        smoke_test(mail_host, metric_host)
+
 
 
 if __name__ == "__main__":
