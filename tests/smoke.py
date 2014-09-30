@@ -1,16 +1,25 @@
 #!/usr/bin/env python
 #
 """smoke
-    Runs a smoke test of the monitoring installation on mini-mon by ensuring
-    metrics are flowing and creating a new notification, alarm and that the
-    Threshold Engine changes the state of the alarm.  This requires the mon
-    CLI and must be run on either the mini-mon VM for the single VM mode or
+    Runs a smoke test of the monitoring installation on mini-mon to ensure
+    the components (other than the UI) are functioning. The code tests these
+    components:
+       1. Agent - ensures metrics are being sent to API
+       2. API - ensures alarm definitions can created, listed, etc. Ensure
+                metrics and alarms can be queried
+       3. CLI - used to talk to the API
+       4. Persister - ensures metrics and alarm history has been persisted
+                      in database because API can query them
+       5. Threshold Engine - ensures alarms are created and change state
+       6. Notification Engine - ensures email notifications are sent to the
+                                local system
+    This must be run on either the mini-mon VM for the single VM mode or
     on the kafka VM in the multi VM mode.
-    Get it by following the instructions on
-    https://wiki.hpcloud.net/display/iaas/Monitoring+CLI.
 
     TODO:
-        1. Add check of notification history when that is implemented
+        1. Add more logic to give ideas of why a particular step failed, for
+           example, alarm did not get created because metrics weren't being
+           received
 """
 
 from __future__ import print_function
@@ -38,8 +47,8 @@ def get_metrics(name, dimensions, since):
                                     dimensions_arg, name, since])
 
 
-def cleanup(notification_name, alarm_name):
-    cli_wrapper.delete_alarm_if_exists(alarm_name)
+def cleanup(notification_name, alarm_definition_name):
+    cli_wrapper.delete_alarm_definition_if_exists(alarm_definition_name)
     cli_wrapper.delete_notification_if_exists(notification_name)
 
 
@@ -96,6 +105,24 @@ def ensure_at_least(actual, desired):
         time.sleep(desired - actual)
 
 
+def wait_for_alarm_creation(alarm_definition_id):
+    print('Waiting for alarm to be created for Alarm Definition %s' % alarm_definition_id)
+    for x in range(0, 30):
+        time.sleep(1)
+        alarms = cli_wrapper.find_alarms_for_definition(alarm_definition_id)
+        if len(alarms) > 0:
+            if len(alarms) == 1:
+                print('Alarm was created in %d seconds' % x)
+                return alarms[0]
+            else:
+                print('%d Alarms were created. Only expected 1' % len(alarms),
+                      file=sys.stderr)
+                return None
+    print('Alarm was not created for Alarm Definition %s in %d seconds' % (alarm_definition_id, x),
+          file=sys.stderr)
+    return None
+
+
 def main():
     if not utils.ensure_has_notification_engine():
         return 1
@@ -107,10 +134,10 @@ def main():
 
     notification_name = 'Monasca Smoke Test'
     notification_email_addr = 'root@' + mail_host
-    alarm_name = 'high cpu and load'
+    alarm_definition_name = 'high cpu and load'
     metric_name = 'cpu.load_avg_1_min'
     metric_dimensions = {'hostname': metric_host}
-    cleanup(notification_name, alarm_name)
+    cleanup(notification_name, alarm_definition_name)
 
     # Query how many metrics there are for the Alarm
     hour_ago = datetime.datetime.now() - datetime.timedelta(hours=1)
@@ -131,11 +158,17 @@ def main():
                  'max(cpu.load_avg_1_min{hostname=' + metric_host + '}) > 0'
     description = 'System CPU Utilization exceeds 1% and ' + \
                   'Load exceeds 3 per measurement period'
-    alarm_id = cli_wrapper.create_alarm(alarm_name, expression,
-                                        description=description,
-                                        ok_notif_id=notification_id,
-                                        alarm_notif_id=notification_id,
-                                        undetermined_notif_id=notification_id)
+    alarm_definition_id = cli_wrapper.create_alarm_definition(alarm_definition_name, expression,
+                                                              description=description,
+                                                              ok_notif_id=notification_id,
+                                                              alarm_notif_id=notification_id,
+                                                              undetermined_notif_id=notification_id)
+
+    # Wait for an alarm to be created
+    alarm_id = wait_for_alarm_creation(alarm_definition_id)
+    if alarm_id is None:
+        return 1
+
     # Ensure it is created in the right state
     initial_state = 'UNDETERMINED'
     if not utils.check_alarm_state(alarm_id, initial_state):

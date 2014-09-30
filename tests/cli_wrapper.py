@@ -16,15 +16,15 @@ def find_obj_for_name(object_json, name):
     return None
 
 
-def find_alarm_by_name(alarm_name):
-    alarm_json = run_mon_cli(['alarm-list'])
-    return find_obj_for_name(alarm_json, alarm_name)
+def find_alarm_definition_by_name(name):
+    alarm_json = run_mon_cli(['alarm-definition-list'])
+    return find_obj_for_name(alarm_json, name)
 
 
-def delete_alarm_if_exists(alarm_name):
-    alarm_json = find_alarm_by_name(alarm_name)
+def delete_alarm_definition_if_exists(name):
+    alarm_json = find_alarm_definition_by_name(name)
     if alarm_json:
-        run_mon_cli(['alarm-delete', alarm_json['id']], useJson=False)
+        run_mon_cli(['alarm-definition-delete', alarm_json['id']], useJson=False)
 
 
 def delete_notification_if_exists(notification_name):
@@ -64,24 +64,27 @@ def get_alarm_state(alarm_id):
     return result_json['state']
 
 
-def patch_alarm(alarm_id, what, value):
-    result_json = run_mon_cli(['alarm-patch', what, value, alarm_id])
-    return result_json
-
-
 def change_alarm_state(alarm_id, new_state):
     print('Changing Alarm state to %s' % new_state)
-    result_json = patch_alarm(alarm_id, '--state', new_state)
+    result_json = run_mon_cli(['alarm-patch', alarm_id, new_state])
     if result_json['state'] != new_state:
         print('Alarm patch failed, expected state of %s but was %s' %
               (result_json['state'], new_state), file=sys.stderr)
         return 1
 
 
-def create_alarm(name, expression, description=None, ok_notif_id=None,
-                 alarm_notif_id=None,
-                 undetermined_notif_id=None):
-    args = ['alarm-create']
+def find_alarms_for_definition(alarm_definition_id):
+    result_json = run_mon_cli(['alarm-list', "--alarm-definition", alarm_definition_id])
+    ids = []
+    for alarm in result_json:
+        ids.append(alarm['id'])
+    return ids
+    
+    
+def create_alarm_definition(name, expression, description=None, ok_notif_id=None,
+                            alarm_notif_id=None,
+                            undetermined_notif_id=None):
+    args = ['alarm-definition-create']
     add_argument_if_given(args, '--description', description)
     add_argument_if_given(args, '--alarm-actions', alarm_notif_id)
     add_argument_if_given(args, '--ok-actions', ok_notif_id)
@@ -89,12 +92,11 @@ def create_alarm(name, expression, description=None, ok_notif_id=None,
                           undetermined_notif_id)
     args.append(name)
     args.append(expression)
-    print('Creating alarm')
+    print('Creating alarm definition')
     result_json = run_mon_cli(args)
 
     # Parse out id
-    alarm_id = result_json['id']
-    return alarm_id
+    return result_json['id']
 
 
 def add_argument_if_given(args, arg, value):
