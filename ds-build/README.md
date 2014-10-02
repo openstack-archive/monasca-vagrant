@@ -13,12 +13,8 @@ The following services are enabled:
 - Heat
 - Horizon
 - Keystone
-- Neutron
 - Nova
 - Swift
-
-Note that with Neutron, `Q_PLUGIN` is set to linuxbridge rather than
-openvswitch.
 
 # Upstart instead of screen
 
@@ -37,8 +33,22 @@ progress from another terminal by running `vagrant ssh` and then
 `tail -f /opt/stack/logs/stack.sh.log`
 
 ## Packaging for VagrantCloud
+To ensure that this VM can provision its own instances, launch and delete
+an instance prior to packging for VagrantCloud.
+- Open http://192.168.10.5 in a web browser 
+- Log in using default admin credentials specified above
+- Click on 'Project' at left, then 'Instances'
+- Click the 'Launch Instance' button
+- Enter an Instance Name, any name will do
+- Select Flavor 'm1.tiny'
+- Set Instance Boot Source to 'Boot from image'
+- Choose 'cirros' as the Image Name
+- Click the 'Launch' button
+- Once the image is created successfully, terminate it
+- Sign out from the web interface; you are now ready to package the box image
+
 From within the `ds-build` directory, run this command to build a new
-VagrantCloud box image after `vagrant up` completed successfully:
+VagrantCloud box image:
 ```
 box='devstack.box'; [ -e ../$box ] && rm -v ../$box ; vagrant package devstack --output $box
 ```
