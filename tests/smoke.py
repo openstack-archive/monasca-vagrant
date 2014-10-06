@@ -16,6 +16,16 @@
     This must be run on either the mini-mon VM for the single VM mode or
     on the kafka VM in the multi VM mode.
 
+    If the tests are to be run in a different environment other than mini-mon,
+    the environment variables below can be set and the smoke will use those
+    instead of the mini-mon credentials and settings:
+
+        OS_USERNAME
+        OS_PASSWORD
+        OS_TENANT_NAME
+        OS_AUTH_URL
+        MONASCA_API_URL
+
     TODO:
         1. Add more logic to give ideas of why a particular step failed, for
            example, alarm did not get created because metrics weren't being
@@ -256,7 +266,7 @@ def main():
     utils.setup_cli()
 
     mail_host = 'localhost'
-    metric_host = subprocess.check_output(['hostname', '-f']).strip()
+    metric_host = subprocess.check_output(['hostname']).strip()
 
     if find_processes():
         if not smoke_test(mail_host, metric_host):
