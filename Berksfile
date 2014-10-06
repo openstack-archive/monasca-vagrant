@@ -15,7 +15,6 @@ cookbook 'monasca_persister', git: 'https://github.com/stackforge/cookbook-monas
 cookbook 'monasca_schema', git: 'https://github.com/stackforge/cookbook-monasca-schema.git'
 cookbook 'monasca_thresh', git: 'https://github.com/stackforge/cookbook-monasca-thresh.git'
 cookbook 'storm', git: 'https://github.com/tkuhlman/storm'
-cookbook 'vertica', git: 'https://github.com/hpcloud-mon/cookbooks-vertica'
 cookbook 'zookeeper', git: 'https://github.com/hpcloud-mon/cookbooks-zookeeper'
 
 # Community cookbooks

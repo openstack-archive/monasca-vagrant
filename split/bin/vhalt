@@ -1,5 +1,0 @@
-#!/bin/sh -x 
-#
-# Halt the entire infrastructure with dependencies considered
-
-vagrant halt thresh persister api vertica kafka mysql

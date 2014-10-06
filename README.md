@@ -23,7 +23,6 @@
     - [vagrant-cachier](#vagrant-cachier)
   - [Cookbook Development](#cookbook-development)
   - [Running behind a Web Proxy](#running-behind-a-web-proxy)
-- [Vertica](#vertica)
 - [Alternate Vagrant Configurations](#alternate-vagrant-configurations)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -154,29 +153,13 @@ VM to use them also.
 vagrant plugin install vagrant-proxyconf
 ```
 
-# Vertica
-Vertica is supported instead of influxdb, this is especially useful for large deployments.
-
-Before using Vertica must be downloaded from the [Vertica site](https://my.vertica.com/). Download these packages and place in the root of this repository.
-
-- `vertica_7.0.1-0_amd64.deb`
-- `vertica-r-lang_7.0.1-0_amd64.deb`
-
-The `vertica::console` recipe is not enabled by default, but if it is added, this package is also needed.
-
-- `vertica-console_7.0.1-0_amd64.deb`
-
-After the vertica packages are installed the configuration must be changed to run Vertica. Specifically besides starting Vertica the data bags
-for the monasca_api and the monasca_persister need to be updated so these services use Vertica rather than InfluxDB.
-
-The alternative split setup is configured for running Vertica.
-
 # Alternate Vagrant Configurations
-To run any of these alternate configs, simply run the Vagrant commands from within the subdir.  Note that the Vertica debs must be _copied_
-(not symlinked) into the subdir as well. See the README.md in the subdir for more details.
+To run any of these alternate configs, simply run the Vagrant commands from within the subdir.
 
-- `split` subdir - The various monitoring components split into their own VMs. The split setup runs Vertica by default rather than influxdb.
 - `ds-build` subdir - This is used for building a new devstack server image.  It does not typically need to be run.
 
-In the past other alternative setups were working including running mini-mon in HP Public Cloud and scripts for putting it on baremetal. These are no
-longer supported.
+Previously in the split directory an alternative setup was available with each service split into different vms and using
+Vertica rather than influxdb. This was removed simply because it was not being actively maintained as changes occurred. It is still possible
+to split up the services and to use Vertica, these are done in test environments and production deployments, however is beyond
+the scope of this development environment. Additionaly other alternative setups including running mini-mon in HP Public Cloud
+and scripts for putting it on baremetal are also no longer supported.

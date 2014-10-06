@@ -1,7 +1,0 @@
-#!/bin/sh -x 
-#
-# Brings up the entire infrastructure as fast as possible but with dependencies considered
-
-# Though mon_notification depends on mysql if kafka is up first the daemon will just restart until mysql is available
-vagrant up --parallel mysql kafka vertica
-vagrant up --parallel api persister thresh
