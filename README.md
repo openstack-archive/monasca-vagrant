@@ -8,20 +8,13 @@
     - [Install VirtualBox and Vagrant](#install-virtualbox-and-vagrant)
       - [MacOS](#macos)
       - [Linux (Ubuntu)](#linux-ubuntu)
-    - [Set Up Berkshelf](#set-up-berkshelf)
-      - [MacOS](#macos-1)
-      - [Linux (Ubuntu)](#linux-ubuntu-1)
 - [Using mini-mon](#using-mini-mon)
   - [Starting mini-mon](#starting-mini-mon)
   - [Mini-mon access information](#mini-mon-access-information)
     - [Internal Endpoints](#internal-endpoints)
   - [Updating](#updating)
   - [Improving Provisioning Speed](#improving-provisioning-speed)
-    - [Local cache](#local-cache)
-      - [Linux (Ubuntu)](#linux-ubuntu-2)
-      - [MacOS](#macos-2)
-    - [vagrant-cachier](#vagrant-cachier)
-  - [Cookbook Development](#cookbook-development)
+  - [Ansible Development](#ansible-development)
   - [Running behind a Web Proxy](#running-behind-a-web-proxy)
 - [Alternate Vagrant Configurations](#alternate-vagrant-configurations)
 
@@ -42,43 +35,35 @@ git clone https://github.com/stackforge/monasca-vagrant
 Note: Vagrant version 1.5.0 or higher is required.
 
 #### MacOS
-The following steps assume you have [Homebrew](http://brew.sh/) installed.  Otherwise, install [VirtualBox](http://www.virtualbox.org) and [Vagrant](http://www.vagrantup.com) manually from their websites, then continue with Set Up Berkshelf below.
+The following steps assume you have [Homebrew](http://brew.sh/) installed.  Otherwise, install [VirtualBox](http://www.virtualbox.org) and [Vagrant](http://www.vagrantup.com) and [Ansible](http://www.ansible.com) as suggested on their websites.
 
 ```
 brew tap phinze/cask
 brew install brew-cask
 brew cask install virtualbox 
 brew cask install vagrant
+brew install ansible
+ansible-galaxy install -r ansible_roles -p ./roles
 ```
 
 #### Linux (Ubuntu)
 ```
-# You need the ruby (>1.9), ruby-dev and build-essential packages installed for these commands to complete
-
-# Specifically for Ubuntu 12.04, you may need to install ruby 1.9 first
-sudo apt-get install ruby1.9.3
-sudo update-alternatives --set ruby /usr/bin/ruby1.9.1
-
 sudo apt-get install virtualbox
 #Download and install latest vagrant from http://www.vagrantup.com/downloads.html
-```
-
-### Set Up Berkshelf
-#### MacOS
-```
-vagrant plugin install vagrant-berkshelf --plugin-version '= 2.0.1'
-gem install berkshelf
-```
-#### Linux (Ubuntu)
-```
-sudo vagrant plugin install vagrant-berkshelf --plugin-version '= 2.0.1'
-sudo gem install berkshelf
+sudo pip install ansible
+ansible-galaxy install -r ansible_roles -p ./roles
 ```
 
 # Using mini-mon
 ## Starting mini-mon
 - After installing to start just run `vagrant up`. The first run will download required vagrant boxes.
 - Run `vagrant help` for more info on standard vagrant commands.
+
+## Smoke test
+A smoke test exists in the test directory. From within the mini-mon vm this directory is exposed to /vagrant/tests and
+so `/vagrant/tests/smoke.py` can be run when in a mini-mon terminal.
+
+Alternatively a very simple playbook is available for running the test, `ansible-playbook ./smoke.yml`
 
 ## Mini-mon access information
 - Your host OS home dir is synced to `/vagrant_home` on the VM.
@@ -94,57 +79,34 @@ sudo gem install berkshelf
 - The keystone credentials used are mini-mon/password in the mini-mon project. The keystone services in 192.168.10.5 on standard ports.
 
 ## Updating
-When someone updates the config, this process should allow you to bring up an updated VM.
+When someone updates the config, this process should allow you to bring up an updated VM, though not every step is needed at all times.
 
 - `git pull`
-- `berks update`
+- `ansible-galaxy install -r ansible_roles -p ./roles`
 - `vagrant box update`
 - `vagrant destroy <vm>` Where `<vm>` is the name of the VM being updated, for example 'vertica'
 - `vagrant up`
 
 ## Improving Provisioning Speed
 
-The slowest part of the provisioning process is the downloading of deb packages.
-
-### Local cache
-
-To speed this up a local apt-cacher-ng can be used.
-
-#### Linux (Ubuntu)
-```
-sudo apt-get install apt-cacher-ng
-```
-#### MacOS
-```
-brew install apt-cacher-ng
-```
-Run `apt-cacher-ng -c /usr/local/etc/apt-cacher-ng/` or optionally follow the instructions from brew to start up the cache automatically.
-That is all that is needed.  From now on, the cache will be used.
-
-A report from the cache is found at http://localhost:3142/acng-report.html
-
-### vagrant-cachier
-
-Instead of using apt-cacher-ng you can also use the Vagrant plugin
-`vagrant-cachier` available at https://github.com/fgrehm/vagrant-cachier. To
-use it with this Vagrant box you simply have to install the plugin.
+The slowest part of the provisioning process is the downloading of packages.
+The Vagrant plugin `vagrant-cachier` available at https://github.com/fgrehm/vagrant-cachier
+should help by caching repeated dependencies. To use with Vagrant simply install the plugin.
 
 ```
 sudo vagrant plugin install vagrant-cachier
 ```
 
-## Cookbook Development
+## Ansible Development
 
-To develop cookbook changes with Vagrant:
-
-- Edit Berksfile, changing the appropriate cookbook line to a local path.  For example:
-```
-cookbook 'zookeeper', path: '/Users/kuhlmant/src/mon/cookbooks/zookeeper'
-```
-- Edit your local cookbook as needed
-- Run `berks update <cookbook_name>`
-- If the Vagrant VM is already up, run `vagrant provision`.  Otherwise, run `vagrant up`
-- When finish testing commit and upload your cookbook as normal but don't forget to bump the cookbook version in the metadata.rb.
+To edit the Ansible roles I suggest downloading the full git source of the role and putting it in
+your ansible path. Then though you can rerun `vagrant provision` to test your changes, often it is
+easier to run ansible directly. For this to work smoothly add these vagrant specific settings to
+your local ansible configuration
+    
+    hostfile = .vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory
+    private_key_file = ~/.vagrant.d/insecure_private_key
+    remote_user = vagrant
 
 ## Running behind a Web Proxy
 If you are behind a proxy you can install the `vagrant-proxyconf` pluging to have Vagrant honor standard proxy-related environment variables and set the
