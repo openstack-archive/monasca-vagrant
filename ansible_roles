@@ -1,0 +1,8 @@
+tkuhlman.kafka
+tkuhlman.monasca-persister
+tkuhlman.monasca-notification
+tkuhlman.monasca-schema
+tkuhlman.percona
+tkuhlman.zookeeper
+
+stympy.influxdb
