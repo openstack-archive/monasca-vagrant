@@ -1,0 +1,50 @@
+- hosts: mini-mon
+  sudo: yes
+  vars:
+    mini_mon_host: 192.168.10.4
+    influxdb:
+      version: 0.8.1
+      raft_port: 9090
+      seed_servers: []
+      replication_factor: 1
+    kafka_hosts: "{{mini_mon_host}}:9092"
+    keystone_url: http://192.168.10.5:35357/v3
+    monasca_agent:
+      user: monasca-agent
+      password: password
+      project: mini-mon
+      service: monitoring
+    monasca_api_url: http://192.168.10.4:8080/v2.0
+    monasca_checks:
+      host_alive:
+        init_config:
+          ssh_port: 22
+          ssh_timeout: 0.5
+          ping_timeout: 1
+        instances:
+          - devstack:
+              name: devstack
+              host_name: 192.168.10.5
+              alive_test: ssh
+    zookeeper_hosts: "{{mini_mon_host}}:2181"
+  roles:
+    - pip
+    - {role: tkuhlman.kafka, kafka_listen_address: "{{mini_mon_host}}", tags: [kafka]}
+    - {role: stympy.influxdb, tags: [influxdb]}
+    - {role: tkuhlman.percona, mysql_root_password: password, percona_package: percona-xtradb-cluster-56, tags: [mysql, percona]}
+    - {role: tkuhlman.monasca-persister,
+       kafka_uri: "{{kafka_hosts}}",
+       influxdb_host: "{{mini_mon_host}}",
+       influxdb_user: mon_persister,
+       influxdb_password: password,
+       tags: [influxdb]}
+    - {role: tkuhlman.monasca-notification,
+       mysql_host: "{{mini_mon_host}}",
+       mysql_user: notification,
+       mysql_password: password,
+       smtp_host: localhost,
+       tags: [notification]}
+    - {role: tkuhlman.monasca-agent, tags: [agent]}
+  tasks:
+    - name: Install postfix, needed by notification engine
+      apt: name=postfix state=present

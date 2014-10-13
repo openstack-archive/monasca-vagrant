@@ -1,0 +1,28 @@
+- hosts: mini-mon
+  sudo: yes
+  vars:
+    influxdb_users:
+      mon_api: password
+      mon_persister: password
+    kafka_topics:
+        metrics: { replicas: 1, partitions: 4 }
+        events: { replicas: 1, partitions: 4 }
+        raw-events: { replicas: 1, partitions: 4 }
+        transformed-events: { replicas: 1, partitions: 4 }
+        alarm-state-transitions: { replicas: 1, partitions: 4 }
+        alarm-notifications: { replicas: 1, partitions: 4 }
+    mini_mon_host: 192.168.10.4
+    zookeeper_hosts: "{{mini_mon_host}}:2181"
+  roles:
+    - tkuhlman.monasca-schema
+  tasks:  # Restart services that need the schema before working correctly
+    - name: restart thresh
+      service: name=monasca-thresh state=restarted enabled=yes
+    - name: restart persister
+      service: name=monasca-persister state=restarted enabled=yes
+    - name: restart notification
+      service: name=monasca-notification state=restarted enabled=yes
+    - name: restart api
+      service: name=monasca-api state=restarted enabled=yes
+    - name: restart agent
+      service: name=monasca-agent state=restarted enabled=yes
