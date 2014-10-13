@@ -1,10 +1,13 @@
 # Installs the mon-ui panel
 
+package 'python-pip' do
+  action :install
+end
+
 # Grab the necessary packages
-include_recipe "python"
 ['monasca-ui','python-monascaclient'].each do |pkg|
-    python_pip pkg do
-        action :install
+    execute "pip install #{pkg}" do
+        action :run
     end
 end
 

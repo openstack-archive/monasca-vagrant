@@ -1,0 +1,23 @@
+- hosts: devstack
+  sudo: yes
+  vars:
+    keystone_url: http://192.168.10.5:35357/v3
+    monasca_agent:
+      user: monasca-agent
+      password: password
+      project: mini-mon
+      service: monitoring
+    monasca_api_url: http://192.168.10.4:8080/v2.0
+    monasca_checks:
+      host_alive:
+        init_config:
+          ssh_port: 22
+          ssh_timeout: 0.5
+          ping_timeout: 1
+        instances:
+          - mini-mon:
+              name: mini-mon
+              host_name: 192.168.10.4
+              alive_test: ssh
+  roles:
+    - {role: tkuhlman.monasca-agent, tags: [agent]}

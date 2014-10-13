@@ -1,0 +1,94 @@
+- name: Installs DBs, kafka and other core dependencies.
+  hosts: mini-mon
+  sudo: yes
+  vars:
+    influxdb:
+      version: 0.8.1
+      raft_port: 9090
+      seed_servers: []
+      replication_factor: 1
+    mini_mon_host: 192.168.10.4
+    zookeeper_hosts: "{{mini_mon_host}}:2181"
+  pre_tasks:
+    - name: apt-get update
+      apt: update_cache=yes
+  tasks:
+    - name: Install postfix, needed by notification engine
+      apt: name=postfix state=present
+    - name: Install pip from apt
+      apt: name=python-pip state=present
+    - name: pip upgrade pip
+      pip: name=pip state=latest
+    - name: Install python-dev
+      apt: name=python-dev state=present
+  roles:
+    - {role: tkuhlman.kafka, kafka_listen_address: "{{mini_mon_host}}", tags: [kafka]}
+    - {role: stympy.influxdb, tags: [influxdb]}
+    - {role: tkuhlman.percona, mysql_root_password: password, percona_package: percona-xtradb-cluster-56, tags: [mysql, percona]}
+
+- name: Sets up schema and Installs Monasca apps
+  hosts: mini-mon
+  sudo: yes
+  vars:
+    mini_mon_host: 192.168.10.4
+    influxdb_host: "{{mini_mon_host}}"
+    influxdb_users:
+      mon_api: password
+      mon_persister: password
+    kafka_topics:
+        metrics: { replicas: 1, partitions: 4 }
+        events: { replicas: 1, partitions: 4 }
+        raw-events: { replicas: 1, partitions: 4 }
+        transformed-events: { replicas: 1, partitions: 4 }
+        alarm-state-transitions: { replicas: 1, partitions: 4 }
+        alarm-notifications: { replicas: 1, partitions: 4 }
+    kafka_hosts: "{{mini_mon_host}}:9092"
+    keystone_url: http://192.168.10.5:35357/v3
+    monasca_agent:
+      user: monasca-agent
+      password: password
+      project: mini-mon
+      service: monitoring
+    monasca_api_url: http://192.168.10.4:8080/v2.0
+    monasca_checks:
+      host_alive:
+        init_config:
+          ssh_port: 22
+          ssh_timeout: 0.5
+          ping_timeout: 1
+        instances:
+          - devstack:
+              name: devstack
+              host_name: 192.168.10.5
+              alive_test: ssh
+    mysql_host: "{{mini_mon_host}}"
+    zookeeper_hosts: "{{mini_mon_host}}:2181"
+  roles:
+    - {role: tkuhlman.monasca-schema, tags: [schema]}
+    - {role: tkuhlman.monasca-api,
+       api_region: useast,
+       influxdb_user: mon_api,
+       influxdb_password: password,
+       keystone_host: 192.168.10.5,
+       keystone_admin: admin,
+       keystone_admin_password: password,
+       keystone_admin_token: ADMIN,
+       mysql_user: monapi,
+       mysql_password: password,
+       tags: [api]}
+    - {role: tkuhlman.monasca-persister,
+       kafka_uri: "{{kafka_hosts}}",
+       influxdb_user: mon_persister,
+       influxdb_password: password,
+       tags: [influxdb]}
+    - {role: tkuhlman.monasca-notification,
+       mysql_user: notification,
+       mysql_password: password,
+       smtp_host: localhost,
+       tags: [notification]}
+    - {role: tkuhlman.storm, nimbus_host: "{{mini_mon_host}}", storm_nimbus_enabled: true, storm_supervisor_enabled: true, tags: [storm]}
+    - {role: tkuhlman.monasca-thresh,
+       mysql_user: thresh,
+       mysql_password: password,
+       tags: [thresh]}
+    - {role: tkuhlman.monasca-agent, tags: [agent]}
