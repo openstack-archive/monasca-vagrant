@@ -7,7 +7,7 @@ end
 cookbook 'mini-mon', path: './cookbooks/mini-mon'
 cookbook 'devstack', path: './cookbooks/devstack'
 cookbook 'ds-build', path: './cookbooks/ds-build'
-cookbook 'mon_api', git: 'https://github.com/stackforge/cookbook-monasca-api'
+cookbook 'monasca_api', git: 'https://github.com/stackforge/cookbook-monasca-api'
 cookbook 'kafka', git: 'https://github.com/hpcloud-mon/cookbooks-kafka'
 cookbook 'monasca_agent', git: 'https://github.com/stackforge/cookbook-monasca-agent'
 cookbook 'monasca_notification', git: 'https://github.com/stackforge/cookbook-monasca-notification'
