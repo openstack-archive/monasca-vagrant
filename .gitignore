@@ -1,12 +1,7 @@
 .vagrant
-Berksfile.lock
 .project
-hlinux/templates/output-virtualbox-iso
-hlinux/templates/packer_cache
 .pydevproject
 .idea
 .settings
 *.deb
 *.pyc
-utils/cluster/data_bags/vertica/ssh_key.json
-utils/cluster/data_bags/vertica/backup_credentials.json
