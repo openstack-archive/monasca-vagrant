@@ -3,14 +3,7 @@
 
 VAGRANTFILE_API_VERSION = "2" # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 
-unless Vagrant.has_plugin?("vagrant-berkshelf")
-  raise "The needed plugin vagrant-berkshelf is not available.
-         Install it by calling 'vagrant plugin install vagrant-berkshelf'."
-end
-
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  # Settings for all vms
-  config.berkshelf.enabled = true
 
   if Vagrant.has_plugin?("vagrant-cachier")
     config.cache.scope = :box
@@ -43,25 +36,27 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
     ds.vm.provision :chef_solo do |chef|
       chef.roles_path = "roles"
+      chef.cookbooks_path = "cookbooks"
       chef.data_bags_path = "data_bags"
       chef.add_role "Devstack"
       chef.arguments = '--force-formatter'
+    end
+    ds.vm.provision "ansible" do |ansible|
+      ansible.playbook = "devstack.yml"
     end
   end
 
   # One vm running all the services
   config.vm.define "mini-mon" do |mm|
     mm.vm.hostname = 'mini-mon'
-    mm.vm.box = "kuhlmant/precise64_chef11"
+    mm.vm.box = "ubuntu/trusty64"
     mm.vm.network :private_network, ip: "192.168.10.4"
     mm.vm.provider "virtualbox" do |vb|
       vb.memory = 6144
       vb.cpus = 4
     end
-    mm.vm.provision :chef_solo do |chef|
-      chef.roles_path = "roles"
-      chef.data_bags_path = "data_bags"
-      chef.add_role "Mini-Mon"
+    mm.vm.provision "ansible" do |ansible|
+      ansible.playbook = "mini-mon.yml"
     end
   end
 

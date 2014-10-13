@@ -24,7 +24,9 @@ template "/root/.rabbitmq.cnf" do
   )
 end
 
-include_recipe "mini-mon::mysql_client"
+package 'python-mysqldb' do
+  action :install
+end
 template "/root/.my.cnf" do
   action :create
   source "my.cnf.erb"
