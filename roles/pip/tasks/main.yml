@@ -1,0 +1,10 @@
+---
+- name: Install pip from apt
+  apt: name=python-pip state=present
+
+- name: pip upgrade pip
+  pip: name=pip state=latest
+
+- name: Install python-dev
+  apt: name=python-dev state=present
+

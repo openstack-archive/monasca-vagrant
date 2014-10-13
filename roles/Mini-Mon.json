@@ -6,66 +6,9 @@
     "apt": {
       "periodic_update_min_delay": 60
     },
-    "monasca_agent": {
-      "plugin": {
-        "host_alive": {
-          "init_config": {
-            "ssh_port": 22,
-            "ssh_timeout": 0.5,
-            "ping_timeout": 1
-          },
-          "instances": {
-            "devstack": {
-              "name": "devstack",
-              "host_name": "192.168.10.5",
-              "alive_test": "ssh"
-            }
-          }
-        }
-      }
-    },
-    "influxdb": {
-      "config": {
-        "logging": {
-          "file": "/opt/influxdb/shared/influxdb.log"
-        },
-        "raft": {
-          "port": 9090
-        }
-      },
-      "version": "0.8.1"
-    },
     "java": {
       "install_flavor": "openjdk",
       "jdk_version": "7"
-    },
-    "kafka": {
-      "listen_address": "192.168.10.4",
-      "topics": {
-        "metrics": { "replicas": 1, "partitions": 4 },
-        "events": { "replicas": 1, "partitions": 4 },
-        "raw-events": { "replicas": 1, "partitions": 4 },
-        "transformed-events": { "replicas": 1, "partitions": 4 },
-        "alarm-state-transitions": { "replicas": 1, "partitions": 4 },
-        "alarm-notifications": { "replicas": 1, "partitions": 4 }
-      }
-    },
-    "percona": {
-      "backup": {
-        "password": "password"
-      },
-      "cluster": {
-        "package": "percona-xtradb-cluster-56"
-      },
-      "main_config_file": "/etc/mysql/my.cnf",
-      "server": {
-        "bind_address": "0.0.0.0",
-        "replication": {
-          "password": "password"
-        },
-        "root_password": "password",
-        "skip_name_resolve": true
-      }
     },
     "storm": {
       "nimbus": {
@@ -88,22 +31,10 @@
   "chef_type": "role",
   "run_list": [
     "recipe[mini-mon]",
-    "recipe[percona::cluster]",
-    "recipe[monasca_schema::mysql]",
-    "recipe[zookeeper]",
-    "recipe[kafka]",
-    "recipe[mini-mon::postfix]",
-    "recipe[kafka::create_topics]",
-    "recipe[monasca_notification]",
-    "recipe[influxdb]",
-    "recipe[monasca_schema::influxdb]",
-    "recipe[sysctl]",
-    "recipe[monasca_persister]",
     "recipe[monasca_api]",
     "recipe[storm::nimbus]",
     "recipe[storm::supervisor]",
-    "recipe[monasca_thresh]",
-    "recipe[monasca_agent]"
+    "recipe[monasca_thresh]"
   ],
   "env_run_lists": {
   }
