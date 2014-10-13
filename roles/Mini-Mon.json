@@ -24,31 +24,9 @@
         }
       }
     },
-    "influxdb": {
-      "config": {
-        "logging": {
-          "file": "/opt/influxdb/shared/influxdb.log"
-        },
-        "raft": {
-          "port": 9090
-        }
-      },
-      "version": "0.8.1"
-    },
     "java": {
       "install_flavor": "openjdk",
       "jdk_version": "7"
-    },
-    "kafka": {
-      "listen_address": "192.168.10.4",
-      "topics": {
-        "metrics": { "replicas": 1, "partitions": 4 },
-        "events": { "replicas": 1, "partitions": 4 },
-        "raw-events": { "replicas": 1, "partitions": 4 },
-        "transformed-events": { "replicas": 1, "partitions": 4 },
-        "alarm-state-transitions": { "replicas": 1, "partitions": 4 },
-        "alarm-notifications": { "replicas": 1, "partitions": 4 }
-      }
     },
     "percona": {
       "backup": {
@@ -89,16 +67,7 @@
   "run_list": [
     "recipe[mini-mon]",
     "recipe[percona::cluster]",
-    "recipe[monasca_schema::mysql]",
-    "recipe[zookeeper]",
-    "recipe[kafka]",
     "recipe[mini-mon::postfix]",
-    "recipe[kafka::create_topics]",
-    "recipe[monasca_notification]",
-    "recipe[influxdb]",
-    "recipe[monasca_schema::influxdb]",
-    "recipe[sysctl]",
-    "recipe[monasca_persister]",
     "recipe[monasca_api]",
     "recipe[storm::nimbus]",
     "recipe[storm::supervisor]",

@@ -63,6 +63,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       chef.data_bags_path = "data_bags"
       chef.add_role "Mini-Mon"
     end
+    mm.vm.provision "ansible" do |ansible|
+      ansible.playbook = "mini-mon.yml"
+    end
+    # 2nd provision is for the schema, it is simpler to do 2 runs than to force flush handlers or abandon them
+    mm.vm.provision "ansible" do |ansible|
+      ansible.playbook = "schema.yml"
+    end
   end
 
 end
