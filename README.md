@@ -163,3 +163,7 @@ Vertica rather than influxdb. This was removed simply because it was not being a
 to split up the services and to use Vertica, these are done in test environments and production deployments, however is beyond
 the scope of this development environment. Additionaly other alternative setups including running mini-mon in HP Public Cloud
 and scripts for putting it on baremetal are also no longer supported.
+
+# Ansible
+- It needs to be installed on the workstation. Point to install page.
+- run `ansible-galaxy install -r ansible_roles`

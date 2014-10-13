@@ -1,0 +1,7 @@
+- hosts: mini-mon
+  sudo: yes
+  vars:
+    kafka_hosts: 192.168.10.4:9092
+    influxdb_vip: 192.168.10.4
+  roles:
+    - {role: monasca-persister, kafka_uri: "{{kafka_hosts}}", influxdb_host: "{{influxdb_vip}}", influxdb_user: mon_persister, influxdb_password: password}
