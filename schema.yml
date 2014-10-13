@@ -1,0 +1,14 @@
+- hosts: mini-mon
+  sudo: yes
+  vars:
+    kafka_topics:
+        metrics: { replicas: 1, partitions: 4 }
+        events: { replicas: 1, partitions: 4 }
+        raw-events: { replicas: 1, partitions: 4 }
+        transformed-events: { replicas: 1, partitions: 4 }
+        alarm-state-transitions: { replicas: 1, partitions: 4 }
+        alarm-notifications: { replicas: 1, partitions: 4 }
+    mini_mon_host: 192.168.10.4
+    zookeeper_hosts: "{{mini_mon_host}}:2181"
+  roles:
+    - monasca-schema

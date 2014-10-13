@@ -1,0 +1,10 @@
+- hosts: mini-mon
+  sudo: yes
+  vars:
+    kafka_hosts: 192.168.10.4:9092
+    mini_mon_host: 192.168.10.4
+    zookeeper_hosts: "{{mini_mon_host}}:2181"
+  roles:
+    - {role: kafka, kafka_listen_address: "{{mini_mon_host}}"}
+    - {role: monasca-persister, kafka_uri: "{{kafka_hosts}}", influxdb_host: "{{mini_mon_host}}", influxdb_user: mon_persister, influxdb_password: password}
+    - {role: monasca-notification, mysql_host: "{{mini_mon_host}}", mysql_user: notification, mysql_password: password, smtp_host: localhost}
