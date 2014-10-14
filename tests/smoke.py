@@ -42,8 +42,9 @@ import utils
 import datetime
 import psutil
 
-process_list = ('monasca-persister', 'monasca-notification', 'kafka', 'zookeeper.jar',
-                'monasca-api', 'influxdb', 'apache-storm', 'mysqld')
+process_list = ('monasca-persister', 'monasca-notification', 'kafka',
+                'zookeeper.jar', 'monasca-api', 'influxdb', 'apache-storm',
+                'mysqld')
 
 
 def get_metrics(name, dimensions, since):
@@ -83,7 +84,7 @@ def check_notifications(alarm_id, state_changes):
               file=sys.stderr)
         return False
 
-    notifications = utils.find_notifications(alarm_id,"root")
+    notifications = utils.find_notifications(alarm_id, "root")
     if len(notifications) != len(state_changes):
         print('Expected %d notifications but only found %d' %
               (len(state_changes), len(notifications)), file=sys.stderr)
@@ -118,11 +119,12 @@ def ensure_at_least(actual, desired):
         time.sleep(desired - actual)
 
 
-def wait_for_alarm_creation(alarm_definition_id):
-    print('Waiting for alarm to be created for Alarm Definition %s' % alarm_definition_id)
+def wait_for_alarm_creation(alarm_def_id):
+    print('Waiting for alarm to be created for Alarm Definition %s' %
+          alarm_def_id)
     for x in range(0, 30):
         time.sleep(1)
-        alarms = cli_wrapper.find_alarms_for_definition(alarm_definition_id)
+        alarms = cli_wrapper.find_alarms_for_definition(alarm_def_id)
         if len(alarms) == 1:
             print('Alarm was created in %d seconds' % x)
             return alarms[0]
@@ -130,8 +132,8 @@ def wait_for_alarm_creation(alarm_definition_id):
             print('%d Alarms were created. Only expected 1' % len(alarms),
                   file=sys.stderr)
             return None
-    print('Alarm was not created for Alarm Definition %s in %d seconds' % (alarm_definition_id, x),
-          file=sys.stderr)
+    print('Alarm was not created for Alarm Definition %s in %d seconds' %
+          (alarm_def_id, x), file=sys.stderr)
     return None
 
 
@@ -157,23 +159,34 @@ def smoke_test(mail_host, metric_host):
     start_time = time.time()
 
     # Create Notification through CLI
-    notification_id = cli_wrapper.create_notification(notification_name,
-                                                      notification_email_addr)
+    notif_id = cli_wrapper.create_notification(notification_name,
+                                               notification_email_addr)
 
-       # Create Alarm through CLI
+    # Create Alarm through CLI
     expression = 'max(cpu.system_perc) > 0 and ' + \
                  'max(load.avg_1_min{hostname=' + metric_host + '}) > 0'
     description = 'System CPU Utilization exceeds 1% and ' + \
                   'Load exceeds 3 per measurement period'
-    alarm_definition_id = cli_wrapper.create_alarm_definition(alarm_definition_name, expression,
-                                                              description=description,
-                                                              ok_notif_id=notification_id,
-                                                              alarm_notif_id=notification_id,
-                                                              undetermined_notif_id=notification_id)
+    alarm_def_id = cli_wrapper.create_alarm_definition(alarm_definition_name,
+                                                       expression,
+                                                       description=description,
+                                                       ok_notif_id=notif_id,
+                                                       alarm_notif_id=notif_id,
+                                                       undetermined_notif_id=notif_id)
 
     # Wait for an alarm to be created
-    alarm_id = wait_for_alarm_creation(alarm_definition_id)
+    alarm_id = wait_for_alarm_creation(alarm_def_id)
     if alarm_id is None:
+        received_num_metrics = count_metrics(metric_name, metric_dimensions,
+                                             hour_ago_str)
+        if received_num_metrics == initial_num_metrics:
+            print('Did not receive any %s metrics while waiting' %
+                  metric_name + str(dimensions),
+                  file=sys.stderr)
+        else:
+            delta = received_num_metrics - initial_num_metrics
+            print('Received %d %s metrics while waiting' %
+                  (delta, metric_name), file=sys.stderr)
         return False
 
     # Ensure it is created in the right state
@@ -238,7 +251,7 @@ def find_processes():
     are running before starting the smoke test """
     process_missing = []
 
-    for process in process_list:  # process_list is a global defined at top of module
+    for process in process_list:  # global defined at top of module
         process_found_flag = False
 
         for item in psutil.process_iter():
@@ -259,7 +272,8 @@ def find_processes():
 
 
 def main():
-    # May be able to delete this test because the find_process check should validate the notification engine present.
+    # May be able to delete this test because the find_process check should
+    # validate the notification engine present.
     if not utils.ensure_has_notification_engine():
         return 1
 

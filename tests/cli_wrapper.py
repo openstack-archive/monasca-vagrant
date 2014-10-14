@@ -24,7 +24,8 @@ def find_alarm_definition_by_name(name):
 def delete_alarm_definition_if_exists(name):
     alarm_json = find_alarm_definition_by_name(name)
     if alarm_json:
-        run_mon_cli(['alarm-definition-delete', alarm_json['id']], useJson=False)
+        run_mon_cli(['alarm-definition-delete', alarm_json['id']],
+                    useJson=False)
 
 
 def delete_notification_if_exists(notification_name):
@@ -74,12 +75,13 @@ def change_alarm_state(alarm_id, new_state):
 
 
 def find_alarms_for_definition(alarm_definition_id):
-    result_json = run_mon_cli(['alarm-list', "--alarm-definition", alarm_definition_id])
+    result_json = run_mon_cli(['alarm-list', "--alarm-definition",
+                              alarm_definition_id])
     return [alarm['id'] for alarm in result_json]
-    
-    
-def create_alarm_definition(name, expression, description=None, ok_notif_id=None,
-                            alarm_notif_id=None,
+
+
+def create_alarm_definition(name, expression, description=None,
+                            ok_notif_id=None, alarm_notif_id=None,
                             undetermined_notif_id=None):
     args = ['alarm-definition-create']
     add_argument_if_given(args, '--description', description)

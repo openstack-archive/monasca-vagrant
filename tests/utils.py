@@ -83,9 +83,9 @@ def get_api_host():
 
 def set_if_not_env(name, default):
     if name not in os.environ:
-         os.environ[name] = default
+        os.environ[name] = default
     elif default != os.environ[name]:
-         print('%s already set to %s' % (name, os.environ[name]))
+        print('%s already set to %s' % (name, os.environ[name]))
 
 
 def setup_cli():

@@ -96,7 +96,8 @@ def main():
     mon_client = utils.create_mon_client()
 
     try:
-        # Create 3 notifications with different emails, root, kafka, monasca-agent
+        # Create 3 notifications with different emails, root, kafka,
+        # and monasca-agent
         email1 = "root"
         email2 = "kafka"
         email3 = "monasca-agent"
