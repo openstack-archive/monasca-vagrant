@@ -280,7 +280,7 @@ def main():
     utils.setup_cli()
 
     mail_host = 'localhost'
-    metric_host = subprocess.check_output(['hostname']).strip()
+    metric_host = subprocess.check_output(['hostname', '-f']).strip()
 
     if find_processes():
         if not smoke_test(mail_host, metric_host):
