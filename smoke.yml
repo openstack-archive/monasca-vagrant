@@ -1,0 +1,7 @@
+- hosts: mini-mon
+  sudo: yes
+  tasks:
+    - name: Run the smoke test
+      command: /vagrant/tests/smoke.py
+      register: smoke
+    - debug: var=smoke.stdout_lines
