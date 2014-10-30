@@ -1,0 +1,8 @@
+Verified+2: Jenkins
+Code-Review+2: David Schroeder <david.schroeder@hp.com>
+Workflow+1: David Schroeder <david.schroeder@hp.com>
+Submitted-by: Jenkins
+Submitted-at: Thu, 30 Oct 2014 20:44:36 +0000
+Reviewed-on: https://review.openstack.org/127999
+Project: stackforge/monasca-vagrant
+Branch: refs/heads/master
