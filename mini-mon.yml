@@ -81,7 +81,7 @@
        kafka_uri: "{{kafka_hosts}}",
        influxdb_user: mon_persister,
        influxdb_password: password,
-       tags: [influxdb]}
+       tags: [persister]}
     - {role: tkuhlman.monasca-notification,
        mysql_user: notification,
        mysql_password: password,

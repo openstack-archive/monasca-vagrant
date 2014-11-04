@@ -102,8 +102,9 @@ sudo vagrant plugin install vagrant-cachier
 To edit the Ansible roles I suggest downloading the full git source of the role and putting it in
 your ansible path. Then though you can rerun `vagrant provision` to test your changes, often it is
 easier to run ansible directly. For this to work smoothly add these vagrant specific settings to
-your local ansible configuration
-    
+your local ansible configuration (~/.ansible.cfg):
+
+    [defaults]
     hostfile = .vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory
     private_key_file = ~/.vagrant.d/insecure_private_key
     remote_user = vagrant
