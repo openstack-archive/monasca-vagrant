@@ -22,6 +22,7 @@
     - name: Install python-dev
       apt: name=python-dev state=present
   roles:
+    - {role: tkuhlman.zookeeper, tags: [zookeeper]}
     - {role: tkuhlman.kafka, kafka_listen_address: "{{mini_mon_host}}", tags: [kafka]}
     - {role: stympy.influxdb, tags: [influxdb]}
     - {role: tkuhlman.percona, mysql_root_password: password, percona_package: percona-xtradb-cluster-56, tags: [mysql, percona]}
