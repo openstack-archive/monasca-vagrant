@@ -207,7 +207,10 @@ def smoke_test(mail_host, metric_host):
 
     new_state = 'OK'
     states.append(new_state)
-    cli_wrapper.change_alarm_state(alarm_id, new_state)
+    if not cli_wrapper.change_alarm_state(alarm_id, new_state):
+        print('Unabled to change Alarm state', file=sys.stderr)
+        return False
+
     # There is a bug in the API which allows this to work. Soon that
     # will be fixed and this will fail
     if len(sys.argv) > 1:
