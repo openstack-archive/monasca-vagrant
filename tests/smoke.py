@@ -22,7 +22,7 @@
 
         OS_USERNAME
         OS_PASSWORD
-        OS_TENANT_NAME
+        OS_PROJECT_NAME
         OS_AUTH_URL
         MONASCA_API_URL
 

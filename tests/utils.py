@@ -15,7 +15,7 @@ from monagent.common.keystone import Keystone
 
 OS_USERNAME = 'mini-mon'
 OS_PASSWORD = 'password'
-OS_TENANT_NAME = 'mini-mon'
+OS_PROJECT_NAME = 'mini-mon'
 OS_AUTH_URL = 'http://192.168.10.5:35357/v3/'
 
 
@@ -94,7 +94,7 @@ def setup_cli():
     # These need to be set because we are invoking the CLI as a process
     set_if_not_env('OS_USERNAME', OS_USERNAME)
     set_if_not_env('OS_PASSWORD', OS_PASSWORD)
-    set_if_not_env('OS_TENANT_NAME', OS_TENANT_NAME)
+    set_if_not_env('OS_PROJECT_NAME', OS_PROJECT_NAME)
     set_if_not_env('OS_AUTH_URL', OS_AUTH_URL)
     set_if_not_env('MONASCA_API_URL', 'http://' + api_host + ':8080/v2.0/')
     os.environ['http_proxy'] = ''
@@ -106,7 +106,7 @@ def setup_cli():
 def create_mon_client():
     api_host = get_api_host()
 
-    token = get_token(OS_USERNAME, OS_PASSWORD, OS_TENANT_NAME,
+    token = get_token(OS_USERNAME, OS_PASSWORD, OS_PROJECT_NAME,
                       OS_AUTH_URL)
 
     api_version = '2_0'
@@ -115,11 +115,11 @@ def create_mon_client():
     return client.Client(api_version, endpoint, **kwargs)
 
 
-def get_token(os_username, os_password, os_tenant_name, os_auth_url):
+def get_token(os_username, os_password, os_project_name, os_auth_url):
     keystone = Keystone(os_auth_url,
                         os_username,
                         os_password,
-                        os_tenant_name)
+                        os_project_name)
 
     return keystone.refresh_token()
 
