@@ -1,0 +1,8 @@
+Verified+2: Jenkins
+Code-Review+2: Deklan Dieterly <deklan.dieterly@hp.com>
+Workflow+1: Deklan Dieterly <deklan.dieterly@hp.com>
+Submitted-by: Jenkins
+Submitted-at: Wed, 05 Nov 2014 19:05:57 +0000
+Reviewed-on: https://review.openstack.org/132899
+Project: stackforge/monasca-vagrant
+Branch: refs/heads/master
