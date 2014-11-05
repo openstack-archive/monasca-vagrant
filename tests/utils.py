@@ -16,7 +16,7 @@ from monagent.common.keystone import Keystone
 OS_USERNAME = 'mini-mon'
 OS_PASSWORD = 'password'
 OS_TENANT_NAME = 'mini-mon'
-OS_AUTH_URL = 'http://192.168.10.5:35357/'
+OS_AUTH_URL = 'http://192.168.10.5:35357/v3/'
 
 
 def check_alarm_history(alarm_id, states):
@@ -95,8 +95,7 @@ def setup_cli():
     set_if_not_env('OS_USERNAME', OS_USERNAME)
     set_if_not_env('OS_PASSWORD', OS_PASSWORD)
     set_if_not_env('OS_TENANT_NAME', OS_TENANT_NAME)
-    set_if_not_env('OS_AUTH_URL', OS_AUTH_URL + 'v2.0/')
-    # I don't know v2.0 is needed for CLI, but v3 if client accessed directly
+    set_if_not_env('OS_AUTH_URL', OS_AUTH_URL)
     set_if_not_env('MONASCA_API_URL', 'http://' + api_host + ':8080/v2.0/')
     os.environ['http_proxy'] = ''
     os.environ['https_proxy'] = ''
@@ -107,9 +106,8 @@ def setup_cli():
 def create_mon_client():
     api_host = get_api_host()
 
-    # See above comment for v3 vs v2.0
     token = get_token(OS_USERNAME, OS_PASSWORD, OS_TENANT_NAME,
-                      OS_AUTH_URL + 'v3/')
+                      OS_AUTH_URL)
 
     api_version = '2_0'
     endpoint = 'http://' + api_host + ':8080/v2.0'
