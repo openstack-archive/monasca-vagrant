@@ -1,0 +1,8 @@
+---
+mysql_user: root
+mysql_pass: pass
+rmq_user: guest
+rmq_pass: pass
+rmq_nodes: rabbit@devstack
+rmq_queues: conductor
+rmq_exchanges: nova,cinder,ceilometer,glance,keystone,neutron,heat,ironic,openstack
