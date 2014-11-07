@@ -63,6 +63,10 @@
               host_name: 192.168.10.5
               alive_test: ssh
     mysql_host: "{{mini_mon_host}}"
+    mysql_users:
+      notification: password
+      monapi: password
+      thresh: password
     zookeeper_hosts: "{{mini_mon_host}}:2181"
   roles:
     - {role: tkuhlman.monasca-schema, tags: [schema]}
