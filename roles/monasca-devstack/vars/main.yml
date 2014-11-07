@@ -1,0 +1,3 @@
+---
+rabbitmq_cnf_file: /root/.rabbitmq.cnf
+mysql_cnf_file: /root/.my.cnf

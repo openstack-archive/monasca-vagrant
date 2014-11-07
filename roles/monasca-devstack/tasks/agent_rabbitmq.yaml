@@ -1,0 +1,19 @@
+---
+- name: Agent RabbitMQ Plugin - Check rabbitmq management plugin
+  shell: /usr/lib/rabbitmq/bin/rabbitmq-plugins list -e | grep -c rabbitmq_management
+  ignore_errors: True
+  register: rabbitmq_management_enabled
+
+- name: Agent RabbitMQ Plugin - Enable rabbitmq management plugin
+  command: /usr/lib/rabbitmq/bin/rabbitmq-plugins enable rabbitmq_management
+  when: rabbitmq_management_enabled.stdout == "0"
+  notify:
+    - restart rabbitmq
+    - run monasca-setup
+
+- name: Agent RabbitMQ Plugin - Create/update rabbitmq config
+  template: dest={{ rabbitmq_cnf_file }} owner=root group=root mode=0600 src=rabbitmq_cnf.j2
+  notify:
+    - restart rabbitmq
+    - run monasca-setup
+

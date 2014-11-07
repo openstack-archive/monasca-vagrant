@@ -1,13 +1,16 @@
 - hosts: devstack
   sudo: yes
   vars:
-    keystone_url: http://192.168.10.5:35357/v3
+    monasca_api_host: 192.168.10.4
     monasca_agent:
       user: monasca-agent
       password: password
       project: mini-mon
       service: monitoring
-    monasca_api_url: http://192.168.10.4:8080/v2.0
+    minimon:
+      user: mini-mon
+      password: password
+    monasca_api_url: http://{{ monasca_api_host }}:8080/v2.0
     monasca_checks:
       host_alive:
         init_config:
@@ -19,5 +22,23 @@
               name: mini-mon
               host_name: 192.168.10.4
               alive_test: ssh
+    keystone_url: http://192.168.10.5:35357/v2.0
+    keystone_admin_token: ADMIN
+    keystone_users:
+      mini-mon:
+        tenant: mini-mon
+        password: password
+      monasca-agent:
+        password: password
+        tenant: mini-mon
+        role: monasca-agent
+    keystone_endpoint:
+      name: monasca
+      host: "{{ monasca_api_host }}"
+
   roles:
+    - {role: tkuhlman.monasca-ui, tags: [devstack]}
+    - {role: tkuhlman.monasca-keystone, tags: [devstack]}
+    - {role: monasca-devstack, tags: [devstack]}
     - {role: tkuhlman.monasca-agent, tags: [agent]}
+

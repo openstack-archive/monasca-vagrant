@@ -1,0 +1,9 @@
+---
+- name: install python-mysqldb package
+  apt: name=python-mysqldb state=present
+
+- name: create/update mysql config
+  template: dest={{ mysql_cnf_file }} owner=root group=root mode=0600 src=my_cnf.j2
+  notify:
+    - run monasca-setup
+

@@ -1,0 +1,3 @@
+---
+- include: agent_rabbitmq.yaml tags=devstack
+- include: agent_mysql.yaml tags=devstack
