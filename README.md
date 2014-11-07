@@ -83,8 +83,8 @@ When someone updates the config, this process should allow you to bring up an up
 
 - `git pull`
 - `ansible-galaxy install -r ansible_roles -p ./roles -f`
-- `vagrant box update`
-- `vagrant destroy <vm>` Where `<vm>` is the name of the VM being updated, for example 'vertica'
+- `vagrant box update` Only needed rarely
+- `vagrant destroy <vm>` Where `<vm>` is the name of the VM being updated, for example 'mini-mon'
 - `vagrant up`
 
 ## Improving Provisioning Speed
