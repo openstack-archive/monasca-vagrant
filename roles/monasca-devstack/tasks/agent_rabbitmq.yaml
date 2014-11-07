@@ -1,0 +1,10 @@
+---
+- name: Agent RabbitMQ Plugin - Activate management plugin
+  rabbitmq_plugin: names=rabbitmq_management state=enabled new_only=no
+
+- name: Agent RabbitMQ Plugin - Create/update rabbitmq config
+  template: dest={{ rabbitmq_cnf_file }} owner=root group=root mode=0600 src=rabbitmq_cnf.j2
+  notify:
+    - restart rabbitmq
+    - run monasca-setup
+

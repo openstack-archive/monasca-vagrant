@@ -5,4 +5,5 @@
 .settings
 *.deb
 *.pyc
-roles
+roles/tkuhlman.*
+roles/stympy.influxdb
