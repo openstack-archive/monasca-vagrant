@@ -181,7 +181,7 @@ def smoke_test(mail_host, metric_host):
                                              hour_ago_str)
         if received_num_metrics == initial_num_metrics:
             print('Did not receive any %s metrics while waiting' %
-                  metric_name + str(dimensions),
+                  metric_name + str(metric_dimensions),
                   file=sys.stderr)
         else:
             delta = received_num_metrics - initial_num_metrics
