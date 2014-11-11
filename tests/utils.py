@@ -96,7 +96,6 @@ def setup_cli():
     set_if_not_env('OS_PASSWORD', OS_PASSWORD)
     set_if_not_env('OS_PROJECT_NAME', OS_PROJECT_NAME)
     set_if_not_env('OS_AUTH_URL', OS_AUTH_URL)
-    set_if_not_env('MONASCA_API_URL', 'http://' + api_host + ':8080/v2.0/')
     os.environ['http_proxy'] = ''
     os.environ['https_proxy'] = ''
     os.environ['HTTP_PROXY'] = ''

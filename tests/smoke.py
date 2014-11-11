@@ -24,7 +24,6 @@
         OS_PASSWORD
         OS_PROJECT_NAME
         OS_AUTH_URL
-        MONASCA_API_URL
 
     TODO:
         1. Add more logic to give ideas of why a particular step failed, for
