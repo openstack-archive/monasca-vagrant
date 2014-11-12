@@ -71,7 +71,8 @@ def change_alarm_state(alarm_id, new_state):
     if result_json['state'] != new_state:
         print('Alarm patch failed, expected state of %s but was %s' %
               (result_json['state'], new_state), file=sys.stderr)
-        return 1
+        return False
+    return True
 
 
 def find_alarms_for_definition(alarm_definition_id):
