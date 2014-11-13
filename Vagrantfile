@@ -29,13 +29,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     ds.vm.hostname = "devstack"
     ds.vm.box = "monasca/devstack"
     ds.vm.network :private_network, ip: "192.168.10.5"
-    ds.vm.network :private_network, ip: "10.1.2.44"
     ds.vm.provider "virtualbox" do |vb|
       vb.memory = 7168
       vb.cpus = 4
     end
     ds.vm.provision "ansible" do |ansible|
       ansible.playbook = "devstack.yml"
+      ansible.inventory_path = '.ansible_hosts'
     end
   end
 
@@ -50,6 +50,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
     mm.vm.provision "ansible" do |ansible|
       ansible.playbook = "mini-mon.yml"
+      ansible.inventory_path = '.ansible_hosts'
     end
   end
 
