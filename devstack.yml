@@ -22,7 +22,7 @@
               name: mini-mon
               host_name: 192.168.10.4
               alive_test: ssh
-    keystone_url: http://192.168.10.5:35357/v2.0
+    keystone_url: http://192.168.10.5:35357/v3
     keystone_admin_token: ADMIN
     keystone_users:
       mini-mon:
