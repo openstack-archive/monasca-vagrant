@@ -57,6 +57,8 @@ ansible-galaxy install -r ansible_roles -p ./roles
 # Using mini-mon
 ## Starting mini-mon
 - After installing to start just run `vagrant up`. The first run will download required vagrant boxes.
+- When done you can run `vagrant halt` to stop the boxes and later run `vagrant up` to turn them back on. To destroy
+  and rebuild run `vagrant destroy -f`. It is typically fastest to use halt/up than to rebuild your vm.
 - Run `vagrant help` for more info on standard vagrant commands.
 
 ## Smoke test
@@ -79,13 +81,13 @@ Alternatively a very simple playbook is available for running the test, `ansible
 - The keystone credentials used are mini-mon/password in the mini-mon project. The keystone services in 192.168.10.5 on standard ports.
 
 ## Updating
-When someone updates the config, this process should allow you to bring up an updated VM, though not every step is needed at all times.
+When someone updates the config, this process should allow you update the VMs, though not every step is needed at all times.
 
 - `git pull`
 - `ansible-galaxy install -r ansible_roles -p ./roles -f`
 - `vagrant box update` Only needed rarely
-- `vagrant destroy <vm>` Where `<vm>` is the name of the VM being updated, for example 'mini-mon'
-- `vagrant up`
+- `vagrant provision`, if the vms where halted run `vagrant up` first.
+  - It is also possible to Ansible directly to update just parts of the system. See [Ansible Development](#ansible-development) for more info.
 
 ## Improving Provisioning Speed
 
@@ -100,8 +102,9 @@ sudo vagrant plugin install vagrant-cachier
 ## Ansible Development
 
 To edit the Ansible roles I suggest downloading the full git source of the role and putting it in
-your ansible path. Then though you can rerun `vagrant provision` to test your changes, often it is
-easier to run ansible directly. For this to work smoothly add these vagrant specific settings to
+your ansible path. Then though you can rerun `vagrant provision` to test your changes. Often it is
+easier to run ansible directly and specify tags, ie `ansible-playbook mini-mon --tags api,persister`.
+For this to work smoothly add these vagrant specific settings to
 your local ansible configuration (~/.ansible.cfg):
 
     [defaults]
