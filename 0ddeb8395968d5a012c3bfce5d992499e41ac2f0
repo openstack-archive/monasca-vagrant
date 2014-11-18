@@ -1,0 +1,10 @@
+Verified+2: Jenkins
+Workflow+1: Roland Hochmuth <roland.hochmuth@hp.com>
+Code-Review+2: Tim Kuhlman <tim.kuhlman@hp.com>
+Workflow+1: Tim Kuhlman <tim.kuhlman@hp.com>
+Code-Review+1: Gary Hessler <gary.hessler@hp.com>
+Submitted-by: Jenkins
+Submitted-at: Tue, 18 Nov 2014 23:56:00 +0000
+Reviewed-on: https://review.openstack.org/135391
+Project: stackforge/monasca-vagrant
+Branch: refs/heads/master
