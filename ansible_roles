@@ -1,5 +1,3 @@
-monasca-devstack
-
 tkuhlman.kafka
 tkuhlman.monasca-agent
 tkuhlman.monasca-api
