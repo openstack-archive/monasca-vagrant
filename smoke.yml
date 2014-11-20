@@ -1,5 +1,5 @@
 - hosts: mini-mon
-  sudo: yes
+  gather_facts: no
   tasks:
     - name: Run the smoke test
       command: /vagrant/tests/smoke.py

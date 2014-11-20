@@ -7,3 +7,4 @@
 *.pyc
 roles/tkuhlman.*
 roles/stympy.influxdb
+ansible.cfg
