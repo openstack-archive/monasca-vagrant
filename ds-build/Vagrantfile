@@ -42,6 +42,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       vb.cpus = 4
     end
     ds.vm.provision :chef_solo do |chef|
+      chef.cookbooks_path = "cookbooks"
       chef.roles_path = "roles"
       chef.add_role "Devstack-Build"
       chef.arguments = '--force-formatter'
