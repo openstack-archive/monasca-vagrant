@@ -26,6 +26,7 @@
     - {role: tkuhlman.kafka, kafka_listen_address: "{{mini_mon_host}}", tags: [kafka]}
     - {role: stympy.influxdb, tags: [influxdb]}
     - {role: tkuhlman.percona, mysql_root_password: password, percona_package: percona-xtradb-cluster-56, tags: [mysql, percona]}
+    - {role: cacert, cacert_name: monasca_test_ca.crt, tags: [cacert]}
 
 - name: Sets up schema and Installs Monasca apps
   hosts: mini-mon
