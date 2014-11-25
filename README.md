@@ -111,6 +111,7 @@ your local ansible configuration (~/.ansible.cfg or a personal ansible.cfg in th
     hostfile = .ansible_hosts
     private_key_file = ~/.vagrant.d/insecure_private_key
     remote_user = vagrant
+    host_key_checking = False
 
 ## Running behind a Web Proxy
 If you are behind a proxy you can install the `vagrant-proxyconf` pluging to have Vagrant honor standard proxy-related environment variables and set the

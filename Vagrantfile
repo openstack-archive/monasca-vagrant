@@ -33,11 +33,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       vb.memory = 7168
       vb.cpus = 4
     end
-    # In Vagrant 1.6.5 there is a race condition where in some instances the ansible provisioner starts before ssh is ready the sleep is a workaround
-    ds.vm.provision "shell", inline: 'sleep 1'
     ds.vm.provision "ansible" do |ansible|
       ansible.playbook = "devstack.yml"
       ansible.inventory_path = '.ansible_hosts'
+      ansible.host_key_checking = false
     end
   end
 
@@ -50,11 +49,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       vb.memory = 6144
       vb.cpus = 4
     end
-    # In Vagrant 1.6.5 there is a race condition where in some instances the ansible provisioner starts before ssh is ready the sleep is a workaround
-    mm.vm.provision "shell", inline: 'sleep 1'
     mm.vm.provision "ansible" do |ansible|
       ansible.playbook = "mini-mon.yml"
       ansible.inventory_path = '.ansible_hosts'
+      ansible.host_key_checking = false
     end
   end
 
