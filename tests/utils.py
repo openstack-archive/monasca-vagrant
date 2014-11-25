@@ -1,10 +1,10 @@
 from __future__ import print_function
+import cli_wrapper
+import os
+import re
+import subprocess
 import sys
 import time
-import os
-import json
-import subprocess
-import cli_wrapper
 from monascaclient import client
 from monagent.common.keystone import Keystone
 
@@ -139,7 +139,15 @@ def find_notifications(alarm_id, user):
     except subprocess.CalledProcessError as e:
         print(e, file=sys.stderr)
         sys.exit(1)
+
+    previous = ''
     for line in stdout.splitlines():
+        # Get the state; the alarm_id always follows the state message
         if alarm_id in line:
-            result.append(json.loads(line)['state'])
+            """ In the notification message the state verb is framed by
+            'transitioned to the ' and ' state'
+            """
+            result.append(re.search('transitioned to the (.+?) state',
+                                    previous).group(1))
+        previous = line
     return result
