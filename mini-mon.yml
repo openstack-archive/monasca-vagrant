@@ -99,3 +99,43 @@
        mysql_password: password,
        tags: [thresh]}
     - {role: tkuhlman.monasca-agent, tags: [agent]}
+
+- name: Define default alarms
+  hosts: mini-mon
+  gather_facts: no
+  vars:
+    keystone_url: http://192.168.10.5:35357/v3/
+    keystone_user: mini-mon
+    keystone_password: password
+  tasks:
+    - name: Create System Alarm Definitions
+      monasca_alarm_definition:
+        name: "{{item.name}}"
+        expression: "{{item.expression}}"
+        keystone_url: "{{keystone_url}}"
+        keystone_user: "{{keystone_user}}"
+        keystone_password: "{{keystone_password}}"
+      with_items:
+        - { name: "High CPU usage", expression: "avg(cpu.idle_perc) < 10 times 3" }
+        - { name: "Disk Inode Usage", expression: "disk.inode_used_perc > 90" }
+        - { name: "Disk Usage", expression: "disk.space_used_perc > 90" }
+        - { name: "Memory usage", expression: "avg(mem.usable_perc) < 10 times 3" }
+        - { name: "Network Errors", expression: "net.in_errors >5 or net.out_errors > 5" }
+      tags:
+        - alarms
+        - system_alarms
+    - name: Create Monasca Alarm Definitions
+      monasca_alarm_definition:
+        name: "{{item.name}}"
+        expression: "{{item.expression}}"
+        keystone_url: "{{keystone_url}}"
+        keystone_user: "{{keystone_user}}"
+        keystone_password: "{{keystone_password}}"
+      with_items:
+        - { name: "Monasca Agent emit time", expression: "avg(monasca.emit_time_sec) > 2 times 3" }
+        - { name: "Monasca Agent collection time", expression: "avg(monasca.collection_time_sec) > 5 times 3" }
+        - { name: "Monasca Configuration DB query time", expression: "avg(monasca.config_db_time.95percentile) > 5 times 3" }
+        - { name: "Zookeeper Average Latency", expression: "avg(zookeeper.avg_latency_sec) > 1 times 3" }
+      tags:
+        - alarms
+        - monasca_alarms
