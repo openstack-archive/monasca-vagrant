@@ -103,7 +103,7 @@ sudo vagrant plugin install vagrant-cachier
 
 To edit the Ansible roles I suggest downloading the full git source of the role and putting it in
 your ansible path. Then though you can rerun `vagrant provision` to test your changes. Often it is
-easier to run ansible directly and specify tags, ie `ansible-playbook mini-mon --tags api,persister`.
+easier to run ansible directly and specify tags, ie `ansible-playbook mini-mon.yml --tags api,persister`.
 For this to work smoothly add these vagrant specific settings to
 your local ansible configuration (~/.ansible.cfg or a personal ansible.cfg in this dir):
 

@@ -68,6 +68,7 @@
       notification: password
       monapi: password
       thresh: password
+    storm_worker_ports: [6701, 6702]
     zookeeper_hosts: "{{mini_mon_host}}:2181"
   roles:
     - {role: tkuhlman.monasca-schema, tags: [schema]}
