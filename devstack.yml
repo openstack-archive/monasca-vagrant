@@ -18,10 +18,9 @@
           ssh_timeout: 0.5
           ping_timeout: 1
         instances:
-          - mini-mon:
-              name: mini-mon
-              host_name: 192.168.10.4
-              alive_test: ssh
+          - name: mini-mon
+            host_name: 192.168.10.4
+            alive_test: ssh
     keystone_url: http://192.168.10.5:35357/v3
     keystone_admin_token: ADMIN
     keystone_users:
