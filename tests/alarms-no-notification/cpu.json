@@ -1,6 +1,0 @@
-{
-  "description": "mini-mon cpu alarm",
-  "name": "compute.cpu",
-  "expression": "compute.cpu{hostname=vertica} >= 90",
-  "alarm_actions": [ ]
-}
