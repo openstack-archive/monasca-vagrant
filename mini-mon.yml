@@ -33,7 +33,7 @@
   sudo: yes
   vars:
     mini_mon_host: 192.168.10.4
-    influxdb_host: "{{mini_mon_host}}"
+    influxdb_url: "http://{{mini_mon_host}}:8086"
     influxdb_users:
       mon_api: password
       mon_persister: password
@@ -83,7 +83,6 @@
        mysql_password: password,
        tags: [api]}
     - {role: tkuhlman.monasca-persister,
-       kafka_uri: "{{kafka_hosts}}",
        influxdb_user: mon_persister,
        influxdb_password: password,
        tags: [persister]}
