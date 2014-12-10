@@ -42,16 +42,16 @@ brew tap phinze/cask
 brew install brew-cask
 brew cask install virtualbox 
 brew cask install vagrant
-brew install ansible
-ansible-galaxy install -r ansible_roles -p ./roles
+brew install ansible  # Version 1.8+ is required
+ansible-galaxy install -r requirements.yml -p ./roles
 ```
 
 #### Linux (Ubuntu)
 ```
 sudo apt-get install virtualbox
 #Download and install latest vagrant from http://www.vagrantup.com/downloads.html
-sudo pip install ansible
-ansible-galaxy install -r ansible_roles -p ./roles
+sudo pip install ansible  # Version 1.8+ is required
+ansible-galaxy install -r requirements.yml -p ./roles
 ```
 
 # Using mini-mon
@@ -84,7 +84,7 @@ Alternatively a very simple playbook is available for running the test, `ansible
 When someone updates the config, this process should allow you update the VMs, though not every step is needed at all times.
 
 - `git pull`
-- `ansible-galaxy install -r ansible_roles -p ./roles -f`
+- `ansible-galaxy install -r requirements.yml -p ./roles -f`
 - `vagrant box update` Only needed rarely
 - `vagrant provision`, if the vms where halted run `vagrant up` first.
   - It is also possible to Ansible directly to update just parts of the system. See [Ansible Development](#ansible-development) for more info.
