@@ -115,10 +115,11 @@ def create_mon_client():
 
 
 def get_token(os_username, os_password, os_project_name, os_auth_url):
-    keystone = Keystone(os_auth_url,
-                        os_username,
-                        os_password,
-                        os_project_name)
+    kwargs = { 'keystone_url': os_auth_url,
+               'username': os_username,
+               'password': os_password,
+              'project_domain_name':os_project_name}
+    keystone = Keystone(kwargs)
 
     return keystone.refresh_token()
 
