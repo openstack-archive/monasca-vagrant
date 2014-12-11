@@ -1,7 +1,0 @@
----
-- name: Copy CA cert
-  copy: src={{cacert_src}} dest=/usr/local/share/ca-certificates/{{cacert_name}}
-  register: copy
-- name: Run update-ca-certificates
-  command: update-ca-certificates
-  when: copy | changed

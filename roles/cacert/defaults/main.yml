@@ -1,3 +1,0 @@
----
-cacert_src: cacert.crt
-cacert_name: "{{cacert_src | basename}}"
