@@ -105,14 +105,33 @@
     keystone_user: mini-mon
     keystone_password: password
   tasks:
+    - name: Setup root email notification method
+      monasca_notification_method:
+        name: "Email Root"
+        type: 'EMAIL'
+        address: 'root@localhost'
+        keystone_url: "{{keystone_url}}"
+        keystone_user: "{{keystone_user}}"
+        keystone_password: "{{keystone_password}}"
+      tags:
+        - alarms
+        - system_alarms
+        - monasca_alarms
+      register: out
     - name: Create System Alarm Definitions
       monasca_alarm_definition:
         name: "{{item.name}}"
         expression: "{{item.expression}}"
-        keystone_url: "{{keystone_url}}"
-        keystone_user: "{{keystone_user}}"
-        keystone_password: "{{keystone_password}}"
+        keystone_token: "{{out.keystone_token}}"
+        monasca_api_url: "{{out.monasca_api_url}}"
+        alarm_actions:
+          - "{{out.notification_method_id}}"
+        ok_actions:
+          - "{{out.notification_method_id}}"
+        undetermined_actions:
+          - "{{out.notification_method_id}}"
       with_items:
+        - { name: "Host Alive Alarm", expression: "host_alive_status > 0" }
         - { name: "High CPU usage", expression: "avg(cpu.idle_perc) < 10 times 3" }
         - { name: "Disk Inode Usage", expression: "disk.inode_used_perc > 90" }
         - { name: "Disk Usage", expression: "disk.space_used_perc > 90" }
@@ -125,9 +144,14 @@
       monasca_alarm_definition:
         name: "{{item.name}}"
         expression: "{{item.expression}}"
-        keystone_url: "{{keystone_url}}"
-        keystone_user: "{{keystone_user}}"
-        keystone_password: "{{keystone_password}}"
+        keystone_token: "{{out.keystone_token}}"
+        monasca_api_url: "{{out.monasca_api_url}}"
+        alarm_actions:
+          - "{{out.notification_method_id}}"
+        ok_actions:
+          - "{{out.notification_method_id}}"
+        undetermined_actions:
+          - "{{out.notification_method_id}}"
       with_items:
         - { name: "Monasca Agent emit time", expression: "avg(monasca.emit_time_sec) > 2 times 3" }
         - { name: "Monasca Agent collection time", expression: "avg(monasca.collection_time_sec) > 5 times 3" }
