@@ -10,6 +10,12 @@
     mini_mon_host: 192.168.10.4
     zookeeper_hosts: "{{mini_mon_host}}:2181"
   pre_tasks:
+    - name: Make sure apt https is availble
+      apt: name=apt-transport-https state=present
+    - name: Add in custom apt key
+      apt_key: url=https://region-a.geo-1.objects.hpcloudsvc.com/v1/46995959297574/mini-mon/public_repo/mon.gpg state=present
+    - name: Add in custom apt repo
+      apt_repository: repo='deb https://region-a.geo-1.objects.hpcloudsvc.com/v1/46995959297574/mini-mon/public_repo precise release' state=present
     - name: apt-get update
       apt: update_cache=yes
   tasks:
