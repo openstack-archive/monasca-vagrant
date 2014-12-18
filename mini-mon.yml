@@ -141,7 +141,7 @@
         - { name: "High CPU usage", expression: "avg(cpu.idle_perc) < 10 times 3" }
         - { name: "Disk Inode Usage", expression: "disk.inode_used_perc > 90" }
         - { name: "Disk Usage", expression: "disk.space_used_perc > 90" }
-        - { name: "Memory usage", expression: "avg(mem.usable_perc) < 10 times 3" }
+        - { name: "Memory usage", expression: "avg(mem.usable_perc) < 0.10 times 3" }
         - { name: "Network Errors", expression: "net.in_errors >5 or net.out_errors > 5" }
       tags:
         - alarms
