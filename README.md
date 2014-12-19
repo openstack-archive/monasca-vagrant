@@ -113,6 +113,9 @@ your local ansible configuration (~/.ansible.cfg or a personal ansible.cfg in th
     remote_user = vagrant
     host_key_checking = False
 
+    [ssh_connection]
+    pipelining = True  # Speeds up connections but only if requiretty is not enabled for sudo
+
 ## Running behind a Web Proxy
 If you are behind a proxy you can install the `vagrant-proxyconf` pluging to have Vagrant honor standard proxy-related environment variables and set the
 VM to use them also.
