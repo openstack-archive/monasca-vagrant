@@ -27,6 +27,7 @@
       mini-mon:
         tenant: mini-mon
         password: password
+        role: monasca-user
       monasca-agent:
         password: password
         tenant: mini-mon
