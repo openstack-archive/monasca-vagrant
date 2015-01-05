@@ -6,7 +6,7 @@ import subprocess
 import sys
 import time
 from monascaclient import client
-from monagent.common.keystone import Keystone
+from monasca_agent.common.keystone import Keystone
 
 """
     Utility methods for testing
