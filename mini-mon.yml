@@ -161,7 +161,8 @@
       with_items:
         - { name: "Monasca Agent emit time", expression: "avg(monasca.emit_time_sec) > 2 times 3" }
         - { name: "Monasca Agent collection time", expression: "avg(monasca.collection_time_sec) > 5 times 3" }
-        - { name: "Monasca Configuration DB query time", expression: "avg(monasca.config_db_time.95percentile) > 5 times 3" }
+        - { name: "Monasca Notification Configuration DB query time", expression: "avg(monasca.config_db_time.95percentile) > 5 times 3" }
+        - { name: "Monasca Notification email time", expression: "avg(monasca.email_time.95percentile) > 2 times 3" }
         - { name: "Zookeeper Average Latency", expression: "avg(zookeeper.avg_latency_sec) > 1 times 3" }
       tags:
         - alarms
