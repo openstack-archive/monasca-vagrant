@@ -74,6 +74,11 @@
       thresh: password
     storm_worker_ports: [6701, 6702]
     zookeeper_hosts: "{{mini_mon_host}}:2181"
+  tasks:
+    - name: Setup the monasca cli credentials in the default environment
+      copy: src=tests/env.sh dest=/etc/profile.d/monasca_cli.sh owner=root group=root mode=0644
+      tags:
+        - cli
   roles:
     - {role: monasca-schema, tags: [schema]}
     - {role: monasca-api,

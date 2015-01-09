@@ -54,31 +54,27 @@ sudo pip install ansible  # Version 1.8+ is required
 ansible-galaxy install -r requirements.yml -p ./roles
 ```
 
-# Using mini-mon
+# Using Monasca Vagrant
 ## Starting mini-mon
 - After installing to start just run `vagrant up`. The first run will download required vagrant boxes.
 - When done you can run `vagrant halt` to stop the boxes and later run `vagrant up` to turn them back on. To destroy
   and rebuild run `vagrant destroy -f`. It is typically fastest to use halt/up than to rebuild your vm.
 - Run `vagrant help` for more info on standard vagrant commands.
 
-## Smoke test
-A smoke test exists in the test directory. From within the mini-mon vm this directory is exposed to /vagrant/tests and
-so `/vagrant/tests/smoke.py` can be run when in a mini-mon terminal.
-
-Alternatively a very simple playbook is available for running the test, `ansible-playbook ./smoke.yml`
-
-## Mini-mon access information
-- Your host OS home dir is synced to `/vagrant_home` on the VM.
-- The root dir of the monasca-vagrant repo on your host OS is synced to `/vagrant` on the VM.
-- The main VM will have an IP of 192.168.10.4 that can be access from other services running on the host.
-- An additional VM running DevStack will be created at 192.168.10.5
+## Basic Monasca usage
+The full Monasca stack is running on the mini-mon vm and many devstack services on the devstack vm. A monasca-agent is installed
+on both and metrics are actively being collected.
+- You can access the horizon UI by navigating to http://192.168.10.5 and logging in as mini-mon/password. This 
+  is the UI used for devstack and it contains the Monasca plugin found at the Monitoring tab as well as Grafana used for graphing metrics.
 - Run `vagrant ssh <host>` to log in, where `<host>` is either `mini-mon` or `devstack`
+- The monasca cli is installed within both vms and the necessary environment variables loaded into the shell. This is a good way to
+  explore the metrics in the system. For example to list all metrics, run `monasca metric-list`
 
-### Internal Endpoints
-- You can access UI by navigating to http://192.168.10.5 and logging in as mini-mon with password
-- Influxdb is available at http://192.168.10.4:8083 with root/root as user/password
-- The Monasca-api is available at http://192.168.10.4:8080
-- The keystone credentials used are mini-mon/password in the mini-mon project. The keystone services in 192.168.10.5 on standard ports.
+## Smoke test
+A smoke test exists in the test directory that exercises every major piece of Monasca and culminates with an email sent by
+the notification engine. From within the mini-mon vm this directory is exposed as /vagrant/tests and
+so `/vagrant/tests/smoke.py` can be run when in a mini-mon terminal. If this test exits correctly the system is working!
+
 
 ## Updating
 When someone updates the config, this process should allow you update the VMs, though not every step is needed at all times.
@@ -88,6 +84,24 @@ When someone updates the config, this process should allow you update the VMs, t
 - `vagrant box update` Only needed rarely
 - `vagrant provision`, if the vms where halted run `vagrant up` first.
   - It is also possible to Ansible directly to update just parts of the system. See [Ansible Development](#ansible-development) for more info.
+
+## Running behind a Web Proxy
+If you are behind a proxy you can install the `vagrant-proxyconf` plugin to have Vagrant honor standard proxy-related environment variables and set the
+VM to use them also. It is important that 192.168.10.4, 192.168.10.5, 127.0.0.1 and localhost be in your no_proxy environment variable.
+```
+vagrant plugin install vagrant-proxyconf
+```
+
+# Advanced Usage
+## Access information
+- Your host OS home dir is synced to `/vagrant_home` on the VM.
+- The root dir of the monasca-vagrant repo on your host OS is synced to `/vagrant` on the VM.
+- mini-mon is at 192.168.10.4 and devstack is at 192.168.10.5
+
+### Internal Endpoints
+- Influxdb web ui is available at http://192.168.10.4:8083 with root/root as user/password
+- The Monasca-api is available at http://192.168.10.4:8080
+  - The keystone credentials used are mini-mon/password in the mini-mon project. The keystone services on 192.168.10.5 on standard ports.
 
 ## Improving Provisioning Speed
 
@@ -99,12 +113,30 @@ should help by caching repeated dependencies. To use with Vagrant simply install
 sudo vagrant plugin install vagrant-cachier
 ```
 
+# Monasca Debugging
+See this page for details on the [Monasca Architecture](https://wiki.openstack.org/wiki/Monasca).
+
+The components of the system which are part of the Monasca code base have there configuration in `/etc/monasca` and their logs
+in `/var/log/monasca`. For nearly all of these you can set the logging to higher debug level and restart. The components of the
+system which are dependencies for Monasca (zookeeper, kafka, storm, influxdb, mysql) are either in the standard Ubuntu location
+or in `/opt`.
+
+Some other helpful commands:
+- Zookeeper shell at - `/usr/share/zookeeper/bin/zkCli.sh`
+- Kafka debug commands are at `/opt/kafka/bin` in particular the `kafka-console-consumer.sh` is helpful.
+- Running `monasca-collector info` will give an report on the current state of agent checks.
+- The storm admin webui exists at `http://192.168.10.4:8088`
+- The mysql admin is root/password so you can access the db with the command `mysql -uroot -ppassword mon`
+
 ## Ansible Development
 
-To edit the Ansible roles I suggest downloading the full git source of the role and putting it in
-your ansible path. Then though you can rerun `vagrant provision` to test your changes. Often it is
+### Running Ansible directly
+
+At any point you can rerun `vagrant provision` to rerun the Ansible provisioning. Often it is
 easier to run ansible directly and specify tags, ie `ansible-playbook mini-mon.yml --tags api,persister`.
-For this to work smoothly add these vagrant specific settings to
+Also a very simple playbook is available for running the smoke test, `ansible-playbook ./smoke.yml`
+
+For these to work smoothly add these vagrant specific settings to
 your local ansible configuration (~/.ansible.cfg or a personal ansible.cfg in this dir):
 
     [defaults]
@@ -113,15 +145,18 @@ your local ansible configuration (~/.ansible.cfg or a personal ansible.cfg in th
     remote_user = vagrant
     host_key_checking = False
 
-    [ssh_connection]
-    pipelining = True  # Speeds up connections but only if requiretty is not enabled for sudo
+    # In some configurations this won't work, use only if your config permits.
+    #[ssh_connection]
+    #pipelining = True  # Speeds up connections but only if requiretty is not enabled for sudo
 
-## Running behind a Web Proxy
-If you are behind a proxy you can install the `vagrant-proxyconf` pluging to have Vagrant honor standard proxy-related environment variables and set the
-VM to use them also.
-```
-vagrant plugin install vagrant-proxyconf
-```
+### Editing Ansible Configuration
+Since there are only two VMs in this setup the Ansible configuration has no host or group variables, rather
+all variables are in the playbook. There is one playbook for each machine, `mini-mon.yml` and `devstack.yml`.
+The playbooks contain all variables, some tasks and the roles used in building the VMs.
+
+To edit the Ansible roles I suggest downloading the full git source of the role and putting it in
+your ansible path. This allows you to run your changes directly from the git copy you are working on.
+See the [Ansible docs](http://docs.ansible.com) for more details on the exact configuration needed.
 
 # Alternate Vagrant Configurations
 To run any of these alternate configs, simply run the Vagrant commands from within the subdir.

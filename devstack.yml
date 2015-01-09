@@ -35,7 +35,11 @@
     keystone_endpoint:
       name: monasca
       host: "{{ monasca_api_host }}"
-
+  tasks:
+    - name: Setup the monasca cli credentials in the default environment
+      copy: src=tests/env.sh dest=/etc/profile.d/monasca_cli.sh owner=root group=root mode=0644
+      tags:
+        - cli
   roles:
     - {role: monasca-ui, tags: [ui]}
     - {role: monasca-keystone, keystone_url: 'http://192.168.10.5:35357/v2.0', tags: [devstack, keystone]}  # uses keystone v2 still
