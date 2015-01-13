@@ -32,18 +32,36 @@
 """
 
 from __future__ import print_function
+import argparse
 import sys
 import os
-import subprocess
 import time
 import cli_wrapper
 import utils
 import datetime
 import psutil
+import smoke_configs
 
-process_list = ('monasca-persister', 'monasca-notification', 'kafka',
-                'zookeeper.jar', 'monasca-api', 'influxdb', 'apache-storm',
-                'mysqld')
+config = smoke_configs.test_config["default"]
+
+
+# parse command line arguments
+def parse_commandline_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-c', '--config', nargs='?', default='default',
+                           help='select configuration <CONFIG>')
+    return parser.parse_args()
+
+
+def set_config(config_name):
+    global config
+    try:
+        config = smoke_configs.test_config[config_name]
+        print('Using %s Configuration' % config_name)
+        return True
+    except KeyError:
+        print('Could not find config "%s"' % config_name, file=sys.stderr)
+        return False
 
 
 def get_metrics(name, dimensions, since):
@@ -77,6 +95,7 @@ def wait_for_alarm_state_change(alarm_id, old_state):
 
 
 def check_notifications(alarm_id, state_changes):
+    print("Checking Notification Engine")
     if not os.path.isfile('/etc/monasca/notification.yaml'):
         print('Notification Engine not installed on this VM,' +
               ' skipping Notifications test',
@@ -131,17 +150,19 @@ def wait_for_alarm_creation(alarm_def_id):
             print('%d Alarms were created. Only expected 1' % len(alarms),
                   file=sys.stderr)
             return None
+
     print('Alarm was not created for Alarm Definition %s in %d seconds' %
           (alarm_def_id, x), file=sys.stderr)
     return None
 
 
-def smoke_test(mail_host, metric_host):
-    notification_name = 'Monasca Smoke Test'
-    notification_email_addr = 'root@' + mail_host
-    alarm_definition_name = 'high cpu and load'
-    metric_name = 'load.avg_1_min'
-    metric_dimensions = {'hostname': metric_host}
+def smoke_test():
+    notification_name = config['notification']['name']
+    notification_email_addr = config['notification']['email_addr']
+    alarm_definition_name = config['alarm']['name']
+    metric_name = config['metric']['name']
+    metric_dimensions = config['metric']['dimensions']
+
     cleanup(notification_name, alarm_definition_name)
 
     # Query how many metrics there are for the Alarm
@@ -151,9 +172,9 @@ def smoke_test(mail_host, metric_host):
                                         hour_ago_str)
 
     if initial_num_metrics is None or initial_num_metrics == 0:
-        print('No metric %s with dimensions %s received in last hour' %
-              (metric_name, metric_dimensions), file=sys.stderr)
-        return False
+        msg = ('No metric %s with dimensions %s received in last hour' %
+               (metric_name, metric_dimensions))
+        return False, msg
 
     start_time = time.time()
 
@@ -162,53 +183,55 @@ def smoke_test(mail_host, metric_host):
                                                notification_email_addr)
 
     # Create Alarm through CLI
-    expression = 'max(cpu.system_perc) > 0 and ' + \
-                 'max(load.avg_1_min{hostname=' + metric_host + '}) > 0'
-    description = 'System CPU Utilization exceeds 1% and ' + \
-                  'Load exceeds 3 per measurement period'
-    alarm_def_id = cli_wrapper.create_alarm_definition(alarm_definition_name,
-                                                       expression,
-                                                       description=description,
-                                                       ok_notif_id=notif_id,
-                                                       alarm_notif_id=notif_id,
-                                                       undetermined_notif_id=notif_id)
+    expression = config['alarm']['expression']
+    description = config['alarm']['description']
+    alarm_def_id = cli_wrapper.create_alarm_definition(
+        alarm_definition_name,
+        expression,
+        description=description,
+        ok_notif_id=notif_id,
+        alarm_notif_id=notif_id,
+        undetermined_notif_id=notif_id)
 
     # Wait for an alarm to be created
     alarm_id = wait_for_alarm_creation(alarm_def_id)
+
     if alarm_id is None:
         received_num_metrics = count_metrics(metric_name, metric_dimensions,
                                              hour_ago_str)
         if received_num_metrics == initial_num_metrics:
             print('Did not receive any %s metrics while waiting' %
-                  metric_name + str(metric_dimensions),
-                  file=sys.stderr)
+                   metric_name + str(metric_dimensions))
         else:
             delta = received_num_metrics - initial_num_metrics
             print('Received %d %s metrics while waiting' %
-                  (delta, metric_name), file=sys.stderr)
-        return False
+                   (delta, metric_name))
+        return False, 'Alarm creation error'
 
     # Ensure it is created in the right state
     initial_state = 'UNDETERMINED'
     if not utils.check_alarm_state(alarm_id, initial_state):
-        return False
+        msg = 'Alarm is in an invalid initial state'
+        return False, msg
     states = []
     states.append(initial_state)
     state = wait_for_alarm_state_change(alarm_id, initial_state)
     if state is None:
-        return False
+        msg = 'Alarm is in an invalid state'
+        return False, msg
 
     if state != 'ALARM':
         print('Wrong final state, expected ALARM but was %s' % state,
               file=sys.stderr)
-        return False
+        msg = 'Alarm is in an invalid final state'
+        return False, msg
     states.append(state)
 
     new_state = 'OK'
     states.append(new_state)
     if not cli_wrapper.change_alarm_state(alarm_id, new_state):
-        print('Unabled to change Alarm state', file=sys.stderr)
-        return False
+        msg = 'Unable to change Alarm state'
+        return False, msg
 
     # There is a bug in the API which allows this to work. Soon that
     # will be fixed and this will fail
@@ -218,12 +241,13 @@ def smoke_test(mail_host, metric_host):
 
         state = wait_for_alarm_state_change(alarm_id, new_state)
         if state is None:
-            return False
+            msg = 'Alarm is in an unknown state'
+            return False, msg
 
         if state != final_state:
-            print('Wrong final state, expected %s but was %s' %
-                  (final_state, state), file=sys.stderr)
-            return False
+            msg = ('Wrong final state, expected %s but was %s' %
+                   (final_state, state))
+            return False, msg
 
     # If the alarm changes state too fast, then there isn't time for the new
     # metric to arrive. Unlikely, but it has been seen
@@ -233,27 +257,30 @@ def smoke_test(mail_host, metric_host):
     final_num_metrics = count_metrics(metric_name, metric_dimensions,
                                       hour_ago_str)
     if final_num_metrics <= initial_num_metrics:
-        print('No new metrics received in %d seconds' % change_time,
-              file=sys.stderr)
-        return False
+        msg = ('No new metrics received in %d seconds' % change_time)
+        return False, msg
     print('Received %d metrics in %d seconds' %
           ((final_num_metrics - initial_num_metrics),  change_time))
     if not utils.check_alarm_history(alarm_id, states):
-        return False
+        msg = 'Invalid alarm history'
+        return False, msg
 
     # Notifications are only sent out for the changes, so omit the first state
     if not check_notifications(alarm_id, states[1:]):
-        return False
+        msg = 'Could not find correct notifications for alarm %s' % alarm_id
+        return False, msg
 
-    return True
+    msg = 'No errors detected'
+    return True, msg
 
 
 def find_processes():
     """Find_process is meant to validate that all the required processes
     are running before starting the smoke test """
     process_missing = []
+    process_list = config['system_vars']['expected_processes']
 
-    for process in process_list:  # global defined at top of module
+    for process in process_list:
         process_found_flag = False
 
         for item in psutil.process_iter():
@@ -278,18 +305,28 @@ def main():
     # validate the notification engine present.
     if not utils.ensure_has_notification_engine():
         return 1
-
+    print('\n')
     utils.setup_cli()
 
-    mail_host = 'localhost'
-    metric_host = subprocess.check_output(['hostname', '-f']).strip()
+    # parse the command line arguments
+    cmd_args = parse_commandline_args()
 
+    if not set_config(cmd_args.config):
+        return 1
+
+    print('*****VERIFYING HOST ENVIRONMENT*****')
     if find_processes():
-        if not smoke_test(mail_host, metric_host):
+        print('*****BEGIN TEST*****')
+        complete, msg = smoke_test()
+        if not complete:
+            print('*****TEST FAILED*****', file=sys.stderr)
+            print(msg, file=sys.stderr)
             return 1
     else:
         return 1
 
+    cleanup(config['notification']['name'], config['alarm']['name'])
+    print('*****TEST COMPLETE*****')
     return 0
 
 
