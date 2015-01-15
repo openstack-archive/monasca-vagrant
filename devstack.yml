@@ -25,16 +25,13 @@
     keystone_admin_token: ADMIN
     keystone_users:
       mini-mon:
-        tenant: mini-mon
+        project: mini-mon
         password: password
         role: monasca-user
       monasca-agent:
         password: password
-        tenant: mini-mon
+        project: mini-mon
         role: monasca-agent
-    keystone_endpoint:
-      name: monasca
-      host: "{{ monasca_api_host }}"
   tasks:
     - name: Setup the monasca cli credentials in the default environment
       copy: src=tests/env.sh dest=/etc/profile.d/monasca_cli.sh owner=root group=root mode=0644
