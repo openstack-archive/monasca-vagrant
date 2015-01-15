@@ -162,6 +162,8 @@ def smoke_test():
     alarm_definition_name = config['alarm']['name']
     metric_name = config['metric']['name']
     metric_dimensions = config['metric']['dimensions']
+    statsd_metric_name = config['statsd_metric']['name']
+    statsd_metric_dimensions = config['statsd_metric']['dimensions']
 
     cleanup(notification_name, alarm_definition_name)
 
@@ -270,7 +272,16 @@ def smoke_test():
         msg = 'Could not find correct notifications for alarm %s' % alarm_id
         return False, msg
 
-    msg = 'No errors detected'
+    time_beginning = datetime.datetime(2000, 1, 1)
+    time_beginning_str = time_beginning.strftime('%Y-%m-%dT%H:%M:%S')
+    # Check that monasca statsd is sending metrics
+    if not count_metrics(statsd_metric_name, statsd_metric_dimensions, time_beginning_str):
+        return False
+        msg = 'Could not find a value for statsd metric %s' % statsd_metric_name
+        return False, msg
+
+
+    msg = ''
     return True, msg
 
 
@@ -305,7 +316,7 @@ def main():
     # validate the notification engine present.
     if not utils.ensure_has_notification_engine():
         return 1
-    print('\n')
+
     utils.setup_cli()
 
     # parse the command line arguments
