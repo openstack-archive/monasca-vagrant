@@ -49,7 +49,7 @@ config = smoke_configs.test_config["default"]
 def parse_commandline_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('-c', '--config', nargs='?', default='default',
-                           help='select configuration <CONFIG>')
+                        help='select configuration <CONFIG>')
     return parser.parse_args()
 
 
@@ -64,8 +64,9 @@ def set_config(config_name):
         return False
 
 
-def get_metrics(name, dimensions, since):
-    print('Getting metrics for %s ' % (name + str(dimensions)))
+def get_metrics(name, dimensions, since, quiet=False):
+    if not quiet:
+        print('Getting metrics for %s ' % (name + str(dimensions)))
     dimensions_arg = ''
     for key, value in dimensions.iteritems():
         if dimensions_arg != '':
@@ -121,9 +122,9 @@ def check_notifications(alarm_id, state_changes):
     return True
 
 
-def count_metrics(metric_name, metric_dimensions, since):
+def count_metrics(metric_name, metric_dimensions, since, quiet=False):
     # Query how many metrics there are for the Alarm
-    metric_json = get_metrics(metric_name, metric_dimensions, since)
+    metric_json = get_metrics(metric_name, metric_dimensions, since, quiet=quiet)
     if len(metric_json) == 0:
         print('No measurements received for metric %s ' %
               (metric_name + str(metric_dimensions)), file=sys.stderr)
@@ -162,6 +163,8 @@ def smoke_test():
     alarm_definition_name = config['alarm']['name']
     metric_name = config['metric']['name']
     metric_dimensions = config['metric']['dimensions']
+    statsd_metric_name = config['statsd_metric']['name']
+    statsd_metric_dimensions = config['statsd_metric']['dimensions']
 
     cleanup(notification_name, alarm_definition_name)
 
@@ -175,6 +178,8 @@ def smoke_test():
         msg = ('No metric %s with dimensions %s received in last hour' %
                (metric_name, metric_dimensions))
         return False, msg
+
+    initial_statsd_num_metrics = count_metrics(statsd_metric_name, statsd_metric_dimensions, hour_ago_str)
 
     start_time = time.time()
 
@@ -201,11 +206,11 @@ def smoke_test():
                                              hour_ago_str)
         if received_num_metrics == initial_num_metrics:
             print('Did not receive any %s metrics while waiting' %
-                   metric_name + str(metric_dimensions))
+                  metric_name + str(metric_dimensions))
         else:
             delta = received_num_metrics - initial_num_metrics
             print('Received %d %s metrics while waiting' %
-                   (delta, metric_name))
+                  (delta, metric_name))
         return False, 'Alarm creation error'
 
     # Ensure it is created in the right state
@@ -270,7 +275,23 @@ def smoke_test():
         msg = 'Could not find correct notifications for alarm %s' % alarm_id
         return False, msg
 
-    msg = 'No errors detected'
+    # Check that monasca statsd is sending metrics
+    # Metrics may take some time to arrive
+    final_statsd_num_metrics = count_metrics(statsd_metric_name, statsd_metric_dimensions, hour_ago_str, True)
+    print('Waiting for statsd metrics')
+    for x in range(0,30):
+        if final_statsd_num_metrics > initial_statsd_num_metrics:
+            break
+        if x >= 30:
+            msg = 'No metrics received for statsd metric %s%s in %d seconds' % \
+                  (statsd_metric_name, statsd_metric_dimensions, x)
+            return False, msg
+        final_statsd_num_metrics = count_metrics(statsd_metric_name, statsd_metric_dimensions, hour_ago_str, True)
+        time.sleep(1)
+    print('Received %d metrics for %s%s in %d seconds' %
+                  (final_statsd_num_metrics-initial_statsd_num_metrics, statsd_metric_name, statsd_metric_dimensions, x))
+
+    msg = ''
     return True, msg
 
 
@@ -305,7 +326,7 @@ def main():
     # validate the notification engine present.
     if not utils.ensure_has_notification_engine():
         return 1
-    print('\n')
+
     utils.setup_cli()
 
     # parse the command line arguments
