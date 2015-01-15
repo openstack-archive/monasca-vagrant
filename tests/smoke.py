@@ -49,7 +49,7 @@ config = smoke_configs.test_config["default"]
 def parse_commandline_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('-c', '--config', nargs='?', default='default',
-                           help='select configuration <CONFIG>')
+                        help='select configuration <CONFIG>')
     return parser.parse_args()
 
 
@@ -162,6 +162,8 @@ def smoke_test():
     alarm_definition_name = config['alarm']['name']
     metric_name = config['metric']['name']
     metric_dimensions = config['metric']['dimensions']
+    statsd_metric_name = config['statsd_metric']['name']
+    statsd_metric_dimensions = config['statsd_metric']['dimensions']
 
     cleanup(notification_name, alarm_definition_name)
 
@@ -175,6 +177,8 @@ def smoke_test():
         msg = ('No metric %s with dimensions %s received in last hour' %
                (metric_name, metric_dimensions))
         return False, msg
+
+    initial_statsd_num_metrics = count_metrics(statsd_metric_name, statsd_metric_dimensions, hour_ago_str)
 
     start_time = time.time()
 
@@ -201,11 +205,11 @@ def smoke_test():
                                              hour_ago_str)
         if received_num_metrics == initial_num_metrics:
             print('Did not receive any %s metrics while waiting' %
-                   metric_name + str(metric_dimensions))
+                  metric_name + str(metric_dimensions))
         else:
             delta = received_num_metrics - initial_num_metrics
             print('Received %d %s metrics while waiting' %
-                   (delta, metric_name))
+                  (delta, metric_name))
         return False, 'Alarm creation error'
 
     # Ensure it is created in the right state
@@ -270,7 +274,15 @@ def smoke_test():
         msg = 'Could not find correct notifications for alarm %s' % alarm_id
         return False, msg
 
-    msg = 'No errors detected'
+    # Check that monasca statsd is sending metrics
+    final_statsd_num_metrics = count_metrics(statsd_metric_name, statsd_metric_dimensions, hour_ago_str)
+    if final_statsd_num_metrics <= initial_statsd_num_metrics:
+        msg = 'No metrics received for statsd metric %s' % statsd_metric_name
+        return False, msg
+    print('Received %d metrics for %s' %
+          (final_statsd_num_metrics-initial_statsd_num_metrics, statsd_metric_name))
+
+    msg = ''
     return True, msg
 
 
@@ -305,7 +317,7 @@ def main():
     # validate the notification engine present.
     if not utils.ensure_has_notification_engine():
         return 1
-    print('\n')
+
     utils.setup_cli()
 
     # parse the command line arguments
