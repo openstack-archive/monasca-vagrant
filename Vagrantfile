@@ -24,6 +24,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.synced_folder "~/", "/vagrant_home"
 
+  # Set all machines to the default insecure key to make running ansible manually easier
+  config.ssh.private_key_path = "~/.vagrant.d/insecure_private_key"
+
   # One vm just for devstack (to access the UI)
   config.vm.define "devstack" do |ds|
     ds.vm.hostname = "devstack"
