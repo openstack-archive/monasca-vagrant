@@ -170,5 +170,5 @@ To run any of these alternate configs, simply run the Vagrant commands from with
 Previously in the split directory an alternative setup was available with each service split into different vms and using
 Vertica rather than influxdb. This was removed simply because it was not being actively maintained as changes occurred. It is still possible
 to split up the services and to use Vertica, these are done in test environments and production deployments, however is beyond
-the scope of this development environment. Additionaly other alternative setups including running mini-mon in HP Public Cloud
+the scope of this development environment. Additionally, other alternative setups including running mini-mon in HP Public Cloud
 and scripts for putting it on baremetal are also no longer supported.
