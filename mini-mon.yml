@@ -157,6 +157,7 @@
         name: "{{item.name}}"
         expression: "{{item.expression}}"
         keystone_token: "{{out.keystone_token}}"
+        match_by: "{{item.match_by | default(['hostname']) }}"
         monasca_api_url: "{{out.monasca_api_url}}"
         alarm_actions:
           - "{{out.notification_method_id}}"
@@ -165,6 +166,7 @@
         undetermined_actions:
           - "{{out.notification_method_id}}"
       with_items:
+        - { name: "Kafka Consumer Lag", expression: "avg(kafka.consumer_lag) > 100 times 3", match_by: ["consumer_group", "hostname"] }
         - { name: "Monasca Agent emit time", expression: "avg(monasca.emit_time_sec) > 2 times 3" }
         - { name: "Monasca Agent collection time", expression: "avg(monasca.collection_time_sec) > 5 times 3" }
         - { name: "Monasca Notification Configuration DB query time", expression: "avg(monasca.config_db_time.95percentile) > 5 times 3" }
