@@ -33,6 +33,11 @@ test_config = {
         'metric': {
             'name': 'load.avg_1_min',
             'dimensions': {'hostname':
+                            system_vars['default']['metric_host']}},
+
+        'statsd_metric': {
+            'name': 'monasca.sent_smtp_count',
+            'dimensions': {'hostname':
                             system_vars['default']['metric_host']}}
     }
 }

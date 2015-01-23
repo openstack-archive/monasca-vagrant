@@ -49,7 +49,7 @@ config = smoke_configs.test_config["default"]
 def parse_commandline_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('-c', '--config', nargs='?', default='default',
-                           help='select configuration <CONFIG>')
+                        help='select configuration <CONFIG>')
     return parser.parse_args()
 
 
@@ -57,15 +57,14 @@ def set_config(config_name):
     global config
     try:
         config = smoke_configs.test_config[config_name]
-        print('Using %s Configuration' % config_name)
+        print('Using {} Configuration'.format(config_name))
         return True
     except KeyError:
-        print('Could not find config "%s"' % config_name, file=sys.stderr)
+        print('Could not find config "{}"'.format(config_name), file=sys.stderr)
         return False
 
 
 def get_metrics(name, dimensions, since):
-    print('Getting metrics for %s ' % (name + str(dimensions)))
     dimensions_arg = ''
     for key, value in dimensions.iteritems():
         if dimensions_arg != '':
@@ -82,14 +81,14 @@ def cleanup(notification_name, alarm_definition_name):
 
 def wait_for_alarm_state_change(alarm_id, old_state):
     # Wait for it to change state
-    print('Waiting for alarm to change state from %s' % old_state)
+    print('Waiting for alarm to change state from {}'.format(old_state))
     for x in range(0, 250):
         time.sleep(1)
         state = cli_wrapper.get_alarm_state(alarm_id)
         if state != old_state:
-            print('Alarm state changed to %s in %d seconds' % (state, x))
+            print('Alarm state changed to {} in {} seconds'.format(state, x))
             return state
-    print('State never changed from %s in %d seconds' % (old_state, x),
+    print('State never changed from {} in {} seconds'.format(old_state, x),
           file=sys.stderr)
     return None
 
@@ -104,16 +103,16 @@ def check_notifications(alarm_id, state_changes):
 
     notifications = utils.find_notifications(alarm_id, "root")
     if len(notifications) != len(state_changes):
-        print('Expected %d notifications but only found %d' %
-              (len(state_changes), len(notifications)), file=sys.stderr)
+        print('Expected {} notifications but only found {}'.format(
+              len(state_changes), len(notifications)), file=sys.stderr)
         return False
 
     index = 0
     for expected in state_changes:
         actual = notifications[index]
         if actual != expected:
-            print('Expected %s but found %s for state change %d' %
-                  (expected, actual, index+1), file=sys.stderr)
+            print('Expected {} but found {} for state change {}'.format(
+                  expected, actual, index+1), file=sys.stderr)
             return False
         index = index + 1
     print('Received email notifications as expected')
@@ -125,8 +124,8 @@ def count_metrics(metric_name, metric_dimensions, since):
     # Query how many metrics there are for the Alarm
     metric_json = get_metrics(metric_name, metric_dimensions, since)
     if len(metric_json) == 0:
-        print('No measurements received for metric %s ' %
-              (metric_name + str(metric_dimensions)), file=sys.stderr)
+        print('No measurements received for metric {}{} '.format(
+              metric_name, metric_dimensions), file=sys.stderr)
         return None
 
     return len(metric_json[0]['measurements'])
@@ -138,21 +137,20 @@ def ensure_at_least(actual, desired):
 
 
 def wait_for_alarm_creation(alarm_def_id):
-    print('Waiting for alarm to be created for Alarm Definition %s' %
-          alarm_def_id)
+    print('Waiting for alarm to be created for Alarm Definition {}'.format(alarm_def_id))
     for x in range(0, 30):
         time.sleep(1)
         alarms = cli_wrapper.find_alarms_for_definition(alarm_def_id)
         if len(alarms) == 1:
-            print('Alarm was created in %d seconds' % x)
+            print('Alarm was created in {} seconds'.format(x))
             return alarms[0]
         elif len(alarms) > 1:
-            print('%d Alarms were created. Only expected 1' % len(alarms),
+            print('{} Alarms were created. Only expected 1'.format(len(alarms)),
                   file=sys.stderr)
             return None
 
-    print('Alarm was not created for Alarm Definition %s in %d seconds' %
-          (alarm_def_id, x), file=sys.stderr)
+    print('Alarm was not created for Alarm Definition {} in {} seconds'.format(
+          alarm_def_id, x), file=sys.stderr)
     return None
 
 
@@ -162,19 +160,24 @@ def smoke_test():
     alarm_definition_name = config['alarm']['name']
     metric_name = config['metric']['name']
     metric_dimensions = config['metric']['dimensions']
+    statsd_metric_name = config['statsd_metric']['name']
+    statsd_metric_dimensions = config['statsd_metric']['dimensions']
 
     cleanup(notification_name, alarm_definition_name)
 
     # Query how many metrics there are for the Alarm
     hour_ago = datetime.datetime.now() - datetime.timedelta(hours=1)
     hour_ago_str = hour_ago.strftime('%Y-%m-%dT%H:%M:%S')
+    print('Getting metrics for {}{} '.format(metric_name, metric_dimensions))
     initial_num_metrics = count_metrics(metric_name, metric_dimensions,
                                         hour_ago_str)
 
     if initial_num_metrics is None or initial_num_metrics == 0:
-        msg = ('No metric %s with dimensions %s received in last hour' %
-               (metric_name, metric_dimensions))
+        msg = ('No metric {} with dimensions {} received in last hour'.format(
+               metric_name, metric_dimensions))
         return False, msg
+
+    initial_statsd_num_metrics = count_metrics(statsd_metric_name, statsd_metric_dimensions, hour_ago_str)
 
     start_time = time.time()
 
@@ -200,12 +203,10 @@ def smoke_test():
         received_num_metrics = count_metrics(metric_name, metric_dimensions,
                                              hour_ago_str)
         if received_num_metrics == initial_num_metrics:
-            print('Did not receive any %s metrics while waiting' %
-                   metric_name + str(metric_dimensions))
+            print('Did not receive any {}{} metrics while waiting'.format(metric_name,metric_dimensions))
         else:
             delta = received_num_metrics - initial_num_metrics
-            print('Received %d %s metrics while waiting' %
-                   (delta, metric_name))
+            print('Received {} {} metrics while waiting'.format(delta, metric_name))
         return False, 'Alarm creation error'
 
     # Ensure it is created in the right state
@@ -221,7 +222,7 @@ def smoke_test():
         return False, msg
 
     if state != 'ALARM':
-        print('Wrong final state, expected ALARM but was %s' % state,
+        print('Wrong final state, expected ALARM but was {}'.format(state),
               file=sys.stderr)
         msg = 'Alarm is in an invalid final state'
         return False, msg
@@ -245,8 +246,7 @@ def smoke_test():
             return False, msg
 
         if state != final_state:
-            msg = ('Wrong final state, expected %s but was %s' %
-                   (final_state, state))
+            msg = ('Wrong final state, expected {} but was {}'.format(final_state, state))
             return False, msg
 
     # If the alarm changes state too fast, then there isn't time for the new
@@ -257,20 +257,34 @@ def smoke_test():
     final_num_metrics = count_metrics(metric_name, metric_dimensions,
                                       hour_ago_str)
     if final_num_metrics <= initial_num_metrics:
-        msg = ('No new metrics received in %d seconds' % change_time)
+        msg = ('No new metrics received for {}{} in {} seconds'.format(metric_name, metric_dimensions, change_time))
         return False, msg
-    print('Received %d metrics in %d seconds' %
-          ((final_num_metrics - initial_num_metrics),  change_time))
+    print('Received {} metrics in {} seconds'.format((final_num_metrics - initial_num_metrics),  change_time))
     if not utils.check_alarm_history(alarm_id, states):
         msg = 'Invalid alarm history'
         return False, msg
 
     # Notifications are only sent out for the changes, so omit the first state
     if not check_notifications(alarm_id, states[1:]):
-        msg = 'Could not find correct notifications for alarm %s' % alarm_id
+        msg = 'Could not find correct notifications for alarm {}'.format(alarm_id)
         return False, msg
 
-    msg = 'No errors detected'
+    # Check that monasca statsd is sending metrics
+    # Metrics may take some time to arrive
+    print('Waiting for statsd metrics')
+    for x in range(0,30):
+        final_statsd_num_metrics = count_metrics(statsd_metric_name, statsd_metric_dimensions, hour_ago_str)
+        if final_statsd_num_metrics > initial_statsd_num_metrics:
+            break
+        if x >= 30:
+            msg = 'No metrics received for statsd metric {}{} in {} seconds'.format(
+                  statsd_metric_name, statsd_metric_dimensions, x)
+            return False, msg
+        time.sleep(1)
+    print('Received {0} metrics for {1}{2} in {3} seconds'.format(
+        final_statsd_num_metrics-initial_statsd_num_metrics, statsd_metric_name, statsd_metric_dimensions, x))
+
+    msg = ''
     return True, msg
 
 
@@ -293,7 +307,7 @@ def find_processes():
             process_missing.append(process)
 
     if len(process_missing) > 0:   # if processes were not found
-        print ('Process = %s Not Found' % process_missing)
+        print ('Process = {} Not Found'.format(process_missing))
         return False
     else:
         print ('All Mini-Mon Processes Found')
@@ -305,7 +319,7 @@ def main():
     # validate the notification engine present.
     if not utils.ensure_has_notification_engine():
         return 1
-    print('\n')
+
     utils.setup_cli()
 
     # parse the command line arguments
