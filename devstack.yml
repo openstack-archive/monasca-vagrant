@@ -6,7 +6,6 @@
       user: monasca-agent
       password: password
       project: mini-mon
-      service: monitoring
     minimon:
       user: mini-mon
       password: password

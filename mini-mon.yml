@@ -135,6 +135,7 @@
         name: "{{item.name}}"
         expression: "{{item.expression}}"
         keystone_token: "{{out.keystone_token}}"
+        match_by: "{{item.match_by | default(['hostname']) }}"
         monasca_api_url: "{{out.monasca_api_url}}"
         alarm_actions:
           - "{{out.notification_method_id}}"
@@ -143,7 +144,8 @@
         undetermined_actions:
           - "{{out.notification_method_id}}"
       with_items:
-        - { name: "Host Alive Alarm", expression: "host_alive_status > 0" }
+        - { name: "Host Alive Alarm", expression: "host_alive_status > 0"}
+        - { name: "Http Status Alarm", expression: "http_status > 0", match_by: ["service", "hostname"] }
         - { name: "High CPU usage", expression: "avg(cpu.idle_perc) < 10 times 3" }
         - { name: "Disk Inode Usage", expression: "disk.inode_used_perc > 90" }
         - { name: "Disk Usage", expression: "disk.space_used_perc > 90" }
