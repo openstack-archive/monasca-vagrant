@@ -4,6 +4,8 @@
   name: monasca-agent
 - src: tkuhlman.monasca-api
   name: monasca-api
+- src: tkuhlman.monasca-default-alarms
+  name: monasca-default-alarms
 - src: tkuhlman.monasca-keystone
   name: monasca-keystone
 - src: tkuhlman.monasca-notification
