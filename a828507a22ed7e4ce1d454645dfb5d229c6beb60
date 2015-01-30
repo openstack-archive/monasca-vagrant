@@ -1,0 +1,8 @@
+Verified+2: Jenkins
+Code-Review+2: Tim Kuhlman <tim.kuhlman@hp.com>
+Workflow+1: Tim Kuhlman <tim.kuhlman@hp.com>
+Submitted-by: Jenkins
+Submitted-at: Fri, 30 Jan 2015 21:56:23 +0000
+Reviewed-on: https://review.openstack.org/151767
+Project: stackforge/monasca-vagrant
+Branch: refs/heads/master
