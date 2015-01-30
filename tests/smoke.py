@@ -177,7 +177,12 @@ def smoke_test():
                metric_name, metric_dimensions))
         return False, msg
 
+    print('Getting metrics for {}{} '.format(statsd_metric_name, statsd_metric_dimensions))
     initial_statsd_num_metrics = count_metrics(statsd_metric_name, statsd_metric_dimensions, hour_ago_str)
+
+    # statsd metrics may not have been sent yet, which will return None from the CLI wrapper
+    if initial_statsd_num_metrics is None:
+        initial_statsd_num_metrics = 0
 
     start_time = time.time()
 
@@ -276,7 +281,7 @@ def smoke_test():
         final_statsd_num_metrics = count_metrics(statsd_metric_name, statsd_metric_dimensions, hour_ago_str)
         if final_statsd_num_metrics > initial_statsd_num_metrics:
             break
-        if x >= 30:
+        if x >= 29:
             msg = 'No metrics received for statsd metric {}{} in {} seconds'.format(
                   statsd_metric_name, statsd_metric_dimensions, x)
             return False, msg
