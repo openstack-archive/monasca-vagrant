@@ -38,7 +38,7 @@
         - cli
   roles:
     - {role: monasca-ui, tags: [ui]}
-    - {role: monasca-keystone, keystone_url: 'http://192.168.10.5:35357/v2.0', tags: [devstack, keystone]}  # uses keystone v2 still
+    - {role: monasca-keystone, tags: [devstack, keystone]}  # uses keystone v2 still
     - {role: monasca-devstack, tags: [devstack]}
     - {role: monasca-agent, tags: [agent]}
 
