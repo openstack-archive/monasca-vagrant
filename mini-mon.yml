@@ -27,6 +27,8 @@
       pip: name=pip state=latest
     - name: Install python-dev
       apt: name=python-dev state=present
+    - name: Install kafka-python 0.9.2, a work around until https://review.openstack.org/153051 is released
+      pip: name=kafka-python state=present version=0.9.2
   roles:
     - {role: zookeeper, tags: [zookeeper]}
     - {role: kafka, kafka_listen_address: "{{mini_mon_host}}", tags: [kafka]}
