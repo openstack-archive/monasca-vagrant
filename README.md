@@ -172,3 +172,9 @@ Vertica rather than influxdb. This was removed simply because it was not being a
 to split up the services and to use Vertica, these are done in test environments and production deployments, however is beyond
 the scope of this development environment. Additionally, other alternative setups including running mini-mon in HP Public Cloud
 and scripts for putting it on baremetal are also no longer supported.
+
+# Troubleshooting
+1.  Service Unavailable (HTTP 503) - If you receive an error like below when provisioning, then ensure your proxy config is setup as shown in [Running behind a Web Proxy](#running-behind-a-web-proxy)
+    TASK: [monasca-keystone | Keystone Service - Execute the script] **************
+    (stacktrace elided...)
+    keystoneclient.openstack.common.apiclient.exceptions.ServiceUnavailable: Service Unavailable (HTTP 503)
