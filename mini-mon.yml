@@ -9,6 +9,9 @@
       replication_factor: 1
     mini_mon_host: 192.168.10.4
     zookeeper_hosts: "{{mini_mon_host}}:2181"
+  pre_tasks:
+    - name: apt-get update    
+      apt: update_cache=yes
   tasks:
     - name: Install postfix, needed by notification engine
       apt: name=postfix state=present
