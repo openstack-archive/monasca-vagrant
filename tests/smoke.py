@@ -156,7 +156,8 @@ def wait_for_alarm_creation(alarm_def_id):
 
 def smoke_test():
     notification_name = config['notification']['name']
-    notification_email_addr = config['notification']['email_addr']
+    notification_addr = config['notification']['addr']
+    notification_type = config['notification']['type']
     alarm_definition_name = config['alarm']['name']
     metric_name = config['metric']['name']
     metric_dimensions = config['metric']['dimensions']
@@ -188,7 +189,8 @@ def smoke_test():
 
     # Create Notification through CLI
     notif_id = cli_wrapper.create_notification(notification_name,
-                                               notification_email_addr)
+                                               notification_addr,
+                                               notification_type)
 
     # Create Alarm through CLI
     expression = config['alarm']['expression']
