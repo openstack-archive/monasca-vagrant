@@ -50,10 +50,12 @@ def run_mon_cli(args, useJson=True):
         sys.exit(1)
 
 
-def create_notification(notification_name, notification_email_addr):
+def create_notification(notification_name,
+                        notification_addr,
+                        notification_type):
     print('Creating notification')
     result_json = run_mon_cli(['notification-create', notification_name,
-                              'EMAIL', notification_email_addr])
+                              notification_type, notification_addr])
 
     # Parse out id
     notification_id = result_json['id']
