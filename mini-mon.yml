@@ -1,3 +1,16 @@
+- name: Detect if the running on a systemd based system
+  hosts: all
+  gather_facts: no
+  tasks:
+    - command: cat /proc/1/comm
+      register: init
+    - set_fact: use_systemd=True
+      when: init.stdout == 'systemd'
+    - set_fact: use_systemd=False
+      when: init.stdout != 'systemd'
+  tags:
+    - systemd
+
 - name: Installs DBs, kafka and other core dependencies.
   hosts: mini-mon
   sudo: yes
