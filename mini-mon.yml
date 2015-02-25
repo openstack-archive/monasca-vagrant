@@ -79,7 +79,7 @@
       tags:
         - cli
   roles:
-    - {role: monasca-schema, tags: [schema]}
+    - {role: monasca-schema, mysql_admin_password: password, tags: [schema]}
     - {role: monasca-api,
        api_region: useast,
        influxdb_user: mon_api,
