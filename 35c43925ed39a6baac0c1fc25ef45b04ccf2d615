@@ -1,0 +1,9 @@
+Verified+2: Jenkins
+Code-Review+2: Craig Bryant <craig.bryant@hp.com>
+Workflow+1: Craig Bryant <craig.bryant@hp.com>
+Code-Review+1: Dexter Fryar <dexter.fryar@outlook.com>
+Submitted-by: Jenkins
+Submitted-at: Wed, 25 Feb 2015 15:58:13 +0000
+Reviewed-on: https://review.openstack.org/158481
+Project: stackforge/monasca-vagrant
+Branch: refs/heads/master
