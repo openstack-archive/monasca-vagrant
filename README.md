@@ -143,7 +143,7 @@ your local ansible configuration (~/.ansible.cfg or a personal ansible.cfg in th
     hostfile = .ansible_hosts
     remote_user = vagrant
     host_key_checking = False
-    # Note: For newer versions of Ansible a single insecure_private_key isn't used, rather it is machine specific
+    # Note: For newer versions of Vagrant a single insecure_private_key isn't used, rather it is machine specific
     # by modifying .ansible_hosts adding ansible_ssh_key_file to the end of the line you can configure the proper behavior.
     # In that case leave out the private_key_file line below.
     # For example `devstack ansible_ssh_host=192.168.10.5 ansible_ssh_private_key_file=.vagrant/machines/devstack/virtualbox/private_key`
