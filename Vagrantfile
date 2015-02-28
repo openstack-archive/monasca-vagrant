@@ -35,8 +35,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
     ds.vm.provision "ansible" do |ansible|
       ansible.playbook = "devstack.yml"
-      ansible.inventory_path = '.ansible_hosts'
-      ansible.host_key_checking = false
       ansible.raw_arguments = ['-T 30', '-e pipelining=True']
     end
   end
@@ -52,8 +50,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
     mm.vm.provision "ansible" do |ansible|
       ansible.playbook = "mini-mon.yml"
-      ansible.inventory_path = '.ansible_hosts'
-      ansible.host_key_checking = false
       ansible.raw_arguments = ['-T 30', '-e pipelining=True']
     end
   end
