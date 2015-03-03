@@ -41,11 +41,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       vb.memory = 7180
       vb.cpus = 4
     end
-    ds.vm.provision :chef_solo do |chef|
-      chef.cookbooks_path = "cookbooks"
-      chef.roles_path = "roles"
-      chef.add_role "Devstack-Build"
-      chef.arguments = '--force-formatter'
+    ds.vm.provision "ansible" do |ansible|
+      ansible.playbook = "ds-build.yml"
+      ansible.raw_arguments = ['-T 30', '-e pipelining=True']
     end
   end
 

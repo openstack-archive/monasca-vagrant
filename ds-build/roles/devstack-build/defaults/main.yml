@@ -1,0 +1,3 @@
+---
+unpriv_user: vagrant
+unpriv_home: /home/{{unpriv_user}}
