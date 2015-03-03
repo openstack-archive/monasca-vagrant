@@ -18,8 +18,8 @@ The following services are enabled:
 
 # Upstart instead of screen
 
-The cookbook includes a script which creates Upstart init scripts for each of
-the services.  It also sets up log files in the `/var/log/` directory.  When
+The Ansible role includes a script which creates Upstart init scripts for each
+of the services.  It also sets up log files in the `/var/log/` directory.  When
 the VM is booted, all DevStack processes will start automatically.
 
 # Usage

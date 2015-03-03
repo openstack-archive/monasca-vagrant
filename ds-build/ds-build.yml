@@ -1,0 +1,8 @@
+- hosts: devstack
+  sudo: yes
+  vars:
+    unpriv_user: vagrant
+    unpriv_home: /home/{{unpriv_user}}
+  roles:
+    - {role: devstack-build, tags: [devstack]}
+

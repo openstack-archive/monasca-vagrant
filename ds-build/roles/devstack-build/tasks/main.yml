@@ -1,0 +1,21 @@
+---
+- name: Install git
+  apt: name=git state=present
+
+- name: Remove apt proxy (populated by default in ubuntu/trusty64)
+  file: path=/etc/apt/apt.conf.d/01proxy state=absent
+
+- name: Install local.conf to the unprivileged user's home directory
+  copy: src=local.conf dest={{unpriv_home}}/local.conf mode=0755 owner={{unpriv_user}}
+
+- name: Install autostack.sh script
+  copy: src=autostack.sh dest={{unpriv_home}}/autostack.sh mode=0755 owner={{unpriv_user}}
+
+- name: Run DevStack installer (may take 30-90 minutes, depending on bandwidth)
+  command: "{{unpriv_home}}/autostack.sh {{unpriv_user}}"
+  args:
+     chdir: "{{unpriv_home}}"
+     creates: "{{unpriv_home}}/devstack/stack-screenrc"
+
+- name: Make sure 'localhost' entry exists in /etc/hosts
+  lineinfile: dest=/etc/hosts regexp='^127\.0\.0\.1' line='127.0.0.1 devstack localhost' owner=root group=root mode=0644
