@@ -39,9 +39,18 @@ su $unpriv_user -c $basedir/devstack/stack.sh 2>&1 &
 
 # Wait for stack.sh to complete by watching the log file for $donestring
 donestring='This is your host ip'
+# Sometimes, 'git clone' fails, and this can be retried
+retrystring='git call failed: \[git clone'
 
-while [ `tail -1 $log 2>/dev/null |grep -c "$donestring"` = 0 ]; do
-        sleep 5
+success=0
+while [ "$success" = 0 ]; do
+    if [ `tail -1 $log 2>/dev/null |grep -c "$donestring"` = 1 ]; then
+        success=1
+    elif [ `tail -2 $log 2>/dev/null |grep -c "$retrystring"` = 1 ]; then
+        pkill -f devstack/stack.sh
+        su $unpriv_user -c $basedir/devstack/stack.sh 2>&1 &
+    fi
+    sleep 10
 done
 
 # Kill off the now-idle stack.sh process
