@@ -3,10 +3,10 @@
   sudo: yes
   vars:
     influxdb:
-      version: 0.8.8
       raft_port: 9090
       seed_servers: []
       replication_factor: 1
+    influxdb_version: 0.8.8  # Also set in the next play
     mini_mon_host: 192.168.10.4
     zookeeper_hosts: "{{mini_mon_host}}:2181"
   pre_tasks:
@@ -36,6 +36,7 @@
     influxdb_users:
       mon_api: password
       mon_persister: password
+    influxdb_version: 0.8.8  # Also set in the previous play
     kafka_topics:
         metrics: { replicas: 1, partitions: 4 }
         events: { replicas: 1, partitions: 4 }
