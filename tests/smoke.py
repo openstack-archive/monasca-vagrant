@@ -71,7 +71,7 @@ def get_metrics(name, dimensions, since):
             dimensions_arg = dimensions_arg + ','
         dimensions_arg = dimensions_arg + key + '=' + value
     return cli_wrapper.run_mon_cli(['measurement-list', '--dimensions',
-                                    dimensions_arg, name, since])
+                                    dimensions_arg, "--name", name, since])
 
 
 def cleanup(notification_name, alarm_definition_name):
