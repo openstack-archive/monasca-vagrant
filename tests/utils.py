@@ -34,8 +34,8 @@ def check_alarm_history(alarm_id, states):
         print('Wrong number of history entries, expected %d but was %d' %
               (transitions, len(result_json)), file=sys.stderr)
         return False
-    # Alarm history is reverse sorted by date
-    index = transitions - 1
+    # Alarm history is sorted by date
+    index = 0
     for i in range(0, transitions):
         old_state = states[i]
         new_state = states[i+1]
@@ -49,7 +49,7 @@ def check_alarm_history(alarm_id, states):
         if not check_expected(alarm_id, alarm_json['alarm_id'], 'alarm_id',
                               i):
             result = False
-        index = index - 1
+        index = index + 1
 
     if result:
         print('Alarm History is OK')
