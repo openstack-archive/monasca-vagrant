@@ -52,6 +52,7 @@
       password: password
       project: mini-mon
       service: monitoring
+    monasca_agent_check_frequency: 15
     monasca_api_url: http://192.168.10.4:8080/v2.0
     monasca_checks:
       host_alive:

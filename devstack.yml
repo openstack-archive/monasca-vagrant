@@ -6,6 +6,7 @@
       user: monasca-agent
       password: password
       project: mini-mon
+    monasca_agent_check_frequency: 15
     minimon:
       user: mini-mon
       password: password
