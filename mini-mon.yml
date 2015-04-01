@@ -37,14 +37,9 @@
       mon_api: password
       mon_persister: password
     influxdb_version: 0.9.0-rc17  # Also set in the previous play
-    kafka_topics:
-        metrics: { replicas: 1, partitions: 4 }
-        events: { replicas: 1, partitions: 4 }
-        raw-events: { replicas: 1, partitions: 4 }
-        transformed-events: { replicas: 1, partitions: 4 }
-        alarm-state-transitions: { replicas: 1, partitions: 4 }
-        alarm-notifications: { replicas: 1, partitions: 4 }
-        retry-notifications: { replicas: 1, partitions: 4 }
+    kafka_events_partitions: 4
+    kafka_metrics_partitions: 4
+    kafka_replicas: 1
     kafka_hosts: "{{mini_mon_host}}:9092"
     keystone_url: http://192.168.10.5:35357/v3
     monasca_agent:
