@@ -6,7 +6,7 @@
       raft_port: 9090
       seed_servers: []
       replication_factor: 1
-    influxdb_version: 0.9.0-rc17  # Also set in the next play
+    influxdb_version: 0.9.0-rc19  # Also set in the next play
     mini_mon_host: 192.168.10.4
     zookeeper_hosts: "{{mini_mon_host}}:2181"
   pre_tasks:
@@ -36,7 +36,7 @@
     influxdb_users:
       mon_api: password
       mon_persister: password
-    influxdb_version: 0.9.0-rc17  # Also set in the previous play
+    influxdb_version: 0.9.0-rc19  # Also set in the previous play
     kafka_events_partitions: 4
     kafka_metrics_partitions: 4
     kafka_replicas: 1
