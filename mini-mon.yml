@@ -3,7 +3,7 @@
   sudo: yes
   vars:
     influxdb:
-      raft_port: 9090
+      raft_port: 8086
       seed_servers: []
       replication_factor: 1
     influxdb_version: 0.9.0-rc22  # Also set in the next play
