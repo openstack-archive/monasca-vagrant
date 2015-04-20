@@ -42,11 +42,10 @@
     kafka_replicas: 1
     kafka_hosts: "{{mini_mon_host}}:9092"
     keystone_url: http://192.168.10.5:35357/v3
-    monasca_agent:
-      user: monasca-agent
-      password: password
-      project: mini-mon
-      service: monitoring
+    monasca_agent_user: monasca-agent
+    monasca_agent_password: password
+    monasca_agent_project: mini-mon
+    monasca_agent_service: monitoring
     monasca_agent_check_frequency: 15
     monasca_api_url: http://192.168.10.4:8080/v2.0
     monasca_checks:
