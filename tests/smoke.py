@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/opt/monasca/bin/python
 #
 """smoke
     Runs a smoke test of the monitoring installation on mini-mon to ensure
