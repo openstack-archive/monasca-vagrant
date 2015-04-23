@@ -8,15 +8,23 @@
     - [Install VirtualBox and Vagrant](#install-virtualbox-and-vagrant)
       - [MacOS](#macos)
       - [Linux (Ubuntu)](#linux-ubuntu)
-- [Using mini-mon](#using-mini-mon)
+- [Using Monasca Vagrant](#using-monasca-vagrant)
   - [Starting mini-mon](#starting-mini-mon)
-  - [Mini-mon access information](#mini-mon-access-information)
-    - [Internal Endpoints](#internal-endpoints)
+  - [Basic Monasca usage](#basic-monasca-usage)
+  - [Smoke test](#smoke-test)
   - [Updating](#updating)
-  - [Improving Provisioning Speed](#improving-provisioning-speed)
-  - [Ansible Development](#ansible-development)
   - [Running behind a Web Proxy](#running-behind-a-web-proxy)
+- [Advanced Usage](#advanced-usage)
+  - [Access information](#access-information)
+    - [Internal Endpoints](#internal-endpoints)
+  - [Improving Provisioning Speed](#improving-provisioning-speed)
+- [Monasca Debugging](#monasca-debugging)
+  - [Ansible Development](#ansible-development)
+    - [Running Ansible directly](#running-ansible-directly)
+    - [Editing Ansible Configuration](#editing-ansible-configuration)
+- [Developing Monasca](#developing-monasca)
 - [Alternate Vagrant Configurations](#alternate-vagrant-configurations)
+- [Troubleshooting](#troubleshooting)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -156,6 +164,11 @@ The playbooks contain all variables, some tasks and the roles used in building t
 To edit the Ansible roles I suggest downloading the full git source of the role and putting it in
 your ansible path. This allows you to run your changes directly from the git copy you are working on.
 See the [Ansible docs](http://docs.ansible.com) for more details on the exact configuration needed.
+
+# Developing Monasca
+In this repo there are a couple of helper scripts to aid in downloading all of the Monasca git repositories.
+  - `./monasca-repos.sh <parent_dir>` will clone all code repos to the parent dir
+  - `./monasca-ansible-repos.sh <parent_dir>` will clone all of the team Ansible repos to the parent dir
 
 # Alternate Vagrant Configurations
 To run any of these alternate configs, simply run the Vagrant commands from within the subdir.
