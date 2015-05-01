@@ -12,6 +12,8 @@
   pre_tasks:
     - name: apt-get update
       apt: update_cache=yes
+    - name: Install virtualenv
+      apt: name=python-virtualenv
   tasks:
     - name: Install postfix, needed by notification engine
       apt: name=postfix state=present

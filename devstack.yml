@@ -35,6 +35,8 @@
     - name: apt-get update
       apt: update_cache=yes
       ignore_errors: true
+    - name: Install virtualenv
+      apt: name=python-virtualenv
   tasks:
     - name: Setup the monasca cli credentials in the default environment
       copy: src=tests/env.sh dest=/etc/profile.d/monasca_cli.sh owner=root group=root mode=0644
