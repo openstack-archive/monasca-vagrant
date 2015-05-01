@@ -12,6 +12,8 @@
   pre_tasks:
     - name: apt-get update
       apt: update_cache=yes
+    - name: Install virtualenv
+      apt: name=python-virtualenv
   tasks:
     - name: Install postfix, needed by notification engine
       apt: name=postfix state=present
@@ -71,7 +73,7 @@
       tags:
         - cli
     - name: Update cli
-      pip: name=python-monascaclient state=latest
+      pip: name=python-monascaclient state=latest virtualenv="{{monasca_virtualenv_dir}}"
       tags:
         - cli
   roles:
