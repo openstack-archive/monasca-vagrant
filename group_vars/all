@@ -1,0 +1,57 @@
+---
+devstack: 192.168.10.5
+mini_mon: 192.168.10.4
+
+api_region: useast
+influxdb:
+  raft_port: 8086
+  seed_servers: []
+  replication_factor: 1
+influxdb_version: 0.9.0-rc28
+influxdb_url: "http://{{mini_mon}}:8086"
+kafka_events_partitions: 4
+kafka_metrics_partitions: 4
+kafka_replicas: 1
+kafka_hosts: "{{mini_mon}}:9092"
+kafka_listen_address: "{{mini_mon}}"
+keystone_host: "{{devstack}}"
+keystone_url: "http://{{devstack}}:35357/v3"
+monasca_agent_check_frequency: 15
+monasca_api_host: "{{mini_mon}}"
+monasca_api_url: http://{{ monasca_api_host }}:8080/v2.0
+monasca_virtualenv_dir: /opt/monasca
+mysql_host: "{{mini_mon}}"
+nimbus_host: "{{mini_mon}}"
+percona_package: percona-xtradb-cluster-56
+smtp_host: localhost
+storm_worker_ports: [6701, 6702]
+zookeeper_hosts: "{{mini_mon}}:2181"
+
+# common credentials
+influxdb_users:
+  mon_api: password
+  mon_persister: password
+keystone_admin: admin
+keystone_admin_password: ""
+keystone_auth_method: token
+keystone_admin_token: ADMIN
+keystone_user: mini-mon
+keystone_password: password
+keystone_users:
+  - username: mini-mon
+    project: mini-mon
+    password: password
+    role: monasca-user
+  - username: monasca-agent
+    password: password
+    project: mini-mon
+    role: monasca-agent
+monasca_agent_user: monasca-agent
+monasca_agent_password: password
+monasca_agent_project: mini-mon
+mysql_admin_password: password
+mysql_root_password: password
+mysql_users:
+  notification: password
+  monapi: password
+  thresh: password
