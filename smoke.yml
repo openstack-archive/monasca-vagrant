@@ -1,7 +1,8 @@
 - hosts: mini-mon
-  gather_facts: no
   tasks:
     - name: Run the smoke test
       command: /vagrant/tests/smoke.py
+      environment:
+        PATH: "{{ansible_env.PATH}}:{{monasca_virtualenv_dir}}/bin"
       register: smoke
     - debug: var=smoke.stdout_lines

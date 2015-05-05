@@ -1,0 +1,10 @@
+---
+keystone_users:
+  - username: mini-mon
+    project: mini-mon
+    password: password
+    role: monasca-user
+  - username: monasca-agent
+    password: password
+    project: mini-mon
+    role: monasca-agent
