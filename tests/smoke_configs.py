@@ -1,3 +1,5 @@
+# -*- encoding: utf-8 -*-
+
 """configurations for smoke test"""
 
 import subprocess
@@ -68,5 +70,33 @@ test_config = {
             'dimensions': {'hostname':
                            system_vars['default']['metric_host']}}
 
+    },
+
+    "unicode": {   # test including unicode strings
+        'system_vars': system_vars['default'],
+
+        'notification': {
+            'name': u'Monasca Smoke Test Ā',
+            'addr': 'root@'+system_vars['default']['mail_host'],
+            'type': 'EMAIL'},
+
+        'alarm': {
+            'name': u'high cpu and load Ա',
+            'expression': 'max(cpu.system_perc) > 0 and ' +
+                          'max(load.avg_1_min{hostname=' +
+                          system_vars['default']['metric_host'] +
+                          '}) > 0',
+            'description': u'System CPU Utilization exceeds 1% and ' +
+                           u'Load exceeds 3 per measurement period ἀ'},
+
+        'metric': {
+            'name': 'load.avg_1_min',
+            'dimensions': {'hostname':
+                           system_vars['default']['metric_host']}},
+
+        'statsd_metric': {
+            'name': 'monasca.sent_smtp_count',
+            'dimensions': {'hostname':
+                           system_vars['default']['metric_host']}}
     }
 }

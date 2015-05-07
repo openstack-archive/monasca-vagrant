@@ -285,11 +285,13 @@ def smoke_test():
             break
         if x >= 29:
             msg = 'No metrics received for statsd metric {}{} in {} seconds'.format(
-                  statsd_metric_name, statsd_metric_dimensions, x)
+                  statsd_metric_name, statsd_metric_dimensions, time.time() - start_time)
             return False, msg
         time.sleep(1)
-    print('Received {0} metrics for {1}{2} in {3} seconds'.format(
-        final_statsd_num_metrics-initial_statsd_num_metrics, statsd_metric_name, statsd_metric_dimensions, x))
+    print('Received {0} metrics for {1}{2} in {3} seconds'.format(final_statsd_num_metrics - initial_statsd_num_metrics,
+                                                                  statsd_metric_name,
+                                                                  statsd_metric_dimensions,
+                                                                  time.time() - start_time))
 
     msg = ''
     return True, msg

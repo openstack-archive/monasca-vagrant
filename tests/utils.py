@@ -135,8 +135,10 @@ def ensure_has_notification_engine():
 def find_notifications(alarm_id, user):
     args = ['sudo', 'cat', '/var/mail/' + user]
     result = []
+    env = os.environ.copy()
+    env['PYTHONIOENCODING'] = "utf-8"
     try:
-        stdout = subprocess.check_output(args)
+        stdout = subprocess.check_output(args, env=env)
     except subprocess.CalledProcessError as e:
         print(e, file=sys.stderr)
         sys.exit(1)
@@ -144,6 +146,7 @@ def find_notifications(alarm_id, user):
     previous = ''
     for line in stdout.splitlines():
         # Get the state; the alarm_id always follows the state message
+        line = unicode(line, "utf-8")
         if alarm_id in line:
             """ In the notification message the state verb is framed by
             'transitioned to the ' and ' state'
