@@ -6,6 +6,7 @@ from __future__ import print_function
 import sys
 import subprocess
 import json
+import os
 
 
 def find_obj_for_name(object_json, name):
@@ -39,8 +40,10 @@ def run_mon_cli(args, useJson=True):
     if useJson:
         args.insert(0, '--json')
     args.insert(0, 'monasca')
+    env = os.environ.copy()
+    env['PYTHONIOENCODING'] = "utf-8"
     try:
-        stdout = subprocess.check_output(args)
+        stdout = subprocess.check_output(args, env=env)
         if useJson:
             return json.loads(stdout)
         else:

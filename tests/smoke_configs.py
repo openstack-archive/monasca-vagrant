@@ -1,3 +1,5 @@
+# -*- encoding: utf-8 -*-
+
 """configurations for smoke test"""
 
 import subprocess
@@ -18,18 +20,18 @@ test_config = {
         'system_vars': system_vars['default'],
 
         'notification': {
-            'name': 'Monasca Smoke Test',
+            'name': u'Monasca Smoke Test Ā',
             'addr': 'root@'+system_vars['default']['mail_host'],
             'type': 'EMAIL'},
 
         'alarm': {
-            'name': 'high cpu and load',
+            'name': u'high cpu and load Ա',
             'expression': 'max(cpu.system_perc) > 0 and ' +
                           'max(load.avg_1_min{hostname=' +
                           system_vars['default']['metric_host'] +
                           '}) > 0',
-            'description': 'System CPU Utilization exceeds 1% and ' +
-                           'Load exceeds 3 per measurement period'},
+            'description': u'System CPU Utilization exceeds 1% and ' +
+                           u'Load exceeds 3 per measurement period ἀ'},
 
         'metric': {
             'name': 'load.avg_1_min',
