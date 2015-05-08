@@ -1,0 +1,9 @@
+Verified+2: Jenkins
+Code-Review+1: Deklan Dieterly <deklan.dieterly@hp.com>
+Code-Review+2: Joe Keen <joe.keen@hp.com>
+Workflow+1: Joe Keen <joe.keen@hp.com>
+Submitted-by: Jenkins
+Submitted-at: Fri, 08 May 2015 14:17:28 +0000
+Reviewed-on: https://review.openstack.org/181138
+Project: stackforge/monasca-vagrant
+Branch: refs/heads/master
