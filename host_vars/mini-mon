@@ -1,0 +1,36 @@
+---
+api_region: useast
+influxdb:
+  raft_port: 8086
+  seed_servers: []
+  replication_factor: 1
+influxdb_version: 0.9.0-rc28
+influxdb_url: "http://{{mini_mon}}:8086"
+kafka_events_partitions: 4
+kafka_metrics_partitions: 4
+kafka_replicas: 1
+kafka_hosts: "{{mini_mon}}:9092"
+kafka_listen_address: "{{mini_mon}}"
+keystone_host: "{{devstack}}"
+mysql_host: "{{mini_mon}}"
+nimbus_host: "{{mini_mon}}"
+percona_package: percona-xtradb-cluster-56
+smtp_host: localhost
+storm_worker_ports: [6701, 6702]
+zookeeper_hosts: "{{mini_mon}}:2181"
+
+# common credentials
+influxdb_users:
+  mon_api: password
+  mon_persister: password
+keystone_admin: admin
+keystone_admin_password: ""
+keystone_auth_method: token
+keystone_user: mini-mon
+keystone_password: password
+mysql_admin_password: password
+mysql_root_password: password
+mysql_users:
+  notification: password
+  monapi: password
+  thresh: password

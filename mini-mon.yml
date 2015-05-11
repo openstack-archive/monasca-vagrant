@@ -1,14 +1,6 @@
 - name: Installs DBs, kafka and other core dependencies.
   hosts: mini-mon
   sudo: yes
-  vars:
-    influxdb:
-      raft_port: 8086
-      seed_servers: []
-      replication_factor: 1
-    influxdb_version: 0.9.0-rc28  # Also set in the next play
-    mini_mon_host: 192.168.10.4
-    zookeeper_hosts: "{{mini_mon_host}}:2181"
   pre_tasks:
     - name: apt-get update
       apt: update_cache=yes
@@ -25,31 +17,15 @@
       apt: name=python-dev state=present
   roles:
     - {role: zookeeper, tags: [zookeeper]}
-    - {role: kafka, kafka_listen_address: "{{mini_mon_host}}", tags: [kafka]}
+    - {role: kafka, tags: [kafka]}
     - {role: influxdb, tags: [influxdb]}
-    - {role: percona, mysql_root_password: password, percona_package: percona-xtradb-cluster-56, tags: [mysql, percona]}
+    - {role: percona, tags: [mysql, percona]}
 
-- name: Sets up schema and Installs Monasca apps
+- name: Sets up schema and install Monasca apps
   hosts: mini-mon
   sudo: yes
   vars:
-    mini_mon_host: 192.168.10.4
-    influxdb_url: "http://{{mini_mon_host}}:8086"
-    influxdb_users:
-      mon_api: password
-      mon_persister: password
-    influxdb_version: 0.9.0-rc28  # Also set in the previous play
-    kafka_events_partitions: 4
-    kafka_metrics_partitions: 4
-    kafka_replicas: 1
-    kafka_hosts: "{{mini_mon_host}}:9092"
-    keystone_url: http://192.168.10.5:35357/v3
-    monasca_agent_user: monasca-agent
-    monasca_agent_password: password
-    monasca_agent_project: mini-mon
     monasca_agent_service: monitoring
-    monasca_agent_check_frequency: 15
-    monasca_api_url: http://192.168.10.4:8080/v2.0
     monasca_checks:
       host_alive:
         init_config:
@@ -60,13 +36,6 @@
           - name: devstack
             host_name: 192.168.10.5
             alive_test: ssh
-    mysql_host: "{{mini_mon_host}}"
-    mysql_users:
-      notification: password
-      monapi: password
-      thresh: password
-    storm_worker_ports: [6701, 6702]
-    zookeeper_hosts: "{{mini_mon_host}}:2181"
   tasks:
     - name: Setup the monasca cli credentials in the default environment
       copy: src=tests/env.sh dest=/etc/profile.d/monasca_cli.sh owner=root group=root mode=0644
@@ -77,16 +46,10 @@
       tags:
         - cli
   roles:
-    - {role: monasca-schema, mysql_admin_password: password, tags: [schema]}
+    - {role: monasca-schema, tags: [schema]}
     - {role: monasca-api,
-       api_region: useast,
        influxdb_user: mon_api,
        influxdb_password: password,
-       keystone_host: 192.168.10.5,
-       keystone_auth_method: token,
-       keystone_admin: admin,
-       keystone_admin_password: "",
-       keystone_admin_token: ADMIN,
        mysql_user: monapi,
        mysql_password: password,
        tags: [api]}
@@ -97,9 +60,8 @@
     - {role: monasca-notification,
        mysql_user: notification,
        mysql_password: password,
-       smtp_host: localhost,
        tags: [notification]}
-    - {role: storm, nimbus_host: "{{mini_mon_host}}", storm_nimbus_enabled: true, storm_supervisor_enabled: true, tags: [storm]}
+    - {role: storm, storm_nimbus_enabled: true, storm_supervisor_enabled: true, tags: [storm]}
     - {role: monasca-thresh,
        mysql_user: thresh,
        mysql_password: password,
@@ -109,9 +71,5 @@
 - name: Define default alarms
   hosts: mini-mon
   gather_facts: no
-  vars:
-    keystone_url: http://192.168.10.5:35357/v3/
-    keystone_user: mini-mon
-    keystone_password: password
   roles:
     - {role: monasca-default-alarms, tags: [alarms]}

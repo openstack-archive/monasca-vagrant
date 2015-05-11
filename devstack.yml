@@ -1,15 +1,6 @@
 - hosts: devstack
   sudo: yes
   vars:
-    monasca_api_host: 192.168.10.4
-    monasca_agent_user: monasca-agent
-    monasca_agent_password: password
-    monasca_agent_project: mini-mon
-    monasca_agent_check_frequency: 15
-    minimon:
-      user: mini-mon
-      password: password
-    monasca_api_url: http://{{ monasca_api_host }}:8080/v2.0
     monasca_checks:
       host_alive:
         init_config:
@@ -20,17 +11,6 @@
           - name: mini-mon
             host_name: 192.168.10.4
             alive_test: ssh
-    keystone_url: http://192.168.10.5:35357/v3
-    keystone_admin_token: ADMIN
-    keystone_users:
-      - username: mini-mon
-        project: mini-mon
-        password: password
-        role: monasca-user
-      - username: monasca-agent
-        password: password
-        project: mini-mon
-        role: monasca-agent
   pre_tasks:
     - name: apt-get update
       apt: update_cache=yes
@@ -43,7 +23,7 @@
       tags:
         - cli
     - name: Update cli
-      pip: name=python-monascaclient state=latest
+      pip: name=python-monascaclient state=latest virtualenv="{{monasca_virtualenv_dir}}"
       tags:
         - cli
   roles:
@@ -51,4 +31,3 @@
     - {role: monasca-keystone, tags: [devstack, keystone]}
     - {role: monasca-devstack, tags: [devstack]}
     - {role: monasca-agent, tags: [agent]}
-
