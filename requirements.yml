@@ -26,3 +26,5 @@
   name: zookeeper
 - src: https://github.com/hpcloud-mon/ansible-influxdb
   name: influxdb
+- src: tkuhlman.vertica
+  name: vertica

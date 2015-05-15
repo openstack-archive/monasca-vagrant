@@ -1,3 +1,10 @@
+- name: Check if database type is set
+  hosts: mini-mon
+  tasks:
+    - name: Check for database_type
+      fail: msg="Must set database type when running this playbook. To pass via command line use -e."
+      when: database_type is not defined
+
 - name: Installs DBs, kafka and other core dependencies.
   hosts: mini-mon
   sudo: yes
@@ -18,8 +25,9 @@
   roles:
     - {role: zookeeper, tags: [zookeeper]}
     - {role: kafka, tags: [kafka]}
-    - {role: influxdb, tags: [influxdb]}
+    - {role: influxdb, when: database_type == 'influxdb', tags: [influxdb]}
     - {role: percona, tags: [mysql, percona]}
+    - {role: vertica, when: database_type == 'vertica', tags: [vertica]}
 
 - name: Sets up schema and install Monasca apps
   hosts: mini-mon

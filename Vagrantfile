@@ -51,6 +51,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     mm.vm.provision "ansible" do |ansible|
       ansible.playbook = "mini-mon.yml"
       ansible.raw_arguments = ['-T 30', '-e pipelining=True']
+      if ENV["USE_VERTICA"]
+        ansible.extra_vars = { database_type: "vertica"}
+      else
+        ansible.extra_vars = { database_type: "influxdb"}
+      end
     end
   end
 
