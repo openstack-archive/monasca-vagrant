@@ -14,6 +14,7 @@
   - [Smoke test](#smoke-test)
   - [Updating](#updating)
   - [Running behind a Web Proxy](#running-behind-a-web-proxy)
+  - [Running with Vertica][#running-with-vertica]
 - [Advanced Usage](#advanced-usage)
   - [Access information](#access-information)
     - [Internal Endpoints](#internal-endpoints)
@@ -100,6 +101,25 @@ VM to use them also. It is important that 192.168.10.4, 192.168.10.5, 127.0.0.1 
 vagrant plugin install vagrant-proxyconf
 ```
 
+
+## Running with Vertica
+You can configure Vagrant to run Vertica as the database in place of influxdb.
+
+To accomplish this you have to download the community edition (Debian) and the jdbc driver from [Vertica](https://my.vertica.com/download-community-edition/).
+
+Place the jdbc driver and debian in the home directory of vagrant with the names of:
+
+vertica_jdbc.jar
+vertica.deb
+
+Set the environment variable USE_VERTICA to true and then run vagrant up.
+
+```
+export USE_VERTICA=true
+vagrant up
+```
+
+
 # Advanced Usage
 ## Access information
 - Your host OS home dir is synced to `/vagrant_home` on the VM.
@@ -155,6 +175,8 @@ your local ansible configuration (~/.ansible.cfg or a personal ansible.cfg in th
     pipelining = True  # Speeds up connections but only if requiretty is not enabled for sudo
 
 Next run `vagrant ssh-config >> ~/.ssh/config`, that will set the correct users/host_keys for the vagrant vms.
+
+When running Ansible directly make sure that you pass in what the database_type is, ie `ansible-playbook mini-mon.yml -e 'database_type=influxdb'`.
 
 ### Editing Ansible Configuration
 Since there are only two VMs in this setup the Ansible configuration has no host or group variables, rather

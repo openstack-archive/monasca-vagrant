@@ -8,7 +8,7 @@ system_vars = {
     'default': {  # the default configuration, assumes monasca-vagrant setup
         'expected_processes': ('monasca-persister', 'monasca-notification',
                                'kafka', 'zookeeper.jar', 'monasca-api',
-                               'influxdb', 'apache-storm', 'mysqld'),
+                               'apache-storm', 'mysqld'),
         'mail_host': 'localhost',
         'metric_host': subprocess.check_output(['hostname', '-f']).strip()},
 }

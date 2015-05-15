@@ -17,12 +17,27 @@ nimbus_host: "{{mini_mon}}"
 percona_package: percona-xtradb-cluster-56
 smtp_host: localhost
 storm_worker_ports: [6701, 6702]
+vertica_package_location: /vagrant/vertica.deb
+vertica_jdbc_location: /vagrant/vertica_jdbc.jar
+vertica_ssh_key_location: /vagrant
+vertica_url: "jdbc:vertica://localhost:5433/mon"
 zookeeper_hosts: "{{mini_mon}}:2181"
 
 # common credentials
 influxdb_users:
   mon_api: password
   mon_persister: password
+vertica_dbadmin_password: password
+vertica_users:
+  - username: monitor
+    password: password
+    role: monitor
+  - username: mon_api
+    password: password
+    role: monasca_api
+  - username: mon_persister
+    password: password
+    role: monasca_persister
 keystone_admin: admin
 keystone_admin_password: ""
 keystone_auth_method: token
