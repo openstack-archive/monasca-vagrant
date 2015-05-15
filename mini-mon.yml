@@ -18,8 +18,9 @@
   roles:
     - {role: zookeeper, tags: [zookeeper]}
     - {role: kafka, tags: [kafka]}
-    - {role: influxdb, tags: [influxdb]}
+    - {role: influxdb, when: database_type == 'influxdb', tags: [influxdb]}
     - {role: percona, tags: [mysql, percona]}
+    - {role: vertica, when: database_type == 'vertica', tags: [vertica]}
 
 - name: Sets up schema and install Monasca apps
   hosts: mini-mon

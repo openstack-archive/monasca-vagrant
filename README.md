@@ -14,6 +14,7 @@
   - [Smoke test](#smoke-test)
   - [Updating](#updating)
   - [Running behind a Web Proxy](#running-behind-a-web-proxy)
+  - [Running with Vertica][#running-with-vertica]
 - [Advanced Usage](#advanced-usage)
   - [Access information](#access-information)
     - [Internal Endpoints](#internal-endpoints)
@@ -99,6 +100,25 @@ VM to use them also. It is important that 192.168.10.4, 192.168.10.5, 127.0.0.1 
 ```
 vagrant plugin install vagrant-proxyconf
 ```
+
+
+## Running with Vertica
+You can configure Vagrant to run Vertica as the database in place of influxdb. 
+
+To accomplish this you have to download the community edition (Debian) and the jdbc driver from https://my.vertica.com/download-community-edition/.
+
+Make a directory vertica and place the jdbc drive and debian in there with the names of:
+
+vertica/vertica_jdbc.jar
+vertica/vertica.deb
+
+Set the environment variable USE_VERTICA to true and then run vagrant up.
+
+```
+export USE_VERTICA=true
+vagrant up
+```
+
 
 # Advanced Usage
 ## Access information
