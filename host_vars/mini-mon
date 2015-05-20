@@ -11,6 +11,7 @@ kafka_metrics_partitions: 4
 kafka_replicas: 1
 kafka_hosts: "{{mini_mon}}:9092"
 kafka_listen_address: "{{mini_mon}}"
+kafka_heap_opts: "-Xmx256m"
 keystone_host: "{{devstack}}"
 mysql_host: "{{mini_mon}}"
 nimbus_host: "{{mini_mon}}"
@@ -24,9 +25,11 @@ vertica_url: "jdbc:vertica://localhost:5433/mon"
 zookeeper_hosts: "{{mini_mon}}:2181"
 
 # common credentials
-influxdb_users:
-  mon_api: password
-  mon_persister: password
+mon_influxdb_users:
+  - username: mon_api
+    password: password
+  - username: mon_persister
+    password: password
 vertica_dbadmin_password: password
 vertica_users:
   - username: monitor
@@ -45,7 +48,10 @@ keystone_user: mini-mon
 keystone_password: password
 mysql_admin_password: password
 mysql_root_password: password
-mysql_users:
-  notification: password
-  monapi: password
-  thresh: password
+mon_mysql_users:
+  - username: notification
+    password: password
+  - username: monapi
+    password: password
+  - username: thresh
+    password: password
