@@ -72,7 +72,7 @@ def get_alarm_state(alarm_id):
 
 def change_alarm_state(alarm_id, new_state):
     print('Changing Alarm state to %s' % new_state)
-    result_json = run_mon_cli(['alarm-patch', alarm_id, new_state])
+    result_json = run_mon_cli(['alarm-patch', alarm_id, "--state", new_state])
     if result_json['state'] != new_state:
         print('Alarm patch failed, expected state of %s but was %s' %
               (result_json['state'], new_state), file=sys.stderr)
