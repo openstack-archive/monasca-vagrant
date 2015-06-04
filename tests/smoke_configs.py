@@ -70,5 +70,6 @@ test_config = {
             'dimensions': {'hostname':
                            system_vars['default']['metric_host']}}
 
-    }
+    },
+
 }

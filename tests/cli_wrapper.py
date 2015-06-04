@@ -9,6 +9,7 @@ import json
 import os
 
 
+
 def find_obj_for_name(object_json, name):
     for obj in object_json:
         this_name = obj['name']
@@ -62,6 +63,7 @@ def create_notification(notification_name,
 
     # Parse out id
     notification_id = result_json['id']
+    print('notification-id = {}'.format(notification_id))
     return notification_id
 
 
@@ -99,7 +101,6 @@ def create_alarm_definition(name, expression, description=None,
     args.append(expression)
     print('Creating alarm definition')
     result_json = run_mon_cli(args)
-
     # Parse out id
     return result_json['id']
 
