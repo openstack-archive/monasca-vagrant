@@ -1,0 +1,10 @@
+# to correctly get formatted output see:
+# http://blog.cliffano.com/2014/04/06/human-readable-ansible-playbook-log-output-using-callback-plugin/
+- hosts: mini-mon
+  tasks:
+    - name: Run the smoke2 test
+      command:  /vagrant_home/monasca-vagrant/tests/smoke2.py -s {{ hostvars['mini-mon']['ansible_eth1']['ipv4']['address']}} -dbtype {{database_type|default('influxdb')}}
+      environment:
+        PATH: "{{ansible_env.PATH}}:{{monasca_virtualenv_dir}}/bin"
+      register: smoke2
+    - debug: var=smoke2.stdout_lines

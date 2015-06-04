@@ -99,7 +99,6 @@ def create_alarm_definition(name, expression, description=None,
     args.append(expression)
     print('Creating alarm definition')
     result_json = run_mon_cli(args)
-
     # Parse out id
     return result_json['id']
 
