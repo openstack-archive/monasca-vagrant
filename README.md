@@ -26,6 +26,7 @@
 - [Developing Monasca](#developing-monasca)
 - [Alternate Vagrant Configurations](#alternate-vagrant-configurations)
 - [Troubleshooting](#troubleshooting)
+  - hello
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
