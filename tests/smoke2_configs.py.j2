@@ -1,0 +1,65 @@
+# -*- encoding: utf-8 -*-
+
+"""configurations for smoke2 test"""
+
+test_config = {
+    'default': {   # the default configuration,
+                   # simple test of each component of monasca-vagrant
+        'kafka': {
+            'topics': [
+                'metrics', 'events', 'raw-events', 'transformed-events',
+                'stream-definitions', 'transform-definitions',
+                'alarm-state-transitions', 'alarm-notifications',
+                'retry-notifications'
+            ]
+        },
+        'mysql_schema': [
+            'alarm', 'alarm_action', 'alarm_definition', 'alarm_metric',
+            'metric_definition', 'metric_definition_dimensions',
+            'metric_dimension', 'notification_method', 'schema_migrations',
+            'stream_actions', 'stream_definition', 'sub_alarm',
+            'sub_alarm_definition', 'sub_alarm_definition_dimension',
+            'event_transform'
+        ],
+        'arg_defaults': {
+            'dbtype': "{{database_type|default('influxdb')}}",
+            'kafka': "{{kafka_hosts|default()}}",
+            'zoo': "{{zookeeper_hosts|default()}}",
+            'mysql': "{{mysql_host|default()}}",
+            'monapi': "{{host_ip|default()}}",
+
+        },
+
+        'check': {
+            'expected_processes': [
+                'apache-storm', 'monasca-api', 'monasca-statsd',
+                'monasca-collector', 'monasca-forward',
+                'monasca-notification', 'monasca-persister',
+                'monasca-statsd', 'monasca-forward', 'monasca-collect'
+            ]
+        },
+    },
+    'keystone': {
+        'user': "{{keystone_user|default()}}",
+        'pass': "{{keystone_password|default()}}",
+        'host': "{{keystone_host|default()}}"
+    },
+    'storm': "{{nimbus_host|default()}}",
+    'mysql': {
+        'user': "{{mon_mysql_users[1]['username']|default()}}",
+        'pass': "{{mon_mysql_users[1]['password']|default()}}"
+    },
+    'vertica': {
+        'user': "{{vertica_users[1]['username']|default()}}",
+        'pass': "{{vertica_users[1]['password']|default()}}",
+        'node': "{{host_ip}}"
+    },
+    'influx': {
+        'user': "{{mon_influxdb_users[0]['username']|default()}}",
+        'pass': "{{mon_influxdb_users[0]['password']|default()}}",
+        'node': "{{influxdb_url|default()}}"
+    },
+    'help': {
+        'test': 'wiki link for help with specific process'
+    }
+}

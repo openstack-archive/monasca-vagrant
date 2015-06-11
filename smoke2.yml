@@ -1,0 +1,12 @@
+- hosts: mini-mon
+  vars:
+    host_ip: "{{mini_mon}}"
+  tasks:
+    - name: Populate config vars
+      template: src=tests/smoke2_configs.py.j2 dest=/vagrant/tests/smoke2_configs.py
+    - name: Run the smoke2 test
+      command:  /vagrant/tests/smoke2.py
+      environment:
+        PATH: "{{ansible_env.PATH}}:{{monasca_virtualenv_dir}}/bin"
+      register: smoke2
+    - debug: var=smoke2.stdout_lines
