@@ -1,12 +1,33 @@
 - hosts: mini-mon
+  sudo: yes
   vars:
     host_ip: "{{mini_mon}}"
+    test_base: /opt/monasca/
+    test_url: https://api.github.com/repos/hpcloud-mon/monasca-ci/tarball/master
   tasks:
+    - name: Fetch the monasca-ci tests
+      get_url: dest="{{test_base}}/monasca-ci.tar.gz" url="{{test_url}}"
+      register: download
+
+    - name: UI - Uncompress the monasca-ci tar
+      unarchive: copy=no dest="{{test_base}}" src="{{test_base}}/monasca-ci.tar.gz"
+      when: download | changed
+    # In Ansible 1.8 this was in the unarchive output, in 2.0 there is list_files option you can add to unarchive but in 1.9 we must use this
+    # command to discover the tar dir. This method will work for the other versions also.
+    - name: Discover the tar path
+      command: tar -tzf "{{test_base}}/monasca-ci.tar.gz"
+      register: tarpath
+
+    - name: Install the influxdb python library
+      pip: name=influxdb virtualenv="{{monasca_virtualenv_dir}}"
+      when: database_type == 'influxdb'
+
+    - name: Copy the template locally
+      fetch: src="{{test_base}}/{{tarpath.stdout_lines[0]}}/tests/smoke/smoke2_configs.py.j2" dest=tests/ flat=yes
     - name: Populate config vars
-      template: src=tests/smoke2_configs.py.j2 dest=/vagrant/tests/smoke2_configs.py
+      template: src="tests/smoke2_configs.py.j2" dest="{{test_base}}/{{tarpath.stdout_lines[0]}}/tests/smoke/smoke2_configs.py"
+
     - name: Run the smoke2 test
-      command:  /vagrant/tests/smoke2.py
-      environment:
-        PATH: "{{ansible_env.PATH}}:{{monasca_virtualenv_dir}}/bin"
+      command: "{{monasca_virtualenv_dir}}/bin/python {{test_base}}/{{tarpath.stdout_lines[0]}}/tests/smoke/smoke2.py"
       register: smoke2
     - debug: var=smoke2.stdout_lines
