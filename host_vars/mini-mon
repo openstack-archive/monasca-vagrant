@@ -1,10 +1,5 @@
 ---
 api_region: useast
-influxdb:
-  raft_port: 8086
-  seed_servers: []
-  replication_factor: 1
-influxdb_version: 0.9.0-rc28
 influxdb_url: "http://{{mini_mon}}:8086"
 kafka_events_partitions: 4
 kafka_metrics_partitions: 4
