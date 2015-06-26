@@ -46,7 +46,7 @@
             alive_test: ssh
   tasks:
     - name: Setup the monasca cli credentials in the default environment
-      copy: src=tests/env.sh dest=/etc/profile.d/monasca_cli.sh owner=root group=root mode=0644
+      copy: src=env.sh dest=/etc/profile.d/monasca_cli.sh owner=root group=root mode=0644
       tags:
         - cli
     - name: Update cli
@@ -82,5 +82,4 @@
   roles:
     - {role: monasca-default-alarms, tags: [alarms]}
 
-- include: smoke2.yml
 - include: smoke.yml
