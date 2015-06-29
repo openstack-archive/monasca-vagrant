@@ -44,7 +44,7 @@ retrystring='git call failed: \[git clone'
 
 success=0
 while [ "$success" = 0 ]; do
-    if [ `tail -1 $log 2>/dev/null |grep -c "$donestring"` = 1 ]; then
+    if [ `tail -5 $log 2>/dev/null |grep -c "$donestring"` = 1 ]; then
         success=1
     elif [ `tail -2 $log 2>/dev/null |grep -c "$retrystring"` = 1 ]; then
         pkill -f devstack/stack.sh
