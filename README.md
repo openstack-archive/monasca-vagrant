@@ -208,3 +208,12 @@ and scripts for putting it on baremetal are also no longer supported.
     TASK: [monasca-keystone | Keystone Service - Execute the script] **************
     (stacktrace elided...)
     keystoneclient.openstack.common.apiclient.exceptions.ServiceUnavailable: Service Unavailable (HTTP 503)
+
+2.  If you have trouble when use libvirt plugin, the steps maybe help you below:
+
+    - 	Check whether novaclient has been installed, if not 
+        run 'pip install python-novaclient'. If you have permission problem, you can chmod for directory /opt/monasca and /etc/monasca first.
+    -   Check whether python lxml module has been imported, if not run 'sudo apt-get libxml2-dev libxslt1-dev', then run 'pip install lxml'.
+    -   Check whether python libvirt module has been imported, if not run 'sudo apt-get libvirt-dev', then run 'pip install libvirt-python'.
+    -   Run 'sudo /opt/monasca/bin/monasca-setup -d libvirt' to detect libvirt plugin.      
+ 
