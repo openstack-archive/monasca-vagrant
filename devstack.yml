@@ -17,6 +17,13 @@
       ignore_errors: true
     - name: Install virtualenv
       apt: name=python-virtualenv
+    - name: Install Agent plugin dependencies in virtualenv
+      pip: name={{item}} state=latest virtualenv="{{monasca_virtualenv_dir}}"
+      with_items:
+        - lxml
+        - libvirt-python
+        - mysql-python
+        - python-novaclient
   tasks:
     - name: Setup the monasca cli credentials in the default environment
       copy: src=env.sh dest=/etc/profile.d/monasca_cli.sh owner=root group=root mode=0644
