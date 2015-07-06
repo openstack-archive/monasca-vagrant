@@ -80,9 +80,9 @@ on both and metrics are actively being collected.
   explore the metrics in the system. For example to list all metrics, run `monasca metric-list`
 
 ## Smoke test
-A smoke test exists in the test directory that exercises every major piece of Monasca and culminates with an email sent by
-the notification engine. From within the mini-mon vm this directory is exposed as /vagrant/tests and
-so `/vagrant/tests/smoke.py` can be run when in a mini-mon terminal. If this test exits correctly the system is working!
+At the end of the install a smoke test is run that exercises every major piece of Monasca. If this fails the end of the provision will report it.
+It is possible to rerun this at any point using Ansible `ansible-playbook ./smoke.yml` or from within the vm by running smoke.py and smoke2.py in
+`/opt/monasca/hpcloud-mon-monasca-ci\*/tests/smoke`.
 
 
 ## Updating
