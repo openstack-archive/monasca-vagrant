@@ -14,7 +14,7 @@
   - [Smoke test](#smoke-test)
   - [Updating](#updating)
   - [Running behind a Web Proxy](#running-behind-a-web-proxy)
-  - [Running with Vertica][#running-with-vertica]
+  - [Running with Vertica](#running-with-vertica)
 - [Advanced Usage](#advanced-usage)
   - [Access information](#access-information)
     - [Internal Endpoints](#internal-endpoints)
