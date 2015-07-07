@@ -18,6 +18,7 @@ vertica_jdbc_location: /vagrant/vertica_jdbc.jar
 vertica_ssh_key_location: /vagrant
 vertica_url: "jdbc:vertica://localhost:5433/mon"
 zookeeper_hosts: "{{mini_mon}}:2181"
+influxdb_host: "{{mini_mon}}"
 
 # common credentials
 mon_influxdb_users:
