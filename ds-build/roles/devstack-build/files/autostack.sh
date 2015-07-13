@@ -38,15 +38,15 @@ echo "Running stack.sh (this will take a while, output in $log)"
 su $unpriv_user -c $basedir/devstack/stack.sh 2>&1 &
 
 # Wait for stack.sh to complete by watching the log file for $donestring
-donestring='This is your host ip'
+donestring='This is your host IP'
 # Sometimes, 'git clone' fails, and this can be retried
 retrystring='git call failed: \[git clone'
 
 success=0
 while [ "$success" = 0 ]; do
-    if [ `tail -5 $log 2>/dev/null |grep -c "$donestring"` = 1 ]; then
+    if [ `tail -6 $log 2>/dev/null |grep -c "$donestring"` -gt 0 ]; then
         success=1
-    elif [ `tail -2 $log 2>/dev/null |grep -c "$retrystring"` = 1 ]; then
+    elif [ `tail -2 $log 2>/dev/null |grep -c "$retrystring"` -gt 0 ]; then
         pkill -f devstack/stack.sh
         su $unpriv_user -c $basedir/devstack/stack.sh 2>&1 &
     fi
