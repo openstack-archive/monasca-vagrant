@@ -9,7 +9,7 @@
           ping_timeout: 1
         instances:
           - name: mini-mon
-            host_name: 192.168.10.4
+            host_name: mini-mon
             alive_test: ssh
   pre_tasks:
     - name: apt-get update
@@ -24,6 +24,8 @@
         - libvirt-python
         - mysql-python
         - python-novaclient
+    - name: Add mini-mon to hosts file
+      lineinfile: dest=/etc/hosts regexp="^{{ mini_mon }}" line="{{ mini_mon }} mini-mon" state=present
   tasks:
     - name: Setup the monasca cli credentials in the default environment
       copy: src=env.sh dest=/etc/profile.d/monasca_cli.sh owner=root group=root mode=0644

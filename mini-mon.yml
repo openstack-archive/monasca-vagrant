@@ -42,8 +42,11 @@
           ping_timeout: 1
         instances:
           - name: devstack
-            host_name: 192.168.10.5
+            host_name: devstack
             alive_test: ssh
+  pre_tasks:
+    - name: Add devstack to hosts file
+      lineinfile: dest=/etc/hosts regexp="^{{ devstack }}" line="{{ devstack }} devstack" state=present
   tasks:
     - name: Setup the monasca cli credentials in the default environment
       copy: src=env.sh dest=/etc/profile.d/monasca_cli.sh owner=root group=root mode=0644
