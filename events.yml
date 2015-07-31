@@ -2,6 +2,7 @@
 
 - name: Monasca Events Install
   hosts: mini-mon
+  sudo: yes
   roles:
     - {role: monasca-events-api}
     - {role: monasca-events-engine}
