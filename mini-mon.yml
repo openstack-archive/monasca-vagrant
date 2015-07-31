@@ -82,4 +82,5 @@
   roles:
     - {role: monasca-default-alarms, tags: [alarms]}
 
+- include: events.yml
 - include: smoke.yml

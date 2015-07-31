@@ -28,3 +28,11 @@
   name: influxdb
 - src: mhoppal.vertica
   name: vertica
+- src: https://github.com/hpcloud-mon/monasca-events-api
+  name: monasca-events-api
+- src: https://github.com/hpcloud-mon/monasca-events-engine
+  name: monasca-events-engine
+- src: https://github.com/hpcloud-mon/monasca-events-transform
+  name: monasca-events-transform
+- src: https://github.com/hpcloud-mon/python-monasca-events
+  name: python-monasca-events
