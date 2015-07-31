@@ -1,3 +1,5 @@
+- src: https://github.com/hpcloud-mon/ansible-influxdb
+  name: influxdb
 - src: tkuhlman.kafka
   name: kafka
 - src: tkuhlman.monasca-agent
@@ -6,6 +8,12 @@
   name: monasca-api
 - src: https://github.com/hpcloud-mon/ansible-monasca-default-alarms
   name: monasca-default-alarms
+- src: https://github.com/hpcloud-mon/ansible-monasca-events-api
+  name: monasca-events-api
+- src: https://github.com/hpcloud-mon/ansible-monasca-events-engine
+  name: monasca-events-engine
+- src: https://github.com/hpcloud-mon/ansible-monasca-events-transform
+  name: monasca-events-transform
 - src: tkuhlman.monasca-keystone
   name: monasca-keystone
 - src: tkuhlman.monasca-notification
@@ -20,11 +28,11 @@
   name: monasca-ui
 - src: tkuhlman.percona
   name: percona
+- src: https://github.com/hpcloud-mon/ansible-python-monasca-events
+  name: python-monasca-events
 - src: tkuhlman.storm
   name: storm
 - src: tkuhlman.zookeeper
   name: zookeeper
-- src: https://github.com/hpcloud-mon/ansible-influxdb
-  name: influxdb
 - src: mhoppal.vertica
   name: vertica

@@ -1,0 +1,9 @@
+---
+
+- name: Monasca Events Install
+  hosts: mini-mon
+  roles:
+    - {role: monasca-events-api}
+    - {role: monasca-events-engine}
+    - {role: monasca-events-transform}
+    - {role: python-monasca-events}
