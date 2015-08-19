@@ -4,7 +4,7 @@ mini_mon: 192.168.10.4
 
 keystone_url: "http://{{devstack}}:35357/v3"
 monasca_api_host: "{{mini_mon}}"
-monasca_api_url: http://{{ monasca_api_host }}:8080/v2.0
+monasca_api_url: http://{{ monasca_api_host }}:8070/v2.0
 monasca_agent_check_frequency: 15
 monasca_virtualenv_dir: /opt/monasca
 
