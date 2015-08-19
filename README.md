@@ -128,7 +128,7 @@ vagrant up
 
 ### Internal Endpoints
 - Influxdb web ui is available at http://192.168.10.4:8083 with root/root as user/password
-- The Monasca-api is available at http://192.168.10.4:8080
+- The Monasca-api is available at http://192.168.10.4:8070
   - The keystone credentials used are mini-mon/password in the mini-mon project. The keystone services on 192.168.10.5 on standard ports.
 
 ## Improving Provisioning Speed
