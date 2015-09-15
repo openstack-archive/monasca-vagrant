@@ -52,10 +52,6 @@
       copy: src=env.sh dest=/etc/profile.d/monasca_cli.sh owner=root group=root mode=0644
       tags:
         - cli
-    - name: Update cli
-      pip: name=python-monascaclient state=latest virtualenv="{{monasca_virtualenv_dir}}"
-      tags:
-        - cli
   roles:
     - {role: monasca-schema, tags: [schema]}
     - {role: monasca-api,
