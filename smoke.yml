@@ -22,6 +22,10 @@
       pip: name=influxdb virtualenv="{{monasca_virtualenv_dir}}"
       when: database_type == 'influxdb'
 
+    - name: Install the cassandra python library
+      pip: name=cassandra-driver virtualenv="{{monasca_virtualenv_dir}}"
+      when: database_type == 'cassandra'
+
     - name: Copy the template locally
       fetch: src="{{test_base}}/{{tarpath.stdout_lines[0]}}/tests/smoke/smoke2_configs.py.j2" dest=tests/ flat=yes
     - name: Populate config vars

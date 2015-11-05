@@ -102,6 +102,16 @@ vagrant plugin install vagrant-proxyconf
 ```
 
 
+## Running with Cassandra
+You can configure Vagrant to run Cassandra as the database in place of influxdb.
+
+Set the environment variable USE_CASSANDRA to true and then run vagrant up.
+
+```
+USE_CASSANDRA=true vagrant up
+```
+
+
 ## Running with Vertica
 You can configure Vagrant to run Vertica as the database in place of influxdb.
 
@@ -112,13 +122,33 @@ Place the jdbc driver and debian in the home directory of vagrant with the names
 vertica_jdbc.jar
 vertica.deb
 
-Set the environment variable USE_VERTICA to true and then run vagrant up.
+Set the environment variable USE_VERTICA to true and run vagrant up.
 
 ```
-export USE_VERTICA=true
-vagrant up
+USE_VERTICA=true vagrant up
 ```
 
+
+## Running with the Python Persister
+
+There is both a Java-based and Python-based persister. The Java-based persister is installed by default.
+To install the Python-based persister instead, set the environment variable `USE_PYTHON_PERSISTER`
+to true and run vagrant up.
+
+```
+USE_PYTHON_PERSISTER=true vagrant up
+```
+
+
+## Running with the Python API
+
+There is both a Java-based and Python-based API. The Java-based API is installed by default.
+To install the Python-based API instead, set the environment variable `USE_PYTHON_API`
+to true and run vagrant up.
+
+```
+USE_PYTHON_API=true vagrant up
+```
 
 # Advanced Usage
 ## Access information
@@ -128,6 +158,7 @@ vagrant up
 
 ### Internal Endpoints
 - Influxdb web ui is available at http://192.168.10.4:8083 with root/root as user/password
+- Cassandra Opscenter web ui is available at http://192.168.10.4:8088 with root/root as user/password
 - The Monasca-api is available at http://192.168.10.4:8070
   - The keystone credentials used are mini-mon/password in the mini-mon project. The keystone services on 192.168.10.5 on standard ports.
 
@@ -146,8 +177,8 @@ See this page for details on the [Monasca Architecture](https://wiki.openstack.o
 
 The components of the system which are part of the Monasca code base have there configuration in `/etc/monasca` and their logs
 in `/var/log/monasca`. For nearly all of these you can set the logging to higher debug level and restart. The components of the
-system which are dependencies for Monasca (zookeeper, kafka, storm, influxdb, mysql) are either in the standard Ubuntu location
-or in `/opt`.
+system which are dependencies for Monasca (zookeeper, kafka, storm, influxdb, cassandra, mysql) are either in the standard Ubuntu
+location or in `/opt`.
 
 Some other helpful commands:
 - Zookeeper shell at - `/usr/share/zookeeper/bin/zkCli.sh`
@@ -176,7 +207,8 @@ your local ansible configuration (~/.ansible.cfg or a personal ansible.cfg in th
 
 Next run `vagrant ssh-config >> ~/.ssh/config`, that will set the correct users/host_keys for the vagrant vms.
 
-When running Ansible directly make sure that you pass in what the database_type is, ie `ansible-playbook mini-mon.yml -e 'database_type=influxdb'`.
+When running Ansible directly make sure that you pass in the database_type (influxdb, cassandra, or vertica),
+ie `ansible-playbook mini-mon.yml -e 'database_type=influxdb'`.
 
 ### Editing Ansible Configuration
 Since there are only two VMs in this setup the Ansible configuration has no host or group variables, rather

@@ -12,6 +12,7 @@ https://github.com/hpcloud-mon/ansible-monasca-schema.git
 https://github.com/hpcloud-mon/ansible-monasca-thresh.git
 https://github.com/hpcloud-mon/ansible-monasca-ui.git
 https://github.com/hpcloud-mon/ansible-influxdb.git
+https://github.com/hpcloud-mon/ansible-cassandra.git
 https://github.com/hpcloud-mon/ansible-kafka.git
 https://github.com/hpcloud-mon/ansible-percona.git
 https://github.com/hpcloud-mon/ansible-storm.git

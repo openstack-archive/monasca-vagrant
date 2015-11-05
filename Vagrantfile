@@ -51,10 +51,29 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     mm.vm.provision "ansible" do |ansible|
       ansible.playbook = "mini-mon.yml"
       ansible.raw_arguments = ['-T 30', '-e pipelining=True']
+
+      # default Ansible selections
+      ansible.extra_vars = {
+        database_type: "influxdb",
+        monasca_persister_java: true,
+        monasca_api_java: true
+      }
+
+      if ENV["USE_PYTHON_PERSISTER"]
+        ansible.extra_vars[:monasca_persister_java] = false
+      end
+
+      if ENV["USE_PYTHON_API"]
+        ansible.extra_vars[:monasca_api_java] = false
+      end
+
       if ENV["USE_VERTICA"]
-        ansible.extra_vars = { database_type: "vertica"}
-      else
-        ansible.extra_vars = { database_type: "influxdb"}
+        ansible.extra_vars[:database_type] = "vertica"
+
+      elsif ENV["USE_CASSANDRA"]
+        ansible.extra_vars[:database_type] = "cassandra"
+        ansible.extra_vars[:monasca_persister_java] = false
+        ansible.extra_vars[:monasca_api_java] = false
       end
     end
   end

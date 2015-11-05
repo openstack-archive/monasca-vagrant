@@ -1,5 +1,7 @@
 - src: https://github.com/hpcloud-mon/ansible-influxdb
   name: influxdb
+- src: https://github.com/hpcloud-mon/ansible-cassandra
+  name: cassandra
 - src: tkuhlman.kafka
   name: kafka
 - src: tkuhlman.monasca-agent
