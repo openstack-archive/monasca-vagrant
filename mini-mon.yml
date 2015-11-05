@@ -26,6 +26,7 @@
     - {role: zookeeper, tags: [zookeeper]}
     - {role: kafka, tags: [kafka]}
     - {role: influxdb, when: database_type == 'influxdb', tags: [influxdb]}
+    - {role: cassandra, when: database_type == 'cassandra', tags: [cassandra]}
     - {role: percona, tags: [mysql, percona]}
     - {role: vertica, when: database_type == 'vertica', tags: [vertica]}
 
@@ -57,12 +58,16 @@
     - {role: monasca-api,
        influxdb_user: mon_api,
        influxdb_password: password,
+       cassandra_user: mon_api,
+       cassandra_password: password,
        mysql_user: monapi,
        mysql_password: password,
        tags: [api]}
     - {role: monasca-persister,
        influxdb_user: mon_persister,
        influxdb_password: password,
+       cassandra_user: mon_persister,
+       cassandra_password: password,
        tags: [persister]}
     - {role: monasca-notification,
        mysql_user: notification,

@@ -1,6 +1,9 @@
 ---
 api_region: useast
-influxdb_url: "http://{{mini_mon}}:8086"
+influxdb_host: "{{mini_mon}}"
+influxdb_url: "http://{{ influxdb_host }}:8086"
+cassandra_opscenter_host: "{{mini_mon}}"
+cassandra_opscenter_url: "http://{{cassandra_opscenter_host}}:8888"
 kafka_events_partitions: 4
 kafka_metrics_partitions: 4
 kafka_replicas: 1
@@ -18,10 +21,15 @@ vertica_jdbc_location: /vagrant/vertica_jdbc.jar
 vertica_ssh_key_location: /vagrant
 vertica_url: "jdbc:vertica://localhost:5433/mon"
 zookeeper_hosts: "{{mini_mon}}:2181"
-influxdb_host: "{{mini_mon}}"
+cassandra_host: "{{mini_mon}}"
 
 # common credentials
 mon_influxdb_users:
+  - username: mon_api
+    password: password
+  - username: mon_persister
+    password: password
+mon_cassandra_users:
   - username: mon_api
     password: password
   - username: mon_persister

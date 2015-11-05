@@ -51,10 +51,43 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     mm.vm.provision "ansible" do |ansible|
       ansible.playbook = "mini-mon.yml"
       ansible.raw_arguments = ['-T 30', '-e pipelining=True']
+
+      # default Ansible selections
+      ansible.extra_vars = {
+        database_type: "influxdb",
+        monasca_persister_java: true,
+        monasca_api_java: true
+      }
+
+      if ENV["USE_PYTHON_PERSISTER"]
+        ansible.extra_vars[:monasca_persister_java] = false
+      end
+
+      if ENV["USE_PYTHON_API"]
+        ansible.extra_vars[:monasca_api_java] = false
+      end
+
       if ENV["USE_VERTICA"]
-        ansible.extra_vars = { database_type: "vertica"}
-      else
-        ansible.extra_vars = { database_type: "influxdb"}
+        ansible.extra_vars[:database_type] = "vertica"
+
+      elsif ENV["USE_CASSANDRA"]
+
+        # The Monasca API java app checks for existence of influxDB or
+        # vertica and dies with an exception if neither is found. The
+        # ansible monasca-api role waits for port 8070 (default) to ensure
+        # monasca-api is running, which will fail if cassandra has been
+        # selected as the database (neither influxDB nor vertica installed)
+
+        # Temporary solution: if Cassandra is selected, install influxdb
+        # and cassandra so the Monasca API java app will execute.
+
+        # TODO: determine and implement optimal solution for this conflict
+
+        # ansible.extra_vars[:database_type] = "influxdb"
+        # ansible.extra_vars[:database_type2] = "cassandra"
+        ansible.extra_vars[:database_type] = "cassandra"
+        ansible.extra_vars[:monasca_persister_java] = false
+        ansible.extra_vars[:monasca_api_java] = false
       end
     end
   end
