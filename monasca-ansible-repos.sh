@@ -17,7 +17,7 @@ https://github.com/hpcloud-mon/ansible-percona.git
 https://github.com/hpcloud-mon/ansible-storm.git
 https://github.com/hpcloud-mon/ansible-zookeeper.git'
 
-# Other repos not in the standard list are found at https://github.com/hpcloud-mon and https://github.com/stackforge?query=monasca
+# Other repos not in the standard list are found at https://github.com/hpcloud-mon and https://github.com/openstack?query=monasca
 
 if [ $# -ne 1 ]; then
   echo 'Usage: $0 <parent_dir>'

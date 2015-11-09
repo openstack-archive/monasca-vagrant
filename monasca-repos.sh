@@ -2,18 +2,18 @@
 #
 # Clone all the monasca code repos to $1
 
-monasca_repos='https://github.com/stackforge/monasca-agent.git
-https://github.com/stackforge/monasca-api.git
-https://github.com/stackforge/monasca-common.git
-https://github.com/stackforge/monasca-notification.git
-https://github.com/stackforge/monasca-persister.git
-https://github.com/stackforge/monasca-thresh.git
-https://github.com/stackforge/monasca-ui.git
-https://github.com/stackforge/python-monascaclient.git
+monasca_repos='https://github.com/openstack/monasca-agent.git
+https://github.com/openstack/monasca-api.git
+https://github.com/openstack/monasca-common.git
+https://github.com/openstack/monasca-notification.git
+https://github.com/openstack/monasca-persister.git
+https://github.com/openstack/monasca-thresh.git
+https://github.com/openstack/monasca-ui.git
+https://github.com/openstack/python-monascaclient.git
 https://github.com/hpcloud-mon/grafana
 https://github.com/hpcloud-mon/monasca-tempest.git'
 
-# Other repos not in the standard list are found at https://github.com/hpcloud-mon and https://github.com/stackforge?query=monasca
+# Other repos not in the standard list are found at https://github.com/hpcloud-mon and https://github.com/openstack?query=monasca
 
 if [ $# -ne 1 ]; then
   echo 'Usage: $0 <parent_dir>'

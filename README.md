@@ -36,7 +36,7 @@ Installs a mini monitoring environment based on Vagrant. Intended for developmen
 ## Get the Code
 
 ```
-git clone https://github.com/stackforge/monasca-vagrant
+git clone https://github.com/openstack/monasca-vagrant
 ```
 ## Install Vagrant
 
