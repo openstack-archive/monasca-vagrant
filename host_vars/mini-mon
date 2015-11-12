@@ -8,7 +8,7 @@ kafka_hosts: "{{mini_mon}}:9092"
 kafka_listen_address: "{{mini_mon}}"
 kafka_heap_opts: "-Xmx256m"
 keystone_host: "{{devstack}}"
-mysql_host: "{{mini_mon}}"
+database_host: "{{mini_mon}}"
 nimbus_host: "{{mini_mon}}"
 percona_package: percona-xtradb-cluster-56
 smtp_host: localhost

@@ -57,21 +57,21 @@
     - {role: monasca-api,
        influxdb_user: mon_api,
        influxdb_password: password,
-       mysql_user: monapi,
-       mysql_password: password,
+       database_user: monapi,
+       database_password: password,
        tags: [api]}
     - {role: monasca-persister,
        influxdb_user: mon_persister,
        influxdb_password: password,
        tags: [persister]}
     - {role: monasca-notification,
-       mysql_user: notification,
-       mysql_password: password,
+       database_user: notification,
+       database_password: password,
        tags: [notification]}
     - {role: storm, storm_nimbus_enabled: true, storm_supervisor_enabled: true, tags: [storm]}
     - {role: monasca-thresh,
-       mysql_user: thresh,
-       mysql_password: password,
+       database_user: thresh,
+       database_password: password,
        tags: [thresh]}
     - {role: monasca-agent, tags: [agent]}
 
