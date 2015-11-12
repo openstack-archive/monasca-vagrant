@@ -26,6 +26,10 @@
         - python-novaclient
     - name: Add mini-mon to hosts file
       lineinfile: dest=/etc/hosts regexp="^{{ mini_mon }}" line="{{ mini_mon }} mini-mon" state=present
+    - name: Setup Monasca group
+      group: name={{monasca_group}} system=yes
+    - name: Add ansible user to Monasca group
+      user: name={{ansible_ssh_user}} groups={{monasca_group}} append=yes
   tasks:
     - name: Setup the monasca cli credentials in the default environment
       copy: src=env.sh dest=/etc/profile.d/monasca_cli.sh owner=root group=root mode=0644
@@ -36,3 +40,9 @@
     - {role: monasca-keystone, tags: [devstack, keystone]}
     - {role: monasca-devstack, tags: [devstack]}
     - {role: monasca-agent, tags: [agent]}
+    - {role: monasca-log-agent,
+       log_files:
+         [{ tags: '["syslog"]',
+            type: '"system"',
+            path: '"/var/log/messages"' }],
+       tags: [log_agent, agent]}
