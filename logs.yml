@@ -1,0 +1,17 @@
+---
+
+- name: Monasca Logging Install
+  hosts: mini-mon
+  sudo: yes
+  roles:
+    - {role: monasca-log-schema, tags: [elkstack]}
+    - {role: monasca-log-api,
+       tags: [api, log_api]}
+    - {role: monasca-elkstack,
+       tags: [elkstack]}
+    - {role: monasca-log-agent,
+       log_files:
+         [{ tags: '["monasca_java"]',
+             type: '"monasca-api"',
+             path: '"/var/log/monasca/api/*.log"' }],
+       tags: [log_agent, agent]}

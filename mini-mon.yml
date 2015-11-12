@@ -47,6 +47,10 @@
   pre_tasks:
     - name: Add devstack to hosts file
       lineinfile: dest=/etc/hosts regexp="^{{ devstack }}" line="{{ devstack }} devstack" state=present
+    - name: Setup Monasca group
+      group: name={{monasca_group}} system=yes
+    - name: Add ansible user to Monasca group
+      user: name={{ansible_ssh_user}} groups={{monasca_group}} append=yes
   tasks:
     - name: Setup the monasca cli credentials in the default environment
       copy: src=env.sh dest=/etc/profile.d/monasca_cli.sh owner=root group=root mode=0644
@@ -81,4 +85,5 @@
   roles:
     - {role: monasca-default-alarms, tags: [alarms]}
 
+- include: logs.yml
 - include: smoke.yml
