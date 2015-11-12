@@ -36,3 +36,11 @@
   name: zookeeper
 - src: mhoppal.vertica
   name: vertica
+- src: https://github.com/FujitsuEnablingSoftwareTechnologyGmbH/ansible-monasca-log-schema
+  name: monasca-log-schema
+- src: https://github.com/FujitsuEnablingSoftwareTechnologyGmbH/ansible-monasca-log-api
+  name: monasca-log-api
+- src: https://github.com/FujitsuEnablingSoftwareTechnologyGmbH/ansible-monasca-elkstack
+  name: monasca-elkstack
+- src: https://github.com/FujitsuEnablingSoftwareTechnologyGmbH/ansible-monasca-log-agent
+  name: monasca-log-agent
