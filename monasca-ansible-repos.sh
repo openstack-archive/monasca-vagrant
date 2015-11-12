@@ -15,9 +15,14 @@ https://github.com/hpcloud-mon/ansible-influxdb.git
 https://github.com/hpcloud-mon/ansible-kafka.git
 https://github.com/hpcloud-mon/ansible-percona.git
 https://github.com/hpcloud-mon/ansible-storm.git
-https://github.com/hpcloud-mon/ansible-zookeeper.git'
+https://github.com/hpcloud-mon/ansible-zookeeper.git
+https://github.com/FujitsuEnablingSoftwareTechnologyGmbH/ansible-monasca-log-schema.git
+https://github.com/FujitsuEnablingSoftwareTechnologyGmbH/ansible-monasca-log-api.git
+https://github.com/FujitsuEnablingSoftwareTechnologyGmbH/ansible-monasca-elkstack.git
+https://github.com/FujitsuEnablingSoftwareTechnologyGmbH/ansible-monasca-log-agent.git'
 
-# Other repos not in the standard list are found at https://github.com/hpcloud-mon and https://github.com/openstack?query=monasca
+# Other repos not in the standard list are found at
+# https://github.com/hpcloud-mon and https://github.com/openstack?query=monasca
 
 if [ $# -ne 1 ]; then
   echo 'Usage: $0 <parent_dir>'
