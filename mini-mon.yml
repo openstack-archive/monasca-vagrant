@@ -19,7 +19,7 @@
     - name: Install pip from apt
       apt: name=python-pip state=present
     - name: pip upgrade pip
-      pip: name=pip state=latest
+      pip: name=pip version=7.1.2
     - name: Install python-dev
       apt: name=python-dev state=present
   roles:
