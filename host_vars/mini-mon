@@ -37,9 +37,7 @@ vertica_users:
   - username: mon_persister
     password: password
     role: monasca_persister
-keystone_admin: admin
-keystone_admin_password: ""
-keystone_auth_method: token
+keystone_auth_method: password
 keystone_user: mini-mon
 keystone_password: password
 mysql_admin_password: password

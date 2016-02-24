@@ -8,7 +8,10 @@ monasca_api_url: http://{{ monasca_api_host }}:8070/v2.0
 monasca_agent_check_frequency: 15
 monasca_virtualenv_dir: /opt/monasca
 
-keystone_admin_token: ADMIN
+keystone_admin_token: ""
+keystone_admin: admin
+keystone_admin_password: admin
+keystone_admin_project: admin
 monasca_agent_user: monasca-agent
 monasca_agent_password: password
 monasca_agent_project: mini-mon
