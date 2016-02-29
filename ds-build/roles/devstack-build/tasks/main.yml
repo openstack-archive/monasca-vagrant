@@ -9,7 +9,7 @@
   copy: src=local.conf dest={{unpriv_home}}/local.conf mode=0755 owner={{unpriv_user}}
 
 - name: Install autostack.sh script
-  copy: src=autostack.sh dest={{unpriv_home}}/autostack.sh mode=0755 owner={{unpriv_user}}
+  template: src=autostack.sh.j2 dest={{unpriv_home}}/autostack.sh mode=0755 owner={{unpriv_user}}
 
 - name: Run DevStack installer (may take 30-90 minutes, depending on bandwidth)
   command: "{{unpriv_home}}/autostack.sh {{unpriv_user}}"
