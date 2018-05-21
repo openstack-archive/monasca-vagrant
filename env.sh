@@ -1,4 +1,4 @@
-# Environment variables for use with python-monascaclient running via monaca-vagrant
+# Environment variables for use with python-monascaclient running via monasca-vagrant
 
 . /opt/monasca/bin/activate
 export OS_USERNAME=mini-mon
