@@ -1,3 +1,0 @@
----
-- include: agent_rabbitmq.yaml tags=devstack_rabbitmq
-- include: agent_mysql.yaml tags=devstack_mysql
